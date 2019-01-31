@@ -50,7 +50,7 @@ public class commandParser {
             if(map.nameMap.isEmpty() || map.coordinateMap.isEmpty()){
                 String[] params = {"sortBy"};
                 String[] values = {sortBy};
-                return outputBuilder("noCitiesToList", "listCities", params, values);
+                return outputBuilder("noCitiesToList", "listCities", params, values, null);
             }else{
                 //we need to list either sorted by coordinates or names
                 if(sortBy.equals("name")){
@@ -65,11 +65,13 @@ public class commandParser {
                         //this is a sorted list of cities going down
                         ret.add(map.nameMap.get(keys[i]));
                     }
+                    //a 2d array that contains each cities information in the cols and
+                    //the cities are sorted asciibetically by row
                     String[][] a= new String[keys.length][];
-
                     for(int i = 0; i < keys.length; i ++){
                         a[i] = ret.get(i).cityInfo();
                     }
+                    Element output = doc.createElement("something");
 
                 }else{
                     //sort by coord
@@ -84,7 +86,7 @@ public class commandParser {
             map.coordinateMap.clear();
             map.nameMap.clear();
             String[] empty = {};
-            return outputBuilder(null, "clearALL", empty, empty);
+            return outputBuilder(null, "clearALL", empty, empty, null);
         }
         //more inputs can go here
         if(node.getNodeName().equals("placeholder")){
@@ -102,11 +104,12 @@ public class commandParser {
 
         //we want to return the success xml here so it can be appended to the document in main
         if(recv.equals("success")){
-            return outputBuilder( null, "createCity", params, values);
+            return outputBuilder( null, "createCity", params, values, null);
         }else{
-            return outputBuilder( recv, "createCity", params, values);
+            return outputBuilder( recv, "createCity", params, values, null);
         }
     }
+
 
     /*
     since xml (probably) doesnt care if its an int or a string as long as it says the same thing
@@ -114,7 +117,7 @@ public class commandParser {
     IMPORTANT IF ERROR IS NULL THEN IT IS A SUCCESSFUL OPERATION
     TODO add output capability to output builder and adjust the other methods
     */
-    private Element outputBuilder( String error, String command, String[] params, String[] values){
+    private Element outputBuilder( String error, String command, String[] params, String[] values, Element output){
         //creates the "root" of this success output
         Element ret;
         if(error != null){
