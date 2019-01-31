@@ -46,6 +46,8 @@ public class MeeshQuest {
         		if (nl.item(i).getNodeType() == Document.ELEMENT_NODE) {
         			commandNode = (Element) nl.item(i);
 
+        			//System.out.println(map.nameMap.toString());
+        			//System.out.println("--------------");
         			//we want to take the element here
 					Element add = parser.in(commandNode);
 					root.appendChild(add);

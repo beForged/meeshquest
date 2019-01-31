@@ -8,13 +8,13 @@ import java.awt.geom.Point2D;
 public class City extends Point2D.Float {
     //these are private and should probably have gets/sets
     String name, color;
-    int x, y, radius;
+    int radius;
 
     //constructor for a city
     public City(String name, int x, int y, int radius, String color){
         this.name = name;
-        this.x = x;
-        this.y = y;
+        super.x = x;
+        super.y = y;
         this.radius = radius;
         this.color = color;
     }

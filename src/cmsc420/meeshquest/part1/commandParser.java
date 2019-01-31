@@ -44,24 +44,25 @@ public class commandParser {
         }
 
         if(node.getNodeName().equals("listCities")){
+
             String sortBy = node.getAttribute("sortBy");
 
+            String[] params = {"sortBy"};
+            String[] values = {sortBy};
             //both maps should either be not empty or empty: problems exist if one or the other is wrong
             if(map.nameMap.isEmpty() || map.coordinateMap.isEmpty()){
-                String[] params = {"sortBy"};
-                String[] values = {sortBy};
                 return outputBuilder("noCitiesToList", "listCities", params, values, null);
             }else{
                 //we need to list either sorted by coordinates or names
                 if(sortBy.equals("name")){
                     //sort by name - we convert a keyset to an array to be sorted
-                    String[] keys = (String[]) map.nameMap.keySet().toArray();
+                    String[] keys =  map.nameMap.keySet().toArray(new String[map.nameMap.size()]);
                     //sorts in ascending order, needs to be reversed
                     Arrays.sort(keys);
                     //we sort the keys so that we can get the cities in the correct order.
                     //does arrays.sort use the string.compareTo() - yes
                     ArrayList<City> ret = new ArrayList<>();
-                    for(int i = keys.length; i > 0; i--){
+                    for(int i = keys.length - 1; i >= 0; i--){
                         //this is a sorted list of cities going down
                         ret.add(map.nameMap.get(keys[i]));
                     }
@@ -71,7 +72,18 @@ public class commandParser {
                     for(int i = 0; i < keys.length; i ++){
                         a[i] = ret.get(i).cityInfo();
                     }
-                    Element output = doc.createElement("something");
+                    Element output = doc.createElement("cityList");
+                    for(int i = 0; i < a.length; i ++){
+                        Element city = doc.createElement("city");
+                        city.setAttribute("name", a[i][0]);
+                        city.setAttribute("x", a[i][1]);
+                        city.setAttribute("y", a[i][2]);
+                        city.setAttribute("radius", a[i][3]);
+                        city.setAttribute("color", a[i][4]);
+                        output.appendChild(city);
+                    }
+
+                    return outputBuilder(null, "listCities", params, values, output);
 
                 }else{
                     //sort by coord
@@ -120,7 +132,7 @@ public class commandParser {
     private Element outputBuilder( String error, String command, String[] params, String[] values, Element output){
         //creates the "root" of this success output
         Element ret;
-        if(error != null){
+        if(error == null){
             ret = doc.createElement("success");
         }else{
             ret = doc.createElement("error");
@@ -139,6 +151,12 @@ public class commandParser {
             Element a = doc.createElement(params[i]);
             a.setAttribute("value", values[i]);
             parameters.appendChild(a);
+        }
+
+        Element out = doc.createElement("output");
+        ret.appendChild(out);
+        if(output != null){
+            out.appendChild(output);
         }
         return ret;
     }
