@@ -64,7 +64,7 @@ public class commandParser {
                     //we sort the keys so that we can get the cities in the correct order.
                     //does arrays.sort use the string.compareTo() - yes
                     ArrayList<City> ret = new ArrayList<>();
-                    for(int i = keys.length - 1; i >= 0; i--){
+                    for(int i = 0; i < keys.length; i++){
                         //this is a sorted list of cities going down
                         ret.add(map.nameMap.get(keys[i]));
                     }
@@ -79,8 +79,8 @@ public class commandParser {
                     for(int i = 0; i < a.length; i ++){
                         Element city = doc.createElement("city");
                         city.setAttribute("name", a[i][0]);
-                        city.setAttribute("x", a[i][1]);
-                        city.setAttribute("y", a[i][2]);
+                        city.setAttribute("x", String.valueOf((int) Float.parseFloat(a[i][1])));
+                        city.setAttribute("y", String.valueOf((int)Float.parseFloat(a[i][2])));
                         city.setAttribute("radius", a[i][3]);
                         city.setAttribute("color", a[i][4]);
                         output.appendChild(city);

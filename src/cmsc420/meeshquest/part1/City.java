@@ -1,6 +1,5 @@
 package cmsc420.meeshquest.part1;
 
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 
 import java.awt.geom.Point2D;
 

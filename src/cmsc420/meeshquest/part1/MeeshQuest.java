@@ -18,53 +18,53 @@ import cmsc420.xml.XmlUtility;
 public class MeeshQuest {
 
     public static void main(String[] args) {
-    	//new map holds all the cities
-    	Map map = new Map();
+        //new map holds all the cities
+        Map map = new Map();
 
-    	//this is the result xml that will be output
+        //this is the result xml that will be output
         Document results = null;
 
 
         try {
-        	Document doc = XmlUtility.validateNoNamespace(new File("test.xml"));
-        	//Document doc = XmlUtility.validateNoNamespace(System.in);
+            //Document doc = XmlUtility.validateNoNamespace(new File("test.xml"));
+            Document doc = XmlUtility.validateNoNamespace(System.in);
 
-			//this is the results document that gets printed as output
-        	results = XmlUtility.getDocumentBuilder().newDocument();
+            //this is the results document that gets printed as output
+            results = XmlUtility.getDocumentBuilder().newDocument();
 
 
-			//this class takes in elements and executes the commands
-			commandParser parser = new commandParser(map, results);
+            //this class takes in elements and executes the commands
+            commandParser parser = new commandParser(map, results);
 
-			//we generate a root element here to start the output as it is on every output (iirc)
-			Element root = results.createElement("results");
-			results.appendChild(root);
-        	Element commandNode = doc.getDocumentElement();
+            //we generate a root element here to start the output as it is on every output (iirc)
+            Element root = results.createElement("results");
+            results.appendChild(root);
+            Element commandNode = doc.getDocumentElement();
 
-        	final NodeList nl = commandNode.getChildNodes();
-        	for (int i = 0; i < nl.getLength(); i++) {
-        		if (nl.item(i).getNodeType() == Document.ELEMENT_NODE) {
-        			commandNode = (Element) nl.item(i);
+            final NodeList nl = commandNode.getChildNodes();
+            for (int i = 0; i < nl.getLength(); i++) {
+                if (nl.item(i).getNodeType() == Document.ELEMENT_NODE) {
+                    commandNode = (Element) nl.item(i);
 
-        			//System.out.println(map.nameMap.toString());
-        			//System.out.println("--------------");
-        			//we want to take the element here
-					Element add = parser.in(commandNode);
-					root.appendChild(add);
+                    //System.out.println(map.nameMap.toString());
+                    //System.out.println("--------------");
+                    //we want to take the element here
+                    Element add = parser.in(commandNode);
+                    root.appendChild(add);
 
-        		}
-        	}
+                }
+            }
         } catch (SAXException | IOException | ParserConfigurationException e) {
 
-        	//temp placeholder
+            //temp placeholder
             System.out.println("<fatalError/>");
 
-		} finally {
+        } finally {
             try {
-				XmlUtility.print(results);
-			} catch (TransformerException e) {
-				e.printStackTrace();
-			}
+                XmlUtility.print(results);
+            } catch (TransformerException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
