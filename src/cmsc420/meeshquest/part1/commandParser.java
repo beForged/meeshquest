@@ -43,8 +43,10 @@ public class commandParser {
             return createCity(name, x, y, radius, color);
         }
 
+        //this is the listcities command, needs to output the cities in the map
         if(node.getNodeName().equals("listCities")){
 
+            //attribute of how to sort the thin
             String sortBy = node.getAttribute("sortBy");
 
             String[] params = {"sortBy"};
@@ -72,6 +74,7 @@ public class commandParser {
                     for(int i = 0; i < keys.length; i ++){
                         a[i] = ret.get(i).cityInfo();
                     }
+                    //just making city elements here
                     Element output = doc.createElement("cityList");
                     for(int i = 0; i < a.length; i ++){
                         Element city = doc.createElement("city");
@@ -86,7 +89,7 @@ public class commandParser {
                     return outputBuilder(null, "listCities", params, values, output);
 
                 }else{
-                    //sort by coord
+                    //TODO sort by coordinates
                 }
             }
         }
@@ -109,8 +112,9 @@ public class commandParser {
 
     //we create add the city to the map and then build xml here to output?
     private Element createCity(String name, int x, int y, int radius, String color){
+        //makes a new city and then inserts it, map checks if it is a dupe or not
         City city = new City(name, x, y, radius, color);
-        String recv = map.addCity(city);
+        String recv = map.addCity(city); //returns success or the error msg
         String[] values= {name, String.valueOf(x), String.valueOf(y), String.valueOf(radius), color};
         String[] params = {"name", "x", "y", "radius", "color"};
 
@@ -127,10 +131,10 @@ public class commandParser {
     since xml (probably) doesnt care if its an int or a string as long as it says the same thing
     we can just give a correctly ordered array of values and parameters and build  correct output
     IMPORTANT IF ERROR IS NULL THEN IT IS A SUCCESSFUL OPERATION
-    TODO add output capability to output builder and adjust the other methods
+    TODO perhaps it might be needed to change params so that they behave like output where elements are made in methods
     */
     private Element outputBuilder( String error, String command, String[] params, String[] values, Element output){
-        //creates the "root" of this success output
+        //creates the "root" of this success output either error or success
         Element ret;
         if(error == null){
             ret = doc.createElement("success");
@@ -153,6 +157,7 @@ public class commandParser {
             parameters.appendChild(a);
         }
 
+        //output stuff, just makes an output tag and then appends if any output is given
         Element out = doc.createElement("output");
         ret.appendChild(out);
         if(output != null){
