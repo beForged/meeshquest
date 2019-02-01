@@ -26,8 +26,9 @@ public class MeeshQuest {
 
 
         try {
-            //Document doc = XmlUtility.validateNoNamespace(new File("test.xml"));
-            Document doc = XmlUtility.validateNoNamespace(System.in);
+            Document doc = XmlUtility.validateNoNamespace(new File("testing/test1.xml"));
+            //Document doc = XmlUtility.validateNoNamespace(System.in);
+            //Document doc = XmlUtility.validateNoNamespace(new File(args[1]));
 
             //this is the results document that gets printed as output
             results = XmlUtility.getDocumentBuilder().newDocument();
@@ -46,7 +47,7 @@ public class MeeshQuest {
                 if (nl.item(i).getNodeType() == Document.ELEMENT_NODE) {
                     commandNode = (Element) nl.item(i);
 
-                    //System.out.println(map.nameMap.toString());
+                    //System.out.println(map.coordinateMap.toString());
                     //System.out.println("--------------");
                     //we want to take the element here
                     Element add = parser.in(commandNode);
@@ -62,6 +63,7 @@ public class MeeshQuest {
         } finally {
             try {
                 XmlUtility.print(results);
+
             } catch (TransformerException e) {
                 e.printStackTrace();
             }

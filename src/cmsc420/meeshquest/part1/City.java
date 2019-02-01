@@ -23,4 +23,8 @@ public class City extends Point2D.Float {
         return new String[]{name, String.valueOf(x), String.valueOf(y), String.valueOf(radius), color};
     }
 
+    public String toString(){
+        return name + "\t\t" + String.valueOf(x) + "\t" + String.valueOf(y) + "\t" + String.valueOf(radius) + "\t" + color;
+    }
+
   }

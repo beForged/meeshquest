@@ -1,19 +1,10 @@
 package cmsc420.meeshquest.part1;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import cmsc420.xml.XmlUtility;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.awt.geom.Point2D;
+import java.util.*;
 
 
 public class commandParser {
@@ -59,7 +50,7 @@ public class commandParser {
                 if(sortBy.equals("name")){
                     //sort by name - we convert a keyset to an array to be sorted
                     String[] keys =  map.nameMap.keySet().toArray(new String[map.nameMap.size()]);
-                    //sorts in ascending order, needs to be reversed
+                    //sorts in ascending order,
                     Arrays.sort(keys);
                     //we sort the keys so that we can get the cities in the correct order.
                     //does arrays.sort use the string.compareTo() - yes
@@ -85,11 +76,25 @@ public class commandParser {
                         city.setAttribute("color", a[i][4]);
                         output.appendChild(city);
                     }
-
                     return outputBuilder(null, "listCities", params, values, output);
-
                 }else{
                     //TODO sort by coordinates
+                    Element output = doc.createElement("cityList");
+
+                    //Comparator<? super Point2D> comp = map.coordinateMap.comparator();
+                    //System.out.println(comp.compare(new Point2D.Float(2, 3), new Point2D.Float(3, 4)));
+
+                    for(City c:map.coordinateMap.values()){
+                   Element city = doc.createElement("city");
+                        city.setAttribute("name", c.name);
+                        city.setAttribute("x", String.valueOf((int)c.x));
+                        city.setAttribute("y", String.valueOf((int)c.y));
+                        city.setAttribute("radius", String.valueOf(c.radius));
+                        city.setAttribute("color", c.color);
+                        output.appendChild(city);
+                    }
+                    return outputBuilder(null, "listCities", params, values, output);
+
                 }
             }
         }
@@ -158,10 +163,12 @@ public class commandParser {
         }
 
         //output stuff, just makes an output tag and then appends if any output is given
-        Element out = doc.createElement("output");
-        ret.appendChild(out);
-        if(output != null){
-            out.appendChild(output);
+        if(error == null){
+            Element out = doc.createElement("output");
+            ret.appendChild(out);
+            if(output != null){
+                out.appendChild(output);
+            }
         }
         return ret;
     }

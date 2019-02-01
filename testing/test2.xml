@@ -1,0 +1,12 @@
+<commands xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="part1in.xsd" spatialWidth="256" spatialHeight="256">
+    <!-- Valid statement -->
+    <createCity name="Los_Angeles" x="118" y="33" radius="80" color="black"/>
+    <!-- Valid statement, lower case city name -->
+    <createCity name="los_Angeles" x="100" y="300" radius="80" color="black"/>
+    <!-- duplicateCityName error -->
+    <createCity name="los_Angeles" x="500" y="300" radius="80" color="black"/>
+    <!-- duplicateCityCoordinates -->
+    <createCity name="Miami" x="100" y="300" radius="80" color="black"/>
+    <!-- duplicateCityCoordinates - higher priority -->
+    <createCity name="los_Angeles" x="118" y="33" radius="80" color="black"/>
+</commands>

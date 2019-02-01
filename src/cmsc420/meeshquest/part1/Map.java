@@ -13,15 +13,20 @@ public class Map {
 
         //we have a comparator here so that we can see if there is a point that is in the same
         //place. could also use x == x and y==y is .equals doesnt work
+        //TODO make this sortable so that compareTo arrays.sort works correctly
         coordinateMap = new TreeMap<>(new Comparator<Point2D>() {
             @Override
             public int compare(Point2D o1, Point2D o2) {
-                if(o1.equals(o2)){
-                    return 0;
-                }else if(o1.getX() + o1.getY() < o2.getX() + o2.getY()){
-                    return 1;
-                }else{
-                    return -1;
+                        if(o1.getX() == o2.getX() && o1.getY() == o2.getY()){
+                            return 0;
+                        }else if(o1.getY() > o2.getY()) {
+                            return 1;
+                        }else if(o1.getY() < o2.getY()){
+                                return -1;
+                        }else if(o1.getX() > o2.getX()){
+                            return 1;
+                        }else{
+                            return -1;
                 }
             }
         });
