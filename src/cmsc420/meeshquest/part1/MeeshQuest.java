@@ -26,8 +26,8 @@ public class MeeshQuest {
 
 
         try {
-            Document doc = XmlUtility.validateNoNamespace(new File("testing/test1.xml"));
-            //Document doc = XmlUtility.validateNoNamespace(System.in);
+            //Document doc = XmlUtility.validateNoNamespace(new File("testing/part1.createCity1.input.xml"));
+            Document doc = XmlUtility.validateNoNamespace(System.in);
             //Document doc = XmlUtility.validateNoNamespace(new File(args[1]));
 
             //this is the results document that gets printed as output
@@ -35,7 +35,7 @@ public class MeeshQuest {
 
 
             //this class takes in elements and executes the commands
-            commandParser parser = new commandParser(map, results);
+            commandParser parser = new     commandParser(map, results);
 
             //we generate a root element here to start the output as it is on every output (iirc)
             Element root = results.createElement("results");
@@ -57,8 +57,8 @@ public class MeeshQuest {
             }
         } catch (SAXException | IOException | ParserConfigurationException e) {
 
-            //temp placeholder
-            System.out.println("<fatalError/>");
+            Element root = results.createElement("fatalError");
+            results.appendChild(root);
 
         } finally {
             try {

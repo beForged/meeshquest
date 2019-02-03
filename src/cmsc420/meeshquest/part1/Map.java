@@ -30,7 +30,12 @@ public class Map {
                 }
             }
         });
-        nameMap = new TreeMap<>();
+        nameMap = new TreeMap<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return -o1.compareTo(o2);
+            }
+        });
     }
 
     //check that name and coordinates are not taken
@@ -46,6 +51,19 @@ public class Map {
             nameMap.put(city.name, city);
             return "success";
         }
+    }
+
+    public String deleteCity(String name){
+        //TODO remove from quadtree if mapped
+        if(nameMap.containsKey(name)){
+            //if the city exists, remove from namemap and get the city object
+            City rem = nameMap.remove(name);
+            //then remove from coordinate map
+            coordinateMap.remove(new Point2D.Float((int)rem.getX(), (int)rem.getY()));
+            //success so return null
+            return null;
+        }
+        return "cityDoesNotExist";
     }
 
 }

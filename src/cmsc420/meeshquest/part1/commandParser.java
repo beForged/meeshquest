@@ -19,6 +19,8 @@ public class commandParser {
 
     //given some node we get all of its attributes and then execute its task
     Element in(Element node){
+
+
         //create city
         if(node.getNodeName().equals("createCity")){
             String color, name = "";
@@ -34,6 +36,11 @@ public class commandParser {
             return createCity(name, x, y, radius, color);
         }
 
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+         */
+
         //this is the listcities command, needs to output the cities in the map
         if(node.getNodeName().equals("listCities")){
 
@@ -47,45 +54,12 @@ public class commandParser {
                 return outputBuilder("noCitiesToList", "listCities", params, values, null);
             }else{
                 //we need to list either sorted by coordinates or names
+                //just making city elements here
+                Element output = doc.createElement("cityList");
                 if(sortBy.equals("name")){
-                    //sort by name - we convert a keyset to an array to be sorted
-                    String[] keys =  map.nameMap.keySet().toArray(new String[map.nameMap.size()]);
-                    //sorts in ascending order,
-                    Arrays.sort(keys);
-                    //we sort the keys so that we can get the cities in the correct order.
-                    //does arrays.sort use the string.compareTo() - yes
-                    ArrayList<City> ret = new ArrayList<>();
-                    for(int i = 0; i < keys.length; i++){
-                        //this is a sorted list of cities going down
-                        ret.add(map.nameMap.get(keys[i]));
-                    }
-                    //a 2d array that contains each cities information in the cols and
-                    //the cities are sorted asciibetically by row
-                    String[][] a= new String[keys.length][];
-                    for(int i = 0; i < keys.length; i ++){
-                        a[i] = ret.get(i).cityInfo();
-                    }
-                    //just making city elements here
-                    Element output = doc.createElement("cityList");
-                    for(int i = 0; i < a.length; i ++){
+                    //goes through the natural ordering of the treemap
+                    for(City c:map.nameMap.values()){
                         Element city = doc.createElement("city");
-                        city.setAttribute("name", a[i][0]);
-                        city.setAttribute("x", String.valueOf((int) Float.parseFloat(a[i][1])));
-                        city.setAttribute("y", String.valueOf((int)Float.parseFloat(a[i][2])));
-                        city.setAttribute("radius", a[i][3]);
-                        city.setAttribute("color", a[i][4]);
-                        output.appendChild(city);
-                    }
-                    return outputBuilder(null, "listCities", params, values, output);
-                }else{
-                    //TODO sort by coordinates
-                    Element output = doc.createElement("cityList");
-
-                    //Comparator<? super Point2D> comp = map.coordinateMap.comparator();
-                    //System.out.println(comp.compare(new Point2D.Float(2, 3), new Point2D.Float(3, 4)));
-
-                    for(City c:map.coordinateMap.values()){
-                   Element city = doc.createElement("city");
                         city.setAttribute("name", c.name);
                         city.setAttribute("x", String.valueOf((int)c.x));
                         city.setAttribute("y", String.valueOf((int)c.y));
@@ -94,10 +68,23 @@ public class commandParser {
                         output.appendChild(city);
                     }
                     return outputBuilder(null, "listCities", params, values, output);
-
+                }else{
+                    for(City c:map.coordinateMap.values()){
+                        Element city = doc.createElement("city");
+                        city.setAttribute("name", c.name);
+                        city.setAttribute("x", String.valueOf((int)c.x));
+                        city.setAttribute("y", String.valueOf((int)c.y));
+                        city.setAttribute("radius", String.valueOf(c.radius));
+                        city.setAttribute("color", c.color);
+                        output.appendChild(city);
+                    }
+                    return outputBuilder(null, "listCities", params, values, output);
                 }
             }
         }
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
 
         /*
          *Resets all structures and clears them, cannot fail
@@ -106,14 +93,41 @@ public class commandParser {
             map.coordinateMap.clear();
             map.nameMap.clear();
             String[] empty = {};
-            return outputBuilder(null, "clearALL", empty, empty, null);
+            return outputBuilder(null, "clearAll", empty, empty, null);
         }
+
+
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+
+        if(node.getNodeName().equals("deleteCity")){
+            //TODO remove the city from the quadtree and create output stuff
+            //get the name to be deleted
+            String cityName = node.getAttribute("name");
+            //delete the map TODO figure out how to tell if it was mapped or not
+            String succ = map.deleteCity(cityName);
+            //parameters and values
+            String[] params = {"name"}; String[] values = {cityName};
+            //return the output builder
+
+            return outputBuilder(succ, "deleteCity", params, values, null);
+        }
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+
         //more inputs can go here
         if(node.getNodeName().equals("placeholder")){
             return null;
         }
         return null;
     }
+
+
+
 
     //we create add the city to the map and then build xml here to output?
     private Element createCity(String name, int x, int y, int radius, String color){
@@ -137,6 +151,8 @@ public class commandParser {
     we can just give a correctly ordered array of values and parameters and build  correct output
     IMPORTANT IF ERROR IS NULL THEN IT IS A SUCCESSFUL OPERATION
     TODO perhaps it might be needed to change params so that they behave like output where elements are made in methods
+    need to give it null if success else the error msg, the command that is given, list of parameter and the values
+    that were given and then build the output element
     */
     private Element outputBuilder( String error, String command, String[] params, String[] values, Element output){
         //creates the "root" of this success output either error or success
@@ -155,7 +171,7 @@ public class commandParser {
 
         //we make and list parameters here
         Element parameters = doc.createElement("parameters");
-        ret.appendChild(parameters);//hopefully can still add things after parameters
+        ret.appendChild(parameters);
         for(int i = 0; i < params.length; i ++){
             Element a = doc.createElement(params[i]);
             a.setAttribute("value", values[i]);
