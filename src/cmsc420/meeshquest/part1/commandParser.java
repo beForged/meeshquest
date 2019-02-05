@@ -119,10 +119,21 @@ public class commandParser {
         --------------------------------------------------------------------------------------------------------------
         */
 
+        if(node.getNodeName().equals("mapCity")){
+            String name = node.getAttribute("name");
+            //TODO add city to the map 3 diff errors possible
+            return null;
+        }
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+
         //more inputs can go here
         if(node.getNodeName().equals("placeholder")){
             return null;
         }
+        //TODO throw an error unknown/malformed input
         return null;
     }
 

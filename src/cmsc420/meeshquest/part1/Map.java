@@ -11,9 +11,7 @@ public class Map {
     TreeMap<String , City> nameMap;
     public Map(){
 
-        //we have a comparator here so that we can see if there is a point that is in the same
-        //place. could also use x == x and y==y is .equals doesnt work
-        //TODO make this sortable so that compareTo arrays.sort works correctly
+        //comparator that compares by number
         coordinateMap = new TreeMap<>(new Comparator<Point2D>() {
             @Override
             public int compare(Point2D o1, Point2D o2) {
@@ -30,6 +28,7 @@ public class Map {
                 }
             }
         });
+        //reverse the regular string compareto
         nameMap = new TreeMap<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {

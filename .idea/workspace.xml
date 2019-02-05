@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e6bb1a0-1cdb-4871-b022-2ed3613f3683" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/testing/test3.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cmsc420.meeshquest.part1/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cmsc420.meeshquest.part1/cmsc420/meeshquest/part1/MeeshQuest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cmsc420.meeshquest.part1/cmsc420/meeshquest/part1/MeeshQuest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cmsc420.meeshquest.part1/cmsc420/meeshquest/part1/commandParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cmsc420.meeshquest.part1/cmsc420/meeshquest/part1/commandParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/README.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cmsc420.meeshquest.part1/cmsc420/meeshquest/part1/Map.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cmsc420.meeshquest.part1/cmsc420/meeshquest/part1/Map.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cmsc420/meeshquest/part1/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cmsc420/meeshquest/part1/Map.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmsc420/meeshquest/part1/MeeshQuest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cmsc420/meeshquest/part1/MeeshQuest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cmsc420/meeshquest/part1/MeeshQuestTest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cmsc420/meeshquest/part1/commandParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cmsc420/meeshquest/part1/commandParser.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -31,29 +25,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cmsc420/meeshquest/part1/commandParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="108" column="79" selection-start-line="108" selection-start-column="79" selection-end-line="108" selection-end-column="79" />
+            <state relative-caret-position="815">
+              <caret line="133" column="23" selection-start-line="133" selection-start-column="23" selection-end-line="133" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cmsc420/meeshquest/part1/City.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cmsc420/meeshquest/part1/Map.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="690">
-              <caret line="64" column="8" selection-start-line="64" selection-start-column="8" selection-end-line="64" selection-end-column="8" />
+            <state relative-caret-position="135">
+              <caret line="14" column="65" lean-forward="true" selection-start-line="14" selection-start-column="65" selection-end-line="14" selection-end-column="65" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1373#1374#0" expanded="true" />
@@ -68,15 +53,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="54">
               <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testing/part1.createCity1.output.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="81" column="16" selection-start-line="81" selection-start-column="16" selection-end-line="81" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -115,10 +91,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="588" />
-    <option name="y" value="-26" />
+    <option name="x" value="173" />
+    <option name="y" value="172" />
     <option name="width" value="1294" />
-    <option name="height" value="990" />
+    <option name="height" value="741" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -139,11 +115,6 @@
               <item name="cmsc420.meeshquest.part1" type="b2602c69:ProjectViewProjectNode" />
               <item name="meeshquest" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cmsc420.meeshquest.part1" type="b2602c69:ProjectViewProjectNode" />
-              <item name="meeshquest" type="462c0819:PsiDirectoryNode" />
-              <item name="testing" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -172,11 +143,11 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549222563782" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549339541709" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/antbuild.xml" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -262,7 +233,14 @@
       <option name="project" value="LOCAL" />
       <updated>1548994579174</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fixed comparator i am super dumb take 2">
+      <created>1549222667741</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1549222667741</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -283,7 +261,7 @@
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12686567" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12686567" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Terminal" sideWeight="0.49946696" />
@@ -302,7 +280,7 @@
       <window_info anchor="right" id="Capture Analysis" />
       <window_info anchor="right" id="Palette&#9;" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.0858209" />
+      <window_info active="true" anchor="right" id="Ant Build" order="1" visible="true" weight="0.09115139" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
   </component>
@@ -337,7 +315,8 @@
     <MESSAGE value="finished listcities and handle output now" />
     <MESSAGE value="list cities fixed ordering for name and also float-as-string and not int issue fixed" />
     <MESSAGE value="fixed comparator i am super dumb" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed comparator i am super dumb" />
+    <MESSAGE value="fixed comparator i am super dumb take 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed comparator i am super dumb take 2" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -478,27 +457,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cmsc420/meeshquest/part1/City.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
+        <state relative-caret-position="473">
           <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/cmsc420/meeshquest/part1/Map.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="64" column="8" selection-start-line="64" selection-start-column="8" selection-end-line="64" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1373#1374#0" expanded="true" />
-            <element signature="e#1425#1426#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cmsc420/meeshquest/part1/commandParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="108" column="79" selection-start-line="108" selection-start-column="79" selection-end-line="108" selection-end-column="79" />
+        <state relative-caret-position="815">
+          <caret line="133" column="23" selection-start-line="133" selection-start-column="23" selection-end-line="133" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cmsc420/meeshquest/part1/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="14" column="65" lean-forward="true" selection-start-line="14" selection-start-column="65" selection-end-line="14" selection-end-column="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1373#1374#0" expanded="true" />
+            <element signature="e#1425#1426#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
