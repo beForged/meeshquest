@@ -19,7 +19,7 @@ public class PRQuadTree {
         //if the root is a white node
         if(root.equals(WhiteNode.getInstance())){
             root = new GreyNode();
-            quadrant(city, root);
+            quadrant(city, (GreyNode) root);
         }
     }
 
@@ -30,7 +30,7 @@ public class PRQuadTree {
       2 | 3
       form
      */
-    private void quadrant(City city, Node root){
+    private void quadrant(City city, GreyNode root){
         //TODO add check to make sure root is a grey node
         //city is below x axis and to the left of y
        if(city.getX() < center.getX() && city.getY() < center.getY()){
