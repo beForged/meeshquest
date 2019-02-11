@@ -27,4 +27,8 @@ public class City extends Point2D.Float {
         return name + "\t\t" + String.valueOf(x) + "\t" + String.valueOf(y) + "\t" + String.valueOf(radius) + "\t" + color;
     }
 
+    public Point2D.Float getCoords(){
+        return new Point2D.Float(x, y);
+    }
+
   }
