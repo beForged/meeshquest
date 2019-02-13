@@ -1,46 +1,20 @@
 package cmsc420.meeshquest.part1;
 
 public class GreyNode implements Node{
-    private Node NE, NW, SE, SW;
+    private Node[] quadrants;
     boolean isFull;
 
     //initialize with all white nodes as children (maybe ask for all 4 nodes?)
     public GreyNode(){
-        NE = WhiteNode.getInstance();
-        NW = WhiteNode.getInstance();
-        SE = WhiteNode.getInstance();
-        SW = WhiteNode.getInstance();
+        quadrants = new Node[4];
+        for(i = 0; i < 4; i ++){
+            quadrants[i] = WhiteNode.getInstance();
+        }
     }
 
-    public void setNE(Node NE) {
-        this.NE = NE;
+    private setNode(int quadrant, Node node){
+        //TODO if all of node consists of black or grey nodes then it is full
+        Node[quadrant] = node;
     }
 
-    public void setNW(Node NW) {
-        this.NW = NW;
-    }
-
-    public void setSE(Node SE) {
-        this.SE = SE;
-    }
-
-    public void setSW(Node SW) {
-        this.SW = SW;
-    }
-
-    public Node getNE() {
-        return NE;
-    }
-
-    public Node getNW() {
-        return NW;
-    }
-
-    public Node getSE() {
-        return SE;
-    }
-
-    public Node getSW() {
-        return SW;
-    }
 }

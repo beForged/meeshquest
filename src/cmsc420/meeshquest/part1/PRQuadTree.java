@@ -19,8 +19,8 @@ public class PRQuadTree {
         //if the root is a white node
         if(root.equals(WhiteNode.getInstance())){
             root = new GreyNode();
-            quadrant(city, (GreyNode) root);
         }
+        quadrant(city, (GreyNode) root);
     }
 
 
@@ -34,15 +34,16 @@ public class PRQuadTree {
         //TODO add check to make sure root is a grey node
         //city is below x axis and to the left of y
        if(city.getX() < center.getX() && city.getY() < center.getY()){
-           root.setSW(new BlackNode(city));
+           root.setNode(2, city);
            //city is above x axis and left of y
        }else if(city.getX() > center.getX() && city.getY() < center.getY()){
-           root.setNW(new BlackNode(city));
+           root.setNode(0, city);
            //city is below x and  to the right of y
        }else if(city.getX() < center.getX() && city.getY() > center.getY()){
-           root.setSE(new BlackNode(city));
+           root.setNode(3, city);
            //city is over x and to the right of y
        }else if (city.getX() > center.getX() && city.getY() > center.getY()) {
+           root.setNode(1, city);
            root.setNE(new BlackNode(city));
        }
     }
