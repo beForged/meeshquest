@@ -7,14 +7,14 @@ public class GreyNode implements Node{
     //initialize with all white nodes as children (maybe ask for all 4 nodes?)
     public GreyNode(){
         quadrants = new Node[4];
-        for(i = 0; i < 4; i ++){
+        for(int i = 0; i < 4; i ++){
             quadrants[i] = WhiteNode.getInstance();
         }
     }
 
-    private setNode(int quadrant, Node node){
+    public void setNode(int quadrant, Node node){
         //TODO if all of node consists of black or grey nodes then it is full
-        Node[quadrant] = node;
+        quadrants[quadrant] = node;
     }
 
 }

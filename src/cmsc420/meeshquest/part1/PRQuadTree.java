@@ -15,12 +15,15 @@ public class PRQuadTree {
     }
 
     //may need return type to do errors tbh
+    //TODO check bounds and name/cood overlap
     public void addCity(City city){
         //if the root is a white node
-        if(root.equals(WhiteNode.getInstance())){
+        if(root.equals(WhiteNode.getInstance())) {
             root = new GreyNode();
-        }
-        quadrant(city, (GreyNode) root);
+            quadrant(city, (GreyNode) root);
+        }//TODO else if root is a greynode, iterate further
+
+
     }
 
 
@@ -34,17 +37,16 @@ public class PRQuadTree {
         //TODO add check to make sure root is a grey node
         //city is below x axis and to the left of y
        if(city.getX() < center.getX() && city.getY() < center.getY()){
-           root.setNode(2, city);
+           root.setNode(2, new BlackNode(city));
            //city is above x axis and left of y
        }else if(city.getX() > center.getX() && city.getY() < center.getY()){
-           root.setNode(0, city);
+           root.setNode(0, new BlackNode(city));
            //city is below x and  to the right of y
        }else if(city.getX() < center.getX() && city.getY() > center.getY()){
-           root.setNode(3, city);
+           root.setNode(3, new BlackNode(city));
            //city is over x and to the right of y
        }else if (city.getX() > center.getX() && city.getY() > center.getY()) {
-           root.setNode(1, city);
-           root.setNE(new BlackNode(city));
+           root.setNode(1, new BlackNode(city));
        }
     }
 }
