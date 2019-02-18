@@ -18,6 +18,15 @@ public class City extends Point2D.Float {
         this.color = color;
     }
 
+    //equals func if needed
+/*    public boolean equals(City c){
+        if(this.equals(c.name) && this.x == c.getX() && this.y == c.getY()) {
+            return true;
+        }else{
+            return false;
+        }
+    }*/
+
     //function that returns information about the city
     public String[] cityInfo(){
         return new String[]{name, String.valueOf(x), String.valueOf(y), String.valueOf(radius), color};

@@ -19,7 +19,7 @@ public class MeeshQuest {
 
     public static void main(String[] args) {
         //new map holds all the cities
-        Map map = new Map();
+        Map map;
 
         //this is the result xml that will be output
         Document results = null;
@@ -28,19 +28,25 @@ public class MeeshQuest {
         try {
             //Document doc = XmlUtility.validateNoNamespace(new File("testing/part1.createCity1.input.xml"));
             Document doc = XmlUtility.validateNoNamespace(System.in);
-            //Document doc = XmlUtility.validateNoNamespace(new File(args[1]));
 
             //this is the results document that gets printed as output
             results = XmlUtility.getDocumentBuilder().newDocument();
 
 
-            //this class takes in elements and executes the commands
-            commandParser parser = new     commandParser(map, results);
-
             //we generate a root element here to start the output as it is on every output (iirc)
             Element root = results.createElement("results");
             results.appendChild(root);
+
+            //this is the root node so we get height and width from that
             Element commandNode = doc.getDocumentElement();
+            int spatialWidth = Integer.parseInt(commandNode.getAttribute("spatialWidth"));
+            int spatialHeight = Integer.parseInt(commandNode.getAttribute("spatialHeight"));
+            //creates the data structures
+            map = new Map(spatialWidth, spatialHeight);
+
+            //starts the command parser
+            //this class takes in elements and executes the commands
+            commandParser parser = new commandParser(map, results);
 
             final NodeList nl = commandNode.getChildNodes();
             for (int i = 0; i < nl.getLength(); i++) {
@@ -56,7 +62,7 @@ public class MeeshQuest {
                 }
             }
         } catch (SAXException | IOException | ParserConfigurationException e) {
-
+//maybe need to clear the dom tree first
             Element root = results.createElement("fatalError");
             results.appendChild(root);
 

@@ -11,6 +11,7 @@ public class commandParser {
     Element commandNode;
     Map map;
     Document doc;
+    String[] empty = {};
 
     public commandParser(Map map, Document doc){
         this.doc = doc;
@@ -92,7 +93,6 @@ public class commandParser {
         if(node.getNodeName().equals("clearAll")){
             map.coordinateMap.clear();
             map.nameMap.clear();
-            String[] empty = {};
             return outputBuilder(null, "clearAll", empty, empty, null);
         }
 
@@ -118,11 +118,23 @@ public class commandParser {
         /*
         --------------------------------------------------------------------------------------------------------------
         */
-
-        if(node.getNodeName().equals("mapCity")){
+        //city already mapped, name not in dict, city out of bounds
+        String mapCity = "mapCity";
+        if(node.getNodeName().equals(mapCity)){
             String name = node.getAttribute("name");
-            //TODO add city to the map 3 diff errors possible
-            return null;
+            String[] params = {name};
+            try{
+                City c = map.nameMap.get("name");
+                if(c == null){
+                    return outputBuilder("nameNotInDictionary", mapCity, params, empty, null);
+                }
+                map.quadTree.addCity(c);
+            }catch(CityAlreadyMappedException e){
+                return outputBuilder(e.getMessage(), mapCity, params, empty, null);
+            }catch(cityOutOfBoundsException e) {
+                return outputBuilder(e.getMessage(), mapCity, params, empty, null);
+            }
+            return outputBuilder(null, mapCity, params, empty, null);
         }
 
         /*

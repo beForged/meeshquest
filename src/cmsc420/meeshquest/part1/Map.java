@@ -9,7 +9,9 @@ import java.util.TreeMap;
 public class Map {
     TreeMap<Point2D, City> coordinateMap;
     TreeMap<String , City> nameMap;
-    public Map(){
+    PRQuadTree quadTree;
+    int width, height;
+    public Map(int width, int height){
 
         //comparator that compares by number
         coordinateMap = new TreeMap<>(new Comparator<Point2D>() {
@@ -35,6 +37,10 @@ public class Map {
                 return -o1.compareTo(o2);
             }
         });
+
+        this.width = width;
+        this.height = height;
+        quadTree = new PRQuadTree(width, height);
     }
 
     //check that name and coordinates are not taken
@@ -43,8 +49,10 @@ public class Map {
         Point2D.Float coord = new Point2D.Float(city.x, city.y);
         if(coordinateMap.containsKey(coord)){
             return "duplicateCityCoordinates";
+            //TODO throw new duplicateCityCoordinates();
         }else if(nameMap.containsKey(city.name)){
             return "duplicateCityName";
+            //TODO throw new duplicateCityName();
         }else{
             coordinateMap.put(new Point2D.Float(city.x, city.y), city);
             nameMap.put(city.name, city);
