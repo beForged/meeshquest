@@ -3,6 +3,8 @@ package cmsc420.meeshquest.part1;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.ArrayList;
+
 public class WhiteNode implements Node{
     //a little bit of communism
     private static WhiteNode ourInstance = new WhiteNode();
@@ -27,6 +29,11 @@ public class WhiteNode implements Node{
 
     public Element printquadtree(Document doc){
         return doc.createElement("white");
+    }
+
+    @Override
+    public ArrayList<City> rangeCities(int x, int y, int radius) {
+        return new ArrayList<>();
     }
 
     private WhiteNode() {

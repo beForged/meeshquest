@@ -4,6 +4,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class PRQuadTree {
 
@@ -63,4 +64,16 @@ public class PRQuadTree {
         }
         return root.printquadtree(doc);
     }
+
+    //TODO return a list of cities
+    public ArrayList<City> rangeCities(int x, int y, int radius) throws noCitiesExistInRangeException{
+        //new array put here
+        ArrayList<City> citiesInRange = new ArrayList<>();
+        citiesInRange.addAll(root.rangeCities(x, y, radius));
+        if(citiesInRange.size() == 0){
+            throw new noCitiesExistInRangeException("noCitiesExistInRange");
+        }
+        return citiesInRange;
+    }
+
 }

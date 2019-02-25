@@ -150,14 +150,14 @@ public class commandParser {
         if(node.getNodeName().equals(unmap)){
             String name = node.getAttribute("name");
             String[] params = {"name"};
+            String[] values = {name};
             if(map.nameMap.get(name) == null){
-                return outputBuilder("nameNotInDictionary", unmap, params, empty, null);
+                return outputBuilder("nameNotInDictionary", unmap, params, values, null);
             }
             if(!map.quadTree.containsCity(name)){
-                return outputBuilder("cityNotMapped", unmap, params, empty, null);
+                return outputBuilder("cityNotMapped", unmap, params, values, null);
             }
             map.quadTree.deleteCity(name);//should be true tbh as if it doesnt contain it will already ret
-            String[] values = {name};
             return outputBuilder(null, unmap, params, values, null);
         }
 
@@ -195,19 +195,50 @@ public class commandParser {
             String x= node.getAttribute("x");
             String y= node.getAttribute("y");
             String radius= node.getAttribute("radius");
-            String saveMap= node.getAttribute("saveMap");
+            String saveMap= node.getAttribute("saveMap");//TODO could be null still needs output maybe
+            ArrayList<City> a;
+            String[] params = new String[]{"x", "y", "radius"};
+            String[] values = {x, y, radius};
+            try {
+                a = map.quadTree.rangeCities(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(radius));
+            }catch (noCitiesExistInRangeException e){
+                return outputBuilder(e.getMessage(), range, params, values, null);
+            }
+
+            Element output = doc.createElement("cityList");
+            for (City i:a ) {
+                Element city = doc.createElement("city");
+                city.setAttribute("name", i.name);
+                city.setAttribute("x", String.valueOf((int)i.x));
+                city.setAttribute("y", String.valueOf((int)i.y));
+                city.setAttribute("color", String.valueOf(i.color));
+                city.setAttribute("radius", String.valueOf(i.radius));
+                output.appendChild(city);
+            }
+            return outputBuilder(null, range, params, values, output);
         }
 
         /*
         --------------------------------------------------------------------------------------------------------------
         */
 
+        if(node.getNodeName().equals("nearestCity")){
+            String x= node.getAttribute("x");
+            String y= node.getAttribute("y");
+            String[] params = {"x", "y"};
+            String[] values = {x, y};
 
-        //more inputs can go here
+        }
+
+        //y6y tbh
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
         if(node.getNodeName().equals("placeholder")){
             return null;
         }
-        //TODO throw an error unknown/malformed input
+
+        //TODO throw an error unknown/malformed input - fatal error
         return null;
     }
 

@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class GreyNode implements Node{
     private Node[] quadrants;
@@ -121,5 +122,14 @@ public class GreyNode implements Node{
             out.appendChild(i.printquadtree(doc));
         }
         return out;
+    }
+
+
+    public ArrayList<City> rangeCities(int x, int y, int radius){
+        ArrayList<City> rangeCity = new ArrayList<>();
+        for (Node i:quadrants) {
+            rangeCity.addAll(i.rangeCities(x, y, radius));
+        }
+        return rangeCity;
     }
 }

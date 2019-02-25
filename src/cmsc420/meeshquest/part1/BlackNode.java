@@ -4,6 +4,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class BlackNode implements Node{
     City city;
@@ -44,5 +45,13 @@ public class BlackNode implements Node{
         black.setAttribute("x", String.valueOf((int)getCity().getX()));
         black.setAttribute("y", String.valueOf((int)getCity().getY()));
         return black;
+    }
+
+    public ArrayList<City> rangeCities(int x, int y, int radius){
+       ArrayList<City> citiesInRange = new ArrayList<>();
+       if(this.city.distance(new Point2D.Float((float)x, (float)y)) <  radius){
+           citiesInRange.add(this.city);
+       }
+       return citiesInRange;
     }
 }
