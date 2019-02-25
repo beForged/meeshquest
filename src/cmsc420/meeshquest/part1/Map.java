@@ -1,5 +1,8 @@
 package cmsc420.meeshquest.part1;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.awt.geom.Point2D;
 import java.util.Comparator;
 import java.util.TreeMap;
@@ -60,17 +63,19 @@ public class Map {
         }
     }
 
-    public String deleteCity(String name){
-        //TODO remove from quadtree if mapped
-        if(nameMap.containsKey(name)){
+    public String deleteCity(String name) throws cityDoesNotExistException{
+        if(!nameMap.containsKey(name)){
+            throw new cityDoesNotExistException("cityDoesNotExist");
+        }
+            //remove from quadtree if mapped
+            quadTree.deleteCity(name);
             //if the city exists, remove from namemap and get the city object
             City rem = nameMap.remove(name);
             //then remove from coordinate map
             coordinateMap.remove(new Point2D.Float((int)rem.getX(), (int)rem.getY()));
             //success so return null
             return null;
-        }
-        return "cityDoesNotExist";
     }
+
 
 }

@@ -1,5 +1,8 @@
 package cmsc420.meeshquest.part1;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.awt.geom.Point2D;
 
 public class PRQuadTree {
@@ -15,19 +18,49 @@ public class PRQuadTree {
     }
 
     //may need return type to do errors tbh
-    //TODO check bounds and name/coord overlap
     public void addCity(City city) throws CityAlreadyMappedException, cityOutOfBoundsException {
         if (city.getX() > width || city.getX() < 0 || city.getY() > height || city.getY() < 0){
             throw new cityOutOfBoundsException("cityOutOfBounds");
         }
+        if(containsCity(city)){
+            throw new CityAlreadyMappedException("cityAlreadyMapped");
+        }
         //if the root is a white node
         if(root.equals(WhiteNode.getInstance())) {
             root = new GreyNode(height, width, center);
-            ((GreyNode) root).addCity(city);
-        }//TODO else if root is a greynode, iterate further
+            root.addCity(city);
+        }
         else if (root instanceof GreyNode){
-            ((GreyNode)root).addCity(city);
+            root.addCity(city);
         }
     }
 
+    //if city is found and successfully deleted, return true else false
+    public boolean deleteCity(String city){
+        if(containsCity(city)){
+            //there is the city in it.
+            root.deleteCity(city);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean containsCity(String city){
+            return root.containsCity(city);
+    }
+
+    public boolean containsCity(City city){
+        return containsCity(city.name);
+    }
+
+    public void clear(){
+        root = WhiteNode.getInstance();
+    }
+
+    public Element printquadtree(Document doc) throws mapisEmptyException{
+        if(root instanceof WhiteNode){
+            throw new mapisEmptyException("mapIsEmpty");
+        }
+        return root.printquadtree(doc);
+    }
 }

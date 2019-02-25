@@ -1,5 +1,8 @@
 package cmsc420.meeshquest.part1;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.awt.geom.Point2D;
 
 public class BlackNode implements Node{
@@ -12,11 +15,34 @@ public class BlackNode implements Node{
         return city;
     }
 
-    public void setCity(City city){
+    public void addCity(City city){
         this.city = city;
     }
 
     public Point2D.Float getCoords(){
         return city.getCoords();
+    }
+
+    public boolean containsCity(String city){
+        if (this.city.name.equals(city)){
+            return true;
+        }
+        return false;
+    }
+
+    public Node deleteCity(String City){
+       if(city.equals(this.city.name)){
+           return WhiteNode.getInstance();
+       }else{
+           return this;
+       }
+    }
+
+    public Element printquadtree(Document doc){
+        Element black = doc.createElement("black");
+        black.setAttribute("name", city.name);
+        black.setAttribute("x", String.valueOf((int)getCity().getX()));
+        black.setAttribute("y", String.valueOf((int)getCity().getY()));
+        return black;
     }
 }

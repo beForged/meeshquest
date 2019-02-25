@@ -93,6 +93,7 @@ public class commandParser {
         if(node.getNodeName().equals("clearAll")){
             map.coordinateMap.clear();
             map.nameMap.clear();
+            map.quadTree.clear();
             return outputBuilder(null, "clearAll", empty, empty, null);
         }
 
@@ -103,16 +104,18 @@ public class commandParser {
         */
 
         if(node.getNodeName().equals("deleteCity")){
-            //TODO remove the city from the quadtree and create output stuff
             //get the name to be deleted
             String cityName = node.getAttribute("name");
-            //delete the map TODO figure out how to tell if it was mapped or not
-            String succ = map.deleteCity(cityName);
             //parameters and values
             String[] params = {"name"}; String[] values = {cityName};
+            try {
+                //delete the map
+                String succ = map.deleteCity(cityName);
             //return the output builder
-
-            return outputBuilder(succ, "deleteCity", params, values, null);
+            }catch (cityDoesNotExistException e){
+                return outputBuilder(e.getMessage(), "deleteCity", params, values, null);
+            }
+            return outputBuilder(null, "deleteCity", params, values, null);
         }
 
         /*
@@ -122,24 +125,83 @@ public class commandParser {
         String mapCity = "mapCity";
         if(node.getNodeName().equals(mapCity)){
             String name = node.getAttribute("name");
-            String[] params = {name};
+            String[] params = {"name"};
+            String[] values = {name};
             try{
                 City c = map.nameMap.get("name");
                 if(c == null){
-                    return outputBuilder("nameNotInDictionary", mapCity, params, empty, null);
+                    return outputBuilder("nameNotInDictionary", mapCity, params, values, null);
                 }
                 map.quadTree.addCity(c);
             }catch(CityAlreadyMappedException e){
-                return outputBuilder(e.getMessage(), mapCity, params, empty, null);
+                return outputBuilder(e.getMessage(), mapCity, params, values, null);
             }catch(cityOutOfBoundsException e) {
-                return outputBuilder(e.getMessage(), mapCity, params, empty, null);
+                return outputBuilder(e.getMessage(), mapCity, params, values, null);
             }
-            return outputBuilder(null, mapCity, params, empty, null);
+            return outputBuilder(null, mapCity, params, values, null);
         }
 
         /*
         --------------------------------------------------------------------------------------------------------------
         */
+
+        //unmap the city, catches name not in dict and city not mapped, returns params name and no output
+        String unmap = "unmapCity";
+        if(node.getNodeName().equals(unmap)){
+            String name = node.getAttribute("name");
+            String[] params = {"name"};
+            if(map.nameMap.get(name) == null){
+                return outputBuilder("nameNotInDictionary", unmap, params, empty, null);
+            }
+            if(!map.quadTree.containsCity(name)){
+                return outputBuilder("cityNotMapped", unmap, params, empty, null);
+            }
+            map.quadTree.deleteCity(name);//should be true tbh as if it doesnt contain it will already ret
+            String[] values = {name};
+            return outputBuilder(null, unmap, params, values, null);
+        }
+
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+
+        if(node.getNodeName().equals("printPRQuadtree")){
+            Element output = null;
+            try {
+                output = map.quadTree.printquadtree(doc);
+            }catch (mapisEmptyException e){
+                return outputBuilder(e.getMessage(), "printPRQuadtree", empty, empty, null);
+            }
+            return outputBuilder(null, "printPRQuadtree", empty, empty, output);
+        }
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+
+        String save = "saveMap";
+        if(node.getNodeName().equals(save)){
+            //TODO save a map
+
+        }
+
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+        String range = "rangeCities";
+        if(node.getNodeName().equals(range)){
+            String x= node.getAttribute("x");
+            String y= node.getAttribute("y");
+            String radius= node.getAttribute("radius");
+            String saveMap= node.getAttribute("saveMap");
+        }
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+
 
         //more inputs can go here
         if(node.getNodeName().equals("placeholder")){

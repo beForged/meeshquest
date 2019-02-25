@@ -1,5 +1,8 @@
 package cmsc420.meeshquest.part1;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 
@@ -21,25 +24,22 @@ public class GreyNode implements Node{
     }
 
 //what if the bucket size is >1 how to modify this so that its OK to have more than 1 black node
-    public void addCity(City city) throws  CityAlreadyMappedException{
+    public void addCity(City city) {
         int quadrant = quadrant(city);
         //if its a blacknode, we take the city as a tmp and then replace with grey node, and reinsert to that greynode
         if( quadrants[quadrant] instanceof BlackNode){
-            if(quadrants[quadrant].equals(city)){
-                //city is mapped
-                throw new CityAlreadyMappedException("CityAlreadyMapped");
-            }
             //this casting is ok because of the instance of we had above
             City temp = ((BlackNode) quadrants[quadrant]).getCity();
-            Point2D.Float newcenter = newcenter(quadrant);
+            //we create a new grey node
             quadrants[quadrant] = new GreyNode(height/2, width/2, newcenter(quadrant));
-            ((GreyNode) quadrants[quadrant]).addCity(temp);
-            ((GreyNode) quadrants[quadrant]).addCity(city);
+            //and then insert into it
+            quadrants[quadrant].addCity(temp);
+            quadrants[quadrant].addCity(city);
         }else if(quadrants[quadrant] instanceof WhiteNode){ //use .instaceof method instead?
             //otherwise it is a whitenode and we can replace with a blacknode
             quadrants[quadrant] = new BlackNode(city);
         } else {//it is a greynode and we recurse
-            ((GreyNode) quadrants[quadrant]).addCity(city);
+            quadrants[quadrant].addCity(city);
         }
 
     }
@@ -85,4 +85,41 @@ public class GreyNode implements Node{
         return -1;
     }
 
+    public boolean containsCity(String city){
+        for(Node i:quadrants){
+            if(i.containsCity(city)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Node deleteCity(String city){
+        int grey = 0;
+        int black = 0;
+        //replace the node with itself (if doesnt match) or with whitenode (returned from blknode)
+        for (int i = 0; i < quadrants.length; i++) {
+            Node n = quadrants[i].deleteCity(city);
+            if(n instanceof GreyNode){grey ++;}
+            if(n instanceof BlackNode){black ++;}
+            quadrants[i] = n;
+        }
+        //if 1 blacknode and no grey nodes, return just black node
+        if(grey == 0 && black <= 1){
+            for (Node i:quadrants ) {if(i instanceof BlackNode){return i;}}
+            return WhiteNode.getInstance();
+        }
+        return this;
+    }
+
+    //we create elements here and return them
+    public Element printquadtree(Document doc){
+        Element out = doc.createElement("gray");
+        out.setAttribute("x", String.valueOf((int)center.x));
+        out.setAttribute("y", String.valueOf((int)center.x));
+        for (Node i:quadrants ) {
+            out.appendChild(i.printquadtree(doc));
+        }
+        return out;
+    }
 }
