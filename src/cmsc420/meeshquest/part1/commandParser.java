@@ -194,7 +194,10 @@ public class commandParser {
         String save = "saveMap";
         if(node.getNodeName().equals(save)){
             String name = node.getAttribute("name");
-
+            map.quadTree.saveMap(name);
+            String[]params = {"name"};
+            String[] values = {name};
+            return outputBuilder(null, save, params, values,null);
         }
 
 
