@@ -194,7 +194,7 @@ public class commandParser {
         String save = "saveMap";
         if(node.getNodeName().equals(save)){
             String name = node.getAttribute("name");
-            map.quadTree.saveMap(name);
+            map.quadTree.saveMap(name, -1, -1, -1);
             String[]params = {"name"};
             String[] values = {name};
             return outputBuilder(null, save, params, values,null);
@@ -219,6 +219,7 @@ public class commandParser {
             }else {
                 params = new String[]{"x", "y", "radius", "saveMap"};
                 values = new String[]{x, y, radius,saveMap};
+                map.quadTree.saveMap(saveMap,Integer.parseInt(x),Integer.parseInt(y),Integer.parseInt(radius));
             }
             try {
                 a = map.quadTree.rangeCities(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(radius));

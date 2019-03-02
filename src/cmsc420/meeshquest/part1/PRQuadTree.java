@@ -102,12 +102,16 @@ public class PRQuadTree {
     }
 
 
-    public void saveMap(String name){
+    //convention for this will be -1 if we dont want to have the radius
+    public void saveMap(String name, int x, int y, int radius){
         //initiallize everything to start out
         CanvasPlus canvas = new CanvasPlus("MeeshQuest");
         canvas.setFrameSize(width, height);
         canvas.addRectangle(0, 0, width, height, Color.WHITE, true);
         canvas.addRectangle(0, 0, width, height, Color.BLACK, false);
+        if(x != -1) {
+            canvas.addCircle(x, y, radius, Color.BLUE, false);
+        }
         root.saveMap(canvas);
         //this is to save the thing to file lol
         try {
