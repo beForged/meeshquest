@@ -5,6 +5,8 @@ import org.w3c.dom.Element;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class PRQuadTree {
@@ -42,6 +44,7 @@ public class PRQuadTree {
     //if city is found and successfully deleted, return true else false
     public boolean deleteCity(String city){
         if(containsCity(city)){
+            System.err.println("we delete this city " + city);
             //there is the city in it.
             root.deleteCity(city);
             return true;
@@ -70,11 +73,12 @@ public class PRQuadTree {
 
     public ArrayList<City> rangeCities(int x, int y, int radius) throws noCitiesExistInRangeException{
         //new array put here
-        ArrayList<City> citiesInRange = new ArrayList<>();
+        ArrayList<City> citiesInRange = new ArrayList<City>();
         citiesInRange.addAll(root.rangeCities(x, y, radius));
         if(citiesInRange.size() == 0){
             throw new noCitiesExistInRangeException("noCitiesExistInRange");
         }
+        Collections.sort(citiesInRange, (o1,o2) -> -o1.name.compareTo(o2.name));
         return citiesInRange;
     }
 

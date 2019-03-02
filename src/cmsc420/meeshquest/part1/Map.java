@@ -34,12 +34,7 @@ public class Map {
             }
         });
         //reverse the regular string compareto
-        nameMap = new TreeMap<>(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return -o1.compareTo(o2);
-            }
-        });
+        nameMap = new TreeMap<>((o1, o2) -> -o1.compareTo(o2));
 
         this.width = width;
         this.height = height;
@@ -63,18 +58,22 @@ public class Map {
         }
     }
 
-    public String deleteCity(String name) throws cityDoesNotExistException{
+    public City deleteCity(String name) throws cityDoesNotExistException{
         if(!nameMap.containsKey(name)){
             throw new cityDoesNotExistException("cityDoesNotExist");
         }
-            //remove from quadtree if mapped
-            quadTree.deleteCity(name);
-            //if the city exists, remove from namemap and get the city object
-            City rem = nameMap.remove(name);
-            //then remove from coordinate map
-            coordinateMap.remove(new Point2D.Float((int)rem.getX(), (int)rem.getY()));
-            //success so return null
+        //remove from quadtree if mapped
+        boolean deleted = quadTree.deleteCity(name);
+        //if the city exists, remove from namemap and get the city object
+        City rem = nameMap.remove(name);
+        //then remove from coordinate map
+        coordinateMap.remove(new Point2D.Float((int)rem.getX(), (int)rem.getY()));
+        //success so return null
+        if(deleted){
+            return rem;
+        }else{
             return null;
+        }
     }
 
 

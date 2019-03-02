@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 
 public class GreyNode extends Node {
     private Node[] quadrants;
-    boolean isFull;
+    private float centerx, centery;
 
     //initialize with all white nodes as children (maybe ask for all 4 nodes?)
     public GreyNode(float height, float width, float x, float y) {
@@ -21,6 +21,8 @@ public class GreyNode extends Node {
         super.width = width;
         super.x = x;
         super.y = y;
+        centerx = x + width/2;
+        centery = y + width/2;
     }
 
     //what if the bucket size is >1 how to modify this so that its OK to have more than 1 black node
@@ -65,22 +67,20 @@ public class GreyNode extends Node {
       0 | 1
       -----
       2 | 3
-      form
+      form - inclusive on bottom and left and exclusive on top and right
      */
     private int quadrant(City city) {
         //city is below x axis and to the left of y
-        float w = width / 2;
-        float h = height / 2;
+        float w = (x + (width / 2));
+        float h = y + (height / 2);
+        //System.err.println("width " + w + " height " + h);
         if (city.getX() < w && city.getY() < h) {
             return 2;
-            //city is above x axis and left of y
-        } else if (city.getX() > w && city.getY() < h) {
-            return 0;
-            //city is below x and  to the right of y
-        } else if (city.getX() < w && city.getY() > h) {
+        } else if (city.getX() >= w && city.getY() < h) {
             return 3;
-            //city is over x and to the right of y
-        } else if (city.getX() > w && city.getY() > h) {
+        } else if (city.getX() < w && city.getY() >= h) {
+            return 0;
+        } else if (city.getX() >= w && city.getY() >= h) {
             return 1;
         }
         return -1;
@@ -124,8 +124,8 @@ public class GreyNode extends Node {
     //we create elements here and return them
     public Element printquadtree(Document doc) {
         Element out = doc.createElement("gray");
-        out.setAttribute("x", String.valueOf((int) this.x));
-        out.setAttribute("y", String.valueOf((int) this.x));
+        out.setAttribute("x", String.valueOf((int) this.centerx));
+        out.setAttribute("y", String.valueOf((int) this.centery));
         for (Node i : quadrants) {
             out.appendChild(i.printquadtree(doc));
         }

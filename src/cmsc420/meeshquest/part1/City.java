@@ -40,4 +40,5 @@ public class City extends Point2D.Float {
         return new Point2D.Float(x, y);
     }
 
-  }
+
+}

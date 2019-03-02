@@ -108,14 +108,24 @@ public class commandParser {
             String cityName = node.getAttribute("name");
             //parameters and values
             String[] params = {"name"}; String[] values = {cityName};
+            Element out = null;
             try {
                 //delete the map
-                String succ = map.deleteCity(cityName);
+                City rem = map.deleteCity(cityName);
+                if(rem != null){
+                    out = doc.createElement("cityUnmapped");
+                    out.setAttribute("name", rem.name);
+                    out.setAttribute("x", String.valueOf((int)rem.x));
+                    out.setAttribute("y", String.valueOf((int)rem.y));
+                    out.setAttribute("color", rem.color);
+                    out.setAttribute("radius", String.valueOf(rem.radius));
+                }
             //return the output builder
             }catch (cityDoesNotExistException e){
                 return outputBuilder(e.getMessage(), "deleteCity", params, values, null);
             }
-            return outputBuilder(null, "deleteCity", params, values, null);
+
+            return outputBuilder(null, "deleteCity", params, values, out);
         }
 
         /*
@@ -128,7 +138,7 @@ public class commandParser {
             String[] params = {"name"};
             String[] values = {name};
             try{
-                City c = map.nameMap.get("name");
+                City c = map.nameMap.get(name);
                 if(c == null){
                     return outputBuilder("nameNotInDictionary", mapCity, params, values, null);
                 }
@@ -197,8 +207,15 @@ public class commandParser {
             String radius= node.getAttribute("radius");
             String saveMap= node.getAttribute("saveMap");//TODO could be null still needs output maybe
             ArrayList<City> a;
-            String[] params = new String[]{"x", "y", "radius"};
-            String[] values = {x, y, radius};
+            String[] params;
+            String[] values;
+            if(saveMap == null){
+                params = new String[]{"x", "y", "radius"};
+                values = new String[]{x, y, radius};
+            }else {
+                params = new String[]{"x", "y", "radius", "saveMap"};
+                values = new String[]{x, y, radius,saveMap};
+            }
             try {
                 a = map.quadTree.rangeCities(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(radius));
             }catch (noCitiesExistInRangeException e){
