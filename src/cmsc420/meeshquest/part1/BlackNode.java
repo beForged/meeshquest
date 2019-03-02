@@ -5,53 +5,67 @@ import org.w3c.dom.Element;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
-public class BlackNode implements Node{
+public class BlackNode extends Node {
     City city;
-    public BlackNode(City city){
+
+    public BlackNode(City city) {
         this.city = city;
+        super.height = 0;
+        super.width = 0;
+        super.x = city.x;
+        super.y = city.y;
     }
 
-    public City getCity(){
+    public City getCity() {
         return city;
     }
 
-    public void addCity(City city){
+    public void addCity(City city) {
         this.city = city;
     }
 
-    public Point2D.Float getCoords(){
+    public Point2D.Float getCoords() {
         return city.getCoords();
     }
 
-    public boolean containsCity(String city){
-        if (this.city.name.equals(city)){
+    public boolean containsCity(String city) {
+        if (this.city.name.equals(city)) {
             return true;
         }
         return false;
     }
 
-    public Node deleteCity(String City){
-       if(city.equals(this.city.name)){
-           return WhiteNode.getInstance();
-       }else{
-           return this;
-       }
+    public Node deleteCity(String City) {
+        if (city.equals(this.city.name)) {
+            return WhiteNode.getInstance();
+        } else {
+            return this;
+        }
     }
 
-    public Element printquadtree(Document doc){
+    public Element printquadtree(Document doc) {
         Element black = doc.createElement("black");
         black.setAttribute("name", city.name);
-        black.setAttribute("x", String.valueOf((int)getCity().getX()));
-        black.setAttribute("y", String.valueOf((int)getCity().getY()));
+        black.setAttribute("x", String.valueOf((int) getCity().getX()));
+        black.setAttribute("y", String.valueOf((int) getCity().getY()));
         return black;
     }
 
-    public ArrayList<City> rangeCities(int x, int y, int radius){
-       ArrayList<City> citiesInRange = new ArrayList<>();
-       if(this.city.distance(new Point2D.Float((float)x, (float)y)) <  radius){
-           citiesInRange.add(this.city);
-       }
-       return citiesInRange;
+    public ArrayList<City> rangeCities(int x, int y, int radius) {
+        ArrayList<City> citiesInRange = new ArrayList<>();
+        if (this.city.distance(new Point2D.Float((float) x, (float) y)) < radius) {
+            citiesInRange.add(this.city);
+        }
+        return citiesInRange;
     }
+
+    @Override
+    PriorityQueue<Node> nearestCity(int x, int y) {
+        PriorityQueue<Node> a = new PriorityQueue<>();
+        a.add(this);
+        return a;
+    }
+
 }

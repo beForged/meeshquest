@@ -3,18 +3,22 @@ package cmsc420.meeshquest.part1;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
-public interface Node {
-//nothing here yet
+public abstract class Node extends Rectangle2D.Float{
 
-    boolean containsCity(String city);
+    abstract boolean containsCity(String city);
 
-    void addCity(City city);
+    abstract void addCity(City city);
 
-    Node deleteCity(String city);
+    abstract Node deleteCity(String city);
 
-    Element printquadtree(Document doc);
+    abstract Element printquadtree(Document doc);
 
-    ArrayList<City> rangeCities(int x, int y, int radius);
+    abstract ArrayList<City> rangeCities(int x, int y, int radius);
+
+    abstract PriorityQueue<Node> nearestCity(int x, int y);
+
 }

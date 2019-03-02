@@ -4,8 +4,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
-public class WhiteNode implements Node{
+public class WhiteNode extends Node{
     //a little bit of communism
     private static WhiteNode ourInstance = new WhiteNode();
 
@@ -13,21 +14,20 @@ public class WhiteNode implements Node{
         return ourInstance;
     }
 
-    @Override
     public boolean containsCity(String city) {
         return false;
     }
 
     //does nothing
-    public void addCity(City city){
+    public void addCity(City city) {
         return;
     }
 
-    public Node deleteCity(String c){
+    public Node deleteCity(String c) {
         return this;
     }
 
-    public Element printquadtree(Document doc){
+    public Element printquadtree(Document doc) {
         return doc.createElement("white");
     }
 
@@ -36,6 +36,14 @@ public class WhiteNode implements Node{
         return new ArrayList<>();
     }
 
+    @Override
+    public PriorityQueue<Node> nearestCity(int x, int y) {
+        return null;
+    }
+
+    //singleton constructor
     private WhiteNode() {
     }
+
+
 }

@@ -211,7 +211,7 @@ public class commandParser {
                 city.setAttribute("name", i.name);
                 city.setAttribute("x", String.valueOf((int)i.x));
                 city.setAttribute("y", String.valueOf((int)i.y));
-                city.setAttribute("color", String.valueOf(i.color));
+                city.setAttribute("color", i.color);
                 city.setAttribute("radius", String.valueOf(i.radius));
                 output.appendChild(city);
             }
@@ -227,6 +227,19 @@ public class commandParser {
             String y= node.getAttribute("y");
             String[] params = {"x", "y"};
             String[] values = {x, y};
+            City c;
+            try {
+                c = map.quadTree.nearestCity(Integer.parseInt(x), Integer.parseInt(y));
+            }catch(mapisEmptyException e){
+                return outputBuilder(e.getMessage(), "nearestCity", params, values, null);
+            }
+            Element out = doc.createElement("city");
+            out.setAttribute("name", c.name);
+            out.setAttribute("x", String.valueOf((int)c.x));
+            out.setAttribute("y", String.valueOf((int)c.y));
+            out.setAttribute("color", c.color);
+            out.setAttribute("radius", String.valueOf(c.radius));
+            return outputBuilder(null, "nearestCity", params, values, out);
 
         }
 
@@ -266,7 +279,6 @@ public class commandParser {
     since xml (probably) doesnt care if its an int or a string as long as it says the same thing
     we can just give a correctly ordered array of values and parameters and build  correct output
     IMPORTANT IF ERROR IS NULL THEN IT IS A SUCCESSFUL OPERATION
-    TODO perhaps it might be needed to change params so that they behave like output where elements are made in methods
     need to give it null if success else the error msg, the command that is given, list of parameter and the values
     that were given and then build the output element
     */

@@ -5,16 +5,19 @@ import org.w3c.dom.Element;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 public class PRQuadTree {
 
     float height, width;
+    int x, y;
     Node root;
     Point2D.Float center;
 
     public PRQuadTree(int height, int width){
         root = WhiteNode.getInstance();
-        center = new Point2D.Float(height/2, width/2);
+        this.x = 0;
+        this.y = 0;
         this.height = height; this.width = width;
     }
 
@@ -28,7 +31,7 @@ public class PRQuadTree {
         }
         //if the root is a white node
         if(root.equals(WhiteNode.getInstance())) {
-            root = new GreyNode(height, width, center);
+            root = new GreyNode(height, width, x, y);
             root.addCity(city);
         }
         else if (root instanceof GreyNode){
@@ -65,7 +68,6 @@ public class PRQuadTree {
         return root.printquadtree(doc);
     }
 
-    //TODO return a list of cities
     public ArrayList<City> rangeCities(int x, int y, int radius) throws noCitiesExistInRangeException{
         //new array put here
         ArrayList<City> citiesInRange = new ArrayList<>();
@@ -74,6 +76,23 @@ public class PRQuadTree {
             throw new noCitiesExistInRangeException("noCitiesExistInRange");
         }
         return citiesInRange;
+    }
+
+    public City nearestCity(int x, int y) throws mapisEmptyException {
+        PriorityQueue<Node> cities = new PriorityQueue<>(new PriorityComparator(x,y));
+        if (root instanceof WhiteNode){
+            throw new mapisEmptyException("mapIsEmpty");
+        }
+        cities.add(root);
+        while(cities.peek() instanceof GreyNode){
+            Node head = cities.poll();
+            PriorityQueue<Node> result = head.nearestCity(x,y);
+            for(Node i:result){
+                cities.add(i);
+            }
+        }
+        //cant be white bc they arent added to the queue and while already removed greys so we gucci
+        return ((BlackNode) cities.peek()).city;
     }
 
 }
