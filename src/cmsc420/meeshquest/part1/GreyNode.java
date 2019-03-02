@@ -147,8 +147,9 @@ public class GreyNode extends Node {
     PriorityQueue<Node> nearestCity(int x, int y) {
         PriorityQueue<Node> nodes = new PriorityQueue<>();
         for (Node i:quadrants ) {
-            if(i != null) {
-                nodes.addAll(i.nearestCity(x, y));
+            PriorityQueue t = i.nearestCity(x,y);
+            if(t != null) {
+                nodes.addAll(t);
             }
         }
         return nodes;

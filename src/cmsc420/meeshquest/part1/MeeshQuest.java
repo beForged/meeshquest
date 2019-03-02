@@ -26,8 +26,8 @@ public class MeeshQuest {
 
 
         try {
-            //Document doc = XmlUtility.validateNoNamespace(new File("testing/test1.xml"));
-            Document doc = XmlUtility.validateNoNamespace(System.in);
+            Document doc = XmlUtility.validateNoNamespace(new File("testing/test1.xml"));
+            //Document doc = XmlUtility.validateNoNamespace(System.in);
 
             //this is the results document that gets printed as output
             results = XmlUtility.getDocumentBuilder().newDocument();

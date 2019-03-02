@@ -209,7 +209,7 @@ public class commandParser {
             String x= node.getAttribute("x");
             String y= node.getAttribute("y");
             String radius= node.getAttribute("radius");
-            String saveMap= node.getAttribute("saveMap");//TODO could be null still needs output maybe
+            String saveMap= node.getAttribute("saveMap");
             ArrayList<City> a;
             String[] params;
             String[] values;
