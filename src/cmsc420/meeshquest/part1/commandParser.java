@@ -179,7 +179,8 @@ public class commandParser {
         if(node.getNodeName().equals("printPRQuadtree")){
             Element output = null;
             try {
-                output = map.quadTree.printquadtree(doc);
+                output = doc.createElement("quadtree");
+                output.appendChild(map.quadTree.printquadtree(doc));
             }catch (mapisEmptyException e){
                 return outputBuilder(e.getMessage(), "printPRQuadtree", empty, empty, null);
             }
