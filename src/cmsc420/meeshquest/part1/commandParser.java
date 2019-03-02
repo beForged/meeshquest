@@ -193,7 +193,7 @@ public class commandParser {
 
         String save = "saveMap";
         if(node.getNodeName().equals(save)){
-            //TODO save a map
+            String name = node.getAttribute("name");
 
         }
 

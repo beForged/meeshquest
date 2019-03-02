@@ -1,5 +1,6 @@
 package cmsc420.meeshquest.part1;
 
+import cmsc420.drawing.CanvasPlus;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -40,6 +41,9 @@ public class WhiteNode extends Node{
     public PriorityQueue<Node> nearestCity(int x, int y) {
         return null;
     }
+
+    @Override
+    void saveMap(CanvasPlus canvas) {} //doesnt do anything, is just a white node
 
     //singleton constructor
     private WhiteNode() {

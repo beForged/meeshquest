@@ -1,8 +1,10 @@
 package cmsc420.meeshquest.part1;
 
+import cmsc420.drawing.CanvasPlus;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -66,6 +68,11 @@ public class BlackNode extends Node {
         PriorityQueue<Node> a = new PriorityQueue<>();
         a.add(this);
         return a;
+    }
+
+    @Override
+    void saveMap(CanvasPlus canvas) {
+        canvas.addPoint(city.name, x, y, Color.BLACK);
     }
 
 }

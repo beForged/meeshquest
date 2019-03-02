@@ -1,5 +1,6 @@
 package cmsc420.meeshquest.part1;
 
+import cmsc420.drawing.CanvasPlus;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -20,5 +21,7 @@ public abstract class Node extends Rectangle2D.Float{
     abstract ArrayList<City> rangeCities(int x, int y, int radius);
 
     abstract PriorityQueue<Node> nearestCity(int x, int y);
+
+    abstract void saveMap(CanvasPlus canvas);
 
 }

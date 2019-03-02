@@ -1,9 +1,12 @@
 package cmsc420.meeshquest.part1;
 
+import cmsc420.drawing.CanvasPlus;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,7 +14,7 @@ import java.util.PriorityQueue;
 
 public class PRQuadTree {
 
-    float height, width;
+    int height, width;
     int x, y;
     Node root;
     Point2D.Float center;
@@ -96,6 +99,24 @@ public class PRQuadTree {
         }
         //cant be white bc they arent added to the queue and while already removed greys so we gucci
         return ((BlackNode) cities.peek()).city;
+    }
+
+
+    public void saveMap(String name){
+        //initiallize everything to start out
+        CanvasPlus canvas = new CanvasPlus("MeeshQuest");
+        canvas.setFrameSize(width, height);
+        canvas.addRectangle(0, 0, width, height, Color.WHITE, true);
+        canvas.addRectangle(0, 0, width, height, Color.BLACK, false);
+        root.saveMap(canvas);
+        //this is to save the thing to file lol
+        try {
+            canvas.save(name);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        //responsibly free memory
+        canvas.dispose();
     }
 
 }
