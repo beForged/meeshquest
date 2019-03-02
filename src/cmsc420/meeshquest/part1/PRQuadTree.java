@@ -44,7 +44,6 @@ public class PRQuadTree {
     //if city is found and successfully deleted, return true else false
     public boolean deleteCity(String city){
         if(containsCity(city)){
-            System.err.println("we delete this city " + city);
             //there is the city in it.
             root.deleteCity(city);
             return true;

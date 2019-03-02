@@ -37,7 +37,7 @@ public class BlackNode extends Node {
         return false;
     }
 
-    public Node deleteCity(String City) {
+    public Node deleteCity(String city) {
         if (city.equals(this.city.name)) {
             return WhiteNode.getInstance();
         } else {
