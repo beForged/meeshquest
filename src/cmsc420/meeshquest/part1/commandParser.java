@@ -213,7 +213,7 @@ public class commandParser {
             ArrayList<City> a;
             String[] params;
             String[] values;
-            if(saveMap == null){
+            if(saveMap.equals("") ){
                 params = new String[]{"x", "y", "radius"};
                 values = new String[]{x, y, radius};
             }else {
@@ -273,7 +273,6 @@ public class commandParser {
             return null;
         }
 
-        //TODO throw an error unknown/malformed input - fatal error
         return null;
     }
 

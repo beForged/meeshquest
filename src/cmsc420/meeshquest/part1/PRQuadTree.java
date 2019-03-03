@@ -1,6 +1,7 @@
 package cmsc420.meeshquest.part1;
 
 import cmsc420.drawing.CanvasPlus;
+import cmsc420.geom.Shape2DDistanceCalculator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -48,7 +49,7 @@ public class PRQuadTree {
     public boolean deleteCity(String city){
         if(containsCity(city)){
             //there is the city in it.
-            root.deleteCity(city);
+            root = root.deleteCity(city);
             return true;
         }
         return false;
@@ -75,11 +76,12 @@ public class PRQuadTree {
 
     public ArrayList<City> rangeCities(int x, int y, int radius) throws noCitiesExistInRangeException{
         //new array put here
-        ArrayList<City> citiesInRange = new ArrayList<City>();
+        ArrayList<City> citiesInRange = new ArrayList<>();
         citiesInRange.addAll(root.rangeCities(x, y, radius));
         if(citiesInRange.size() == 0){
             throw new noCitiesExistInRangeException("noCitiesExistInRange");
         }
+        //sort the return array
         Collections.sort(citiesInRange, (o1,o2) -> -o1.name.compareTo(o2.name));
         return citiesInRange;
     }

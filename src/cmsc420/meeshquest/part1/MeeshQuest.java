@@ -26,11 +26,12 @@ public class MeeshQuest {
 
 
         try {
-            Document doc = XmlUtility.validateNoNamespace(new File("testing/test1.xml"));
-            //Document doc = XmlUtility.validateNoNamespace(System.in);
 
             //this is the results document that gets printed as output
             results = XmlUtility.getDocumentBuilder().newDocument();
+
+            Document doc = XmlUtility.validateNoNamespace(new File("testing/test6.xml"));
+            //Document doc = XmlUtility.validateNoNamespace(System.in);
 
 
             //we generate a root element here to start the output as it is on every output (iirc)
@@ -63,14 +64,19 @@ public class MeeshQuest {
             }
         } catch (SAXException | IOException | ParserConfigurationException e) {
 //maybe need to clear the dom tree first
-            Element root = results.createElement("fatalError");
-            results.appendChild(root);
+                Element root = results.createElement("fatalError");
+                while (results.hasChildNodes()) {
+                    results.removeChild(root.getFirstChild());
+                }
+                results.appendChild(root);
+                e.printStackTrace();
 
         } finally {
             try {
                 XmlUtility.print(results);
 
             } catch (TransformerException e) {
+                //this is an undefined error
                 e.printStackTrace();
             }
         }

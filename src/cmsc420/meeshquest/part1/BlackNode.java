@@ -57,7 +57,7 @@ public class BlackNode extends Node {
 
     public ArrayList<City> rangeCities(int x, int y, int radius) {
         ArrayList<City> citiesInRange = new ArrayList<>();
-        if (this.city.distance(new Point2D.Float((float) x, (float) y)) < radius) {
+        if (this.city.distance(new Point2D.Float((float) x, (float) y)) <= radius) {
             citiesInRange.add(this.city);
         }
         return citiesInRange;
@@ -65,7 +65,7 @@ public class BlackNode extends Node {
 
     @Override
     PriorityQueue<Node> nearestCity(int x, int y) {
-        PriorityQueue<Node> a = new PriorityQueue<>();
+        PriorityQueue<Node> a = new PriorityQueue<>(new PriorityComparator(x,y));
         a.add(this);
         return a;
     }
