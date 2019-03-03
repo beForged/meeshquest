@@ -13,6 +13,8 @@
     <createCity name="Q2" x="30" y="90" radius="50"  color="black"/>
     <createCity name="Q3" x="30" y="30" radius="50"  color="black"/>
     <createCity name="Q4" x="90" y="30" radius="50"  color="black"/>
+    <createCity name="edge" x="128" y="128" radius="50"  color="black"/>
+    <createCity name="corener" x="0" y="0" radius="50"  color="black"/>
     <listCities sortBy="name"/>
     <mapCity name="Atlanta"/>
     <mapCity name="Baltimore"/>
