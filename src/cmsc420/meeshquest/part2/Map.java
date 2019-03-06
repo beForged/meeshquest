@@ -1,7 +1,4 @@
-package cmsc420.meeshquest.part1;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+package cmsc420.meeshquest.part2;
 
 import java.awt.geom.Point2D;
 import java.util.Comparator;

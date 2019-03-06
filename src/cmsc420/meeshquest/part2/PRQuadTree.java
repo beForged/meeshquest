@@ -1,7 +1,6 @@
-package cmsc420.meeshquest.part1;
+package cmsc420.meeshquest.part2;
 
 import cmsc420.drawing.CanvasPlus;
-import cmsc420.geom.Shape2DDistanceCalculator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -10,7 +9,6 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class PRQuadTree {

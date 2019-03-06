@@ -1,4 +1,4 @@
-package cmsc420.meeshquest.part1;
+package cmsc420.meeshquest.part2;
 
 public class cityOutOfBoundsException extends Throwable {
     public cityOutOfBoundsException(String cityOutOfBounds) {
