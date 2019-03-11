@@ -1,11 +1,10 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part1;
 
 import cmsc420.drawing.CanvasPlus;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +15,6 @@ public class PRQuadTree {
     int height, width;
     int x, y;
     Node root;
-    Point2D.Float center;
 
     public PRQuadTree(int height, int width){
         root = WhiteNode.getInstance();
@@ -27,18 +25,25 @@ public class PRQuadTree {
 
     //may need return type to do errors tbh
     public void addCity(City city) throws CityAlreadyMappedException, cityOutOfBoundsException {
-        if (city.getX() > width || city.getX() < 0 || city.getY() > height || city.getY() < 0){
+        if (city.getX() >= width || city.getX() < 0 || city.getY() >= height || city.getY() < 0){
             throw new cityOutOfBoundsException("cityOutOfBounds");
         }
         if(containsCity(city)){
             throw new CityAlreadyMappedException("cityAlreadyMapped");
         }
         //if the root is a white node
-        if(root.equals(WhiteNode.getInstance())) {
+        if (root instanceof BlackNode){
+            City temp = ((BlackNode) root).getCity();
             root = new GreyNode(height, width, x, y);
+            root.addCity(temp);
             root.addCity(city);
         }
-        else if (root instanceof GreyNode){
+        else if(root.equals(WhiteNode.getInstance())) {
+            //root = new GreyNode(height, width, x, y);
+            root = new BlackNode(city);
+        }
+        //we change it to a greynode and then add the city
+        else{//must be a greynode otherwise
             root.addCity(city);
         }
     }
@@ -90,7 +95,9 @@ public class PRQuadTree {
             throw new mapisEmptyException("mapIsEmpty");
         }
         cities.add(root);
+        //while nearest thing is a grey node
         while(cities.peek() instanceof GreyNode){
+            //take the head out - TODO should check that the next thing isnt the same dist. but..
             Node head = cities.poll();
             PriorityQueue<Node> result = head.nearestCity(x,y);
             for(Node i:result){

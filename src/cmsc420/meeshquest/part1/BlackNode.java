@@ -1,4 +1,4 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part1;
 
 import cmsc420.drawing.CanvasPlus;
 import org.w3c.dom.Document;

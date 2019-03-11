@@ -1,4 +1,4 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part1;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class MeeshQuest {
             //this is the results document that gets printed as output
             results = XmlUtility.getDocumentBuilder().newDocument();
 
-            Document doc = XmlUtility.validateNoNamespace(new File("testing/test1.xml"));
+            Document doc = XmlUtility.validateNoNamespace(new File("testing/test8.xml"));
             //Document doc = XmlUtility.validateNoNamespace(System.in);
 
 
