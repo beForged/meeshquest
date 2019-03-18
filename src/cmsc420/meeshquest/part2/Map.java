@@ -14,20 +14,17 @@ public class Map {
     public Map(int width, int height){
 
         //comparator that compares by number
-        coordinateMap = new TreeMap<>(new Comparator<Point2D>() {
-            @Override
-            public int compare(Point2D o1, Point2D o2) {
-                        if(o1.getX() == o2.getX() && o1.getY() == o2.getY()){
-                            return 0;
-                        }else if(o1.getY() > o2.getY()) {
-                            return 1;
-                        }else if(o1.getY() < o2.getY()){
-                                return -1;
-                        }else if(o1.getX() > o2.getX()){
-                            return 1;
-                        }else{
+        coordinateMap = new TreeMap<>((o1, o2) -> {
+                    if(o1.getX() == o2.getX() && o1.getY() == o2.getY()){
+                        return 0;
+                    }else if(o1.getY() > o2.getY()) {
+                        return 1;
+                    }else if(o1.getY() < o2.getY()){
                             return -1;
-                }
+                    }else if(o1.getX() > o2.getX()){
+                        return 1;
+                    }else{
+                        return -1;
             }
         });
         //reverse the regular string compareto
@@ -35,7 +32,7 @@ public class Map {
 
         this.width = width;
         this.height = height;
-        quadTree = new PRQuadTree(width, height);
+        quadTree = new PRQuadTree(height, width);
     }
 
     //check that name and coordinates are not taken
