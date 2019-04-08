@@ -11,6 +11,7 @@ public class commandParser {
     Map map;
     Document doc;
     String[] empty = {};
+    String id;
 
     public commandParser(Map map, Document doc){
         this.doc = doc;
@@ -19,7 +20,7 @@ public class commandParser {
 
     //given some node we get all of its attributes and then execute its task
     Element in(Element node){
-
+        id = node.getAttribute("id");
 
         //create city
         if(node.getNodeName().equals("createCity")){
@@ -315,6 +316,7 @@ public class commandParser {
         //creates the command
         Element comm = doc.createElement("command");
         comm.setAttribute("name", command);
+        comm.setAttribute("id", id);
         ret.appendChild(comm);
 
         //we make and list parameters here

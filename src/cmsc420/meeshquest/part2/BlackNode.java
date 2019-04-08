@@ -11,13 +11,22 @@ import java.util.PriorityQueue;
 
 public class BlackNode extends Node {
     City city;
+    List geometry;
 
+
+
+    public BlackNode(){
+
+    }
+
+    //i guess if this is done then this is an orphaned city
     public BlackNode(City city) {
         this.city = city;
         super.height = 0;
         super.width = 0;
         super.x = city.x;
         super.y = city.y;
+
     }
 
     public City getCity() {
@@ -37,6 +46,16 @@ public class BlackNode extends Node {
             return true;
         }
         return false;
+    }
+
+    @Override
+    Node add() {
+        return null;
+    }
+
+    @Override
+    Node remove() {
+        return null;
     }
 
     public Node deleteCity(String city) {

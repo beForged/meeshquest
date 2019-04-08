@@ -40,6 +40,7 @@ public class MeeshQuest {
             Element commandNode = doc.getDocumentElement();
             int spatialWidth = Integer.parseInt(commandNode.getAttribute("spatialWidth"));
             int spatialHeight = Integer.parseInt(commandNode.getAttribute("spatialHeight"));
+            int pmOrder = Integer.parseInt(commandNode.getAttribute("pmOrder"));
             //creates the data structures
             map = new Map(spatialWidth, spatialHeight);
 

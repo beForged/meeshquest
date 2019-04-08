@@ -10,7 +10,13 @@ import java.util.PriorityQueue;
 
 public abstract class Node extends Rectangle2D.Float{
 
+
     abstract boolean containsCity(String city);
+
+    //next 2 are for roads
+    abstract Node add();
+
+    abstract Node remove();
 
     abstract void addCity(City city);
 
