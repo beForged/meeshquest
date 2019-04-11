@@ -6,12 +6,15 @@ import org.w3c.dom.Element;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class GreyNode extends Node {
     private Node[] quadrants;
     private float centerx, centery;
+
 
     //initialize with all white nodes as children (maybe ask for all 4 nodes?)
     public GreyNode(float height, float width, float x, float y) {
@@ -27,66 +30,56 @@ public class GreyNode extends Node {
         centery = y + width/2;
     }
 
-    //what if the bucket size is >1 how to modify this so that its OK to have more than 1 black node
-    public void addCity(City city) {
-        int quadrant = quadrant(city);
-        //if its a blacknode, we take the city as a tmp and then replace with grey node, and reinsert to that greynode
-        if (quadrants[quadrant] instanceof BlackNode) {
-            //this casting is ok because of the instance of we had above
-            City temp = ((BlackNode) quadrants[quadrant]).getCity();
-            //we create a new grey node
-            Point2D.Float corner= newcenter(quadrant);
-            quadrants[quadrant] = new GreyNode(height / 2, width / 2, corner.x, corner.y);
-            //and then insert into it
-            quadrants[quadrant].addCity(temp);
-            quadrants[quadrant].addCity(city);
-        } else if (quadrants[quadrant] instanceof WhiteNode) { //use .instaceof method instead?
-            //otherwise it is a whitenode and we can replace with a blacknode
-            quadrants[quadrant] = new BlackNode(city);
-        } else {//it is a greynode and we recurse
-            quadrants[quadrant].addCity(city);
+    //we need to have a road and city difference
+    //this adds the endpoints of roads and isolated cities
+    public Node add(City city) {
+        LinkedList<Integer> quad= quadrant(city);
+        for(int quadrant: quad) {
+            quadrants[quadrant] = quadrants[quadrant].add(city);
+            //this is prquadtree code
+            /*
+            Point2D.Float corner = newcenter(quadrant);
+            //if its a blacknode, we take the city as a tmp and then replace with grey node,
+            // and reinsert to that greynode
+            if (quadrants[quadrant] instanceof BlackNode) {
+                //this casting is ok because of the instance of we had above
+                //TODO this is different for PM1 and PM3
+                //todo if this node is valid
+                City temp = ((BlackNode) quadrants[quadrant]).getCity();
+                LinkedList<Road> roads = ((BlackNode) quadrants[quadrant]).roads;
+                //we create a new grey node
+                quadrants[quadrant] = new GreyNode(height / 2, width / 2, corner.x, corner.y);
+                //and then insert into it
+                quadrants[quadrant].add(temp);
+                quadrants[quadrant].add(city);
+                //quadrants[quadrant].add(roads);//todo add a add all roads thing?
+            } else if (quadrants[quadrant] instanceof WhiteNode) {
+                //otherwise it is a whitenode and we can replace with a blacknode
+                quadrants[quadrant] = new BlackNode((height / 2), (width / 2), corner.x, corner.y);
+                quadrants[quadrant].add(city);
+            } else {//it is a greynode and we recurse
+                quadrants[quadrant].add(city);
+            }
+            */
         }
 
+        return this;
+    }
+
+    public Node add(Road road){
+
+        //first we find what it intersects
+        if(road.intersects(this)){
+            //if it intersects this grey node then we add
+            for(Node n: quadrants){
+                n.add(road);
+            }
+        }
+        return this;
     }
 
 
-    //finds the new bottom left of a quadrant for a new grey node
-    private Point2D.Float newcenter(int quadrant) {
-        switch (quadrant) {
-            case 0:
-                return new Point2D.Float(x , y + height / 2);
-            case 1:
-                return new Point2D.Float(x + width / 2, y + height / 2);
-            case 2:
-                return new Point2D.Float(x, y);
-            case 3:
-                return new Point2D.Float(x + width / 2, y );
-        }
-        return null;
-    }
 
-    /* we will return 0-3 in the
-      0 | 1
-      -----
-      2 | 3
-      form - inclusive on bottom and left and exclusive on top and right
-     */
-    private int quadrant(City city) {
-        //city is below x axis and to the left of y
-        float w = (x + (width / 2));
-        float h = y + (height / 2);
-        //System.err.println("width " + w + " height " + h);
-        if (city.getX() < w && city.getY() < h) {
-            return 2;
-        } else if (city.getX() >= w && city.getY() < h) {
-            return 3;
-        } else if (city.getX() < w && city.getY() >= h) {
-            return 0;
-        } else if (city.getX() >= w && city.getY() >= h) {
-            return 1;
-        }
-        return -1;
-    }
 
     public boolean containsCity(String city) {
         for (Node i : quadrants) {
@@ -97,6 +90,7 @@ public class GreyNode extends Node {
         return false;
     }
 
+    /* TODO delete
     public Node deleteCity(String city) {
         int grey = 0;
         int black = 0;
@@ -122,6 +116,7 @@ public class GreyNode extends Node {
         }
         return this;
     }
+*/
 
     //we create elements here and return them
     public Element printquadtree(Document doc) {

@@ -42,7 +42,7 @@ public class MeeshQuest {
             int spatialHeight = Integer.parseInt(commandNode.getAttribute("spatialHeight"));
             int pmOrder = Integer.parseInt(commandNode.getAttribute("pmOrder"));
             //creates the data structures
-            map = new Map(spatialWidth, spatialHeight);
+            map = new Map(spatialWidth, spatialHeight, pmOrder);
 
             //starts the command parser
             //this class takes in elements and executes the commands

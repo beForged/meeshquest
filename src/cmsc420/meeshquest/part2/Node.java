@@ -1,27 +1,76 @@
 package cmsc420.meeshquest.part2;
 
 import cmsc420.drawing.CanvasPlus;
+import cmsc420.geom.Geometry2D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public abstract class Node extends Rectangle2D.Float{
 
-
     abstract boolean containsCity(String city);
 
-    //next 2 are for roads
-    abstract Node add();
 
-    abstract Node remove();
+    //todo maybe add a default func that auto adds both cities and the road
+    abstract Node add(Road road);
 
-    abstract void addCity(City city);
+    abstract Node add(Rectangle2D.Float rect, City city);
 
-    abstract Node deleteCity(String city);
+    //abstract Node add(Geometry2D geom);
 
+    //part 3 dont want to implement if no spec
+    //abstract Node deleteCity(String city);
+    Node delete(Road road){
+        throw new UnsupportedOperationException();
+    }
+    Node delete(City city) {
+        throw new UnsupportedOperationException();
+    }
+
+    /* we will return 0-3 in the
+      0 | 1
+      -----
+      2 | 3
+      form - inclusive on bottom and left and exclusive on top and right
+     */
+    LinkedList<Integer> quadrant(City city) {
+        //city is below x axis and to the left of y
+        LinkedList<Integer> quads = new LinkedList<>();
+        float w = (x + (width / 2));
+        float h = y + (height / 2);
+        //System.err.println("width " + w + " height " + h);
+        if (city.getX() <= w && city.getY() <= h) {
+            quads.add(2);
+        } if (city.getX() >= w && city.getY() <= h) {
+            quads.add(3);
+        } if (city.getX() <= w && city.getY() >= h) {
+            quads.add(0);
+        } if (city.getX() >= w && city.getY() >= h) {
+            quads.add(1);
+        }
+        return quads;
+    }
+
+    //finds the new bottom left of a quadrant for a new grey node
+    Point2D.Float newcenter(int quadrant) {
+        switch (quadrant) {
+            case 0:
+                return new Point2D.Float(x , y + height / 2);
+            case 1:
+                return new Point2D.Float(x + width / 2, y + height / 2);
+            case 2:
+                return new Point2D.Float(x, y);
+            case 3:
+                return new Point2D.Float(x + width / 2, y );
+        }
+        return null;
+    }
+    // and some other stuff
     abstract Element printquadtree(Document doc);
 
     abstract ArrayList<City> rangeCities(int x, int y, int radius);

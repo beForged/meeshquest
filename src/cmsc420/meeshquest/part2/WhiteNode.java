@@ -19,6 +19,21 @@ public class WhiteNode extends Node{
         return false;
     }
 
+
+    Node add(City city) {
+        return null;
+    }
+
+    @Override
+    Node add(Road road) {
+        return null;
+    }
+
+
+    Node remove() {
+        return null;
+    }
+
     //does nothing
     public void addCity(City city) {
         return;

@@ -9,6 +9,8 @@ public class City extends Point2D.Float {
     String name, color;
     int radius;
 
+    //TODO add list of roads that connect to the city
+
     //constructor for a city
     public City(String name, int x, int y, int radius, String color){
         this.name = name;

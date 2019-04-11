@@ -11,8 +11,11 @@ public class Map {
     TreeMap<String , City> nameMap;
     PRQuadTree quadTree;
     int width, height;
-    public Map(int width, int height){
+    int order;
 
+    public Map(int width, int height, int order){
+
+        //TODO replace with treap at somepoint
         //comparator that compares by number
         coordinateMap = new TreeMap<>((o1, o2) -> {
                     if(o1.getX() == o2.getX() && o1.getY() == o2.getY()){
@@ -32,6 +35,9 @@ public class Map {
 
         this.width = width;
         this.height = height;
+
+        this.order = order;
+
         quadTree = new PRQuadTree(height, width);
     }
 
