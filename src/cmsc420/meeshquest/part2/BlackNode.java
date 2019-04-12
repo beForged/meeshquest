@@ -48,7 +48,7 @@ public class BlackNode extends Node {
         return city;
     }
 
-    //
+    //isolated cities?
     public Node add(City city) {
         if(this.city == null){
             this.city = city;

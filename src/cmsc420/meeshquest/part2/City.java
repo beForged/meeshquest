@@ -2,12 +2,16 @@ package cmsc420.meeshquest.part2;
 
 
 import java.awt.geom.Point2D;
+import java.util.LinkedList;
 
 //using float here as double precision unnecessary (and it says to in spec)
 public class City extends Point2D.Float {
     //these are private and should probably have gets/sets
     String name, color;
     int radius;
+    boolean isolated;
+    //roads that connect (maybe end/beginnings?)
+    LinkedList<Road> roads;
 
     //TODO add list of roads that connect to the city
 
