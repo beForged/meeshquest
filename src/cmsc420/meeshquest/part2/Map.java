@@ -9,7 +9,7 @@ import java.util.TreeMap;
 public class Map {
     TreeMap<Point2D, City> coordinateMap;
     TreeMap<String , City> nameMap;
-    PRQuadTree quadTree;
+    PMQuadtree quadTree;
     int width, height;
     int order;
 
@@ -38,7 +38,9 @@ public class Map {
 
         this.order = order;
 
-        quadTree = new PRQuadTree(height, width);
+        if(order == 3){
+            quadTree = new PM3Quadtree(width, height);
+        }
     }
 
     //check that name and coordinates are not taken
@@ -63,7 +65,8 @@ public class Map {
             throw new cityDoesNotExistException("cityDoesNotExist");
         }
         //remove from quadtree if mapped
-        boolean deleted = quadTree.deleteCity(name);
+        //boolean deleted = quadTree.deleteCity(name);
+        boolean deleted = true;
         //if the city exists, remove from namemap and get the city object
         City rem = nameMap.remove(name);
         //then remove from coordinate map

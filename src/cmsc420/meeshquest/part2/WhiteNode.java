@@ -9,8 +9,12 @@ import java.util.PriorityQueue;
 
 public class WhiteNode extends Node{
     //a little bit of communism
+    static Validator valid;
     private static WhiteNode ourInstance = new WhiteNode();
 
+    public static void setValidator(Validator v){
+        valid = v;
+    }
     public static WhiteNode getInstance() {
         return ourInstance;
     }
@@ -19,16 +23,34 @@ public class WhiteNode extends Node{
         return false;
     }
 
-
-    Node add(City city) {
-        return null;
-    }
-
     @Override
-    Node add(Road road) {
-        return null;
+    Node add(Float rect, Road road) {
+        Node newBlackNode = new BlackNode(rect, valid);
+        newBlackNode.add(rect, road);
+        return newBlackNode;
     }
 
+
+    Node add(Float rect, City city) {
+        Node b = new BlackNode(rect, valid);
+        ((BlackNode) b).add(city);
+        return b;
+    }
+
+    //for isolated cities
+    @Override
+    Node addCity(Float rect, City city) {
+        BlackNode b = new BlackNode(rect, valid);
+        b.addCity(rect, city);
+        return this;
+    }
+
+
+    Node addRoad(Float rect, Road road){
+        BlackNode b = new BlackNode(rect, valid);
+        b.addRoad(road);
+        return b;
+    }
 
     Node remove() {
         return null;

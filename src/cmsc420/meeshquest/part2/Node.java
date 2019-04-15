@@ -4,6 +4,7 @@ import cmsc420.drawing.CanvasPlus;
 import cmsc420.geom.Geometry2D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.css.Rect;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -17,12 +18,16 @@ public abstract class Node extends Rectangle2D.Float{
 
 
     //todo maybe add a default func that auto adds both cities and the road
-    abstract Node add(Road road);
+    abstract Node add(Rectangle2D.Float rect, Road road);
 
     abstract Node add(Rectangle2D.Float rect, City city);
 
     //abstract Node add(Geometry2D geom);
 
+    //this is for isolated cities
+    abstract Node addCity(Rectangle2D.Float rect, City city);
+
+    abstract Node addRoad(Rectangle2D.Float rect, Road road);
     //part 3 dont want to implement if no spec
     //abstract Node deleteCity(String city);
     Node delete(Road road){
@@ -69,6 +74,13 @@ public abstract class Node extends Rectangle2D.Float{
                 return new Point2D.Float(x + width / 2, y );
         }
         return null;
+    }
+
+    Rectangle2D.Float getChildRect(Rectangle2D.Float parentSquare, int quadrant){
+        float height = parentSquare.height/2;
+        float width = parentSquare.width/2;
+        Point2D.Float cent = newcenter(quadrant);
+        return new Rectangle2D.Float(width, height, cent.x, cent.y );
     }
     // and some other stuff
     abstract Element printquadtree(Document doc);

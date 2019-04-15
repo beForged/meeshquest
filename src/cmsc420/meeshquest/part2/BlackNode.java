@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -18,17 +19,18 @@ public class BlackNode extends Node {
     //these are the roads
     LinkedList<Road> roads;
 
+    Validator valid;
 
     //this should imply that this includes a road
     //this means that cities must be passed to black node
-    public BlackNode(float height, float width, float x, float y){
+    public BlackNode(Rectangle2D.Float rect, Validator valid){
         //city = road.getEnd(); TODO get city up and running which side of road are we on
-        this.city = city;
         roads = new LinkedList<>();
-        super.height = height;
-        super.width = width;
-        super.x = x;
-        super.y = y;
+        super.height = rect.height;
+        super.width = rect.width;
+        super.x = rect.x;
+        super.y = rect.y;
+        this.valid = valid;
     }
 
     //we only have a const that makes the squares then add stuff in. dont do too much at once
@@ -48,43 +50,55 @@ public class BlackNode extends Node {
         return city;
     }
 
+    //adds a isolated city
+    public Node addCity(Float rect, City city){
+        return valid.validate(this, city);
+    }
+
+    public Node addRoad(Road road){
+        //todo maybe you need to throw road cant be mapped or somethi
+        roads.add(road);
+        return this;
+    }
     //isolated cities?
-    public Node add(City city) {
-        if(this.city == null){
-            this.city = city;
-        }else{
-            //throw new CityAlreadyMappedException("City Already Mapped");
-        }
-        //TODO validator here
-        //if valid return this, else partition
-
-        return this;
+    public Node add(Float rect, City city) {
+        Node ret = this;
+        if(this.contains(city))
+            ret = valid.validate(ret, city);
+        //if pm3 then as long as there isnt a city here, we add the city else partition
+        //if pm1 then only 1 line or city with edges from it
+        return ret;
     }
 
-    Node add(Road road) {
-        //TODO check for need to partition as well as intersection
-        //or something like that
-        if(road.intersects(this)) {
-            roads.add(road);
-        }
-        //TODO validator here
-        return this;
+    Node add(Float rect,Road road) {
+        //if anything is contained or intersects then we add
+        Node ret = this;
+        if(ret.contains(road.start))
+            ret = ret.add(ret, road.start);
+        if(ret.contains(road.end))
+            ret = ret.add(ret, road.end);
+        if(road.intersects(ret))
+            ret = valid.validate(ret, road);
+        return ret;
     }
+
 
     Node partition(City city){
-        GreyNode g = new GreyNode(this.height, this.width, this.x, this.y);
+        GreyNode g = new GreyNode(this, valid);
         g.add(this.city);
         g.add(city);
         //g.add(this.roads);
         return g;
     }
 
+    //can return null if city doesnt exist
     public Point2D.Float getCoords() {
         return city.getCoords();
     }
 
+    //can be null
     public boolean containsCity(String city) {
-        if (this.city.name.equals(city)) {
+        if (this.city != null && this.city.name.equals(city)) {
             return true;
         }
         return false;

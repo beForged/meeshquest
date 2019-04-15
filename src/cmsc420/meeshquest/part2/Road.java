@@ -4,9 +4,15 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 public class Road extends Line2D.Float {
-    Point2D.Float start, end;
+    City start, end;
 
-    public Road(Point2D.Float start, Point2D.Float end){
+    public Road(City start, City end){
+        super.x1 = start.x;
+        super.y1 = start.y;
+
+        super.x2 = end.x;
+        super.y2 = end.y;
+
         this.start = start;
         this.end = end;
     }

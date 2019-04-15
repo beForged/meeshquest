@@ -103,6 +103,23 @@ public class commandParser {
         --------------------------------------------------------------------------------------------------------------
         */
 
+        if(node.getNodeName().equals("printTreap")){
+            return null;
+            //TODO print treap
+        }
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+
+        if(node.getNodeName().equals("mapRoad")) {
+            return null;
+            //TODO maproad
+        }
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+
         if(node.getNodeName().equals("deleteCity")){
             //get the name to be deleted
             String cityName = node.getAttribute("name");
@@ -132,6 +149,7 @@ public class commandParser {
         --------------------------------------------------------------------------------------------------------------
         */
         //city already mapped, name not in dict, city out of bounds
+        //maps an isolated city
         String mapCity = "mapCity";
         if(node.getNodeName().equals(mapCity)){
             String name = node.getAttribute("name");
@@ -316,7 +334,7 @@ public class commandParser {
         //creates the command
         Element comm = doc.createElement("command");
         comm.setAttribute("name", command);
-        comm.setAttribute("id", id);
+        if(!id.equals("")) { comm.setAttribute("id", id); }
         ret.appendChild(comm);
 
         //we make and list parameters here

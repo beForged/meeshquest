@@ -15,27 +15,30 @@ public class GreyNode extends Node {
     private Node[] quadrants;
     private float centerx, centery;
 
+    Validator validate;
 
     //initialize with all white nodes as children (maybe ask for all 4 nodes?)
-    public GreyNode(float height, float width, float x, float y) {
+    public GreyNode(Rectangle2D.Float rect, Validator validate) {
         quadrants = new Node[4];
         for (int i = 0; i < 4; i++) {
             quadrants[i] = WhiteNode.getInstance();
         }
-        super.height = height;
-        super.width = width;
-        super.x = x;
-        super.y = y;
+        super.height = rect.height;
+        super.width = rect.width;
+        super.x = rect.x;
+        super.y = rect.y;
         centerx = x + width/2;
         centery = y + width/2;
+
+        this.validate =  validate;
     }
 
     //we need to have a road and city difference
     //this adds the endpoints of roads and isolated cities
-    public Node add(City city) {
+    public Node add(Float rect, City city) {
         LinkedList<Integer> quad= quadrant(city);
         for(int quadrant: quad) {
-            quadrants[quadrant] = quadrants[quadrant].add(city);
+            quadrants[quadrant] = quadrants[quadrant].add(getChildRect(this, quadrant), city);
             //this is prquadtree code
             /*
             Point2D.Float corner = newcenter(quadrant);
@@ -66,19 +69,43 @@ public class GreyNode extends Node {
         return this;
     }
 
-    public Node add(Road road){
+    public Node addCity(Float rect, City c){
+        LinkedList<Integer> q = quadrant(c);
+        for(int quad:q){
+            quadrants[quad] = quadrants[quad].addCity(getChildRect(this, quad), c);
+        }
+        return this;
+    }
+
+    public Node addRoad(Float rect, Road r){
+        for(int i = 0; i < quadrants.length; i++){
+            quadrants[i] = quadrants[i].addRoad(getChildRect(this, i), r);
+        }
+        return this;
+    }
+    public Node add(Rectangle2D.Float rect, Road road){
 
         //first we find what it intersects
         if(road.intersects(this)){
             //if it intersects this grey node then we add
             for(Node n: quadrants){
-                n.add(road);
+                n.add(rect, road);
             }
         }
         return this;
     }
 
 
+    public Node addroads(LinkedList<Road> r){
+        for(int i = 0; i < quadrants.length; i++){
+            for(Road road:r){
+                if(road.intersects(quadrants[i])){
+                    quadrants[i] = quadrants[i].addRoad(getChildRect(this, i), road);
+                }
+            }
+        }
+        return this;
+    }
 
 
     public boolean containsCity(String city) {

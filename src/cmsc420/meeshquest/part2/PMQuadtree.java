@@ -25,4 +25,20 @@ public abstract class PMQuadtree {
     //this is the root node and we set it to singleton white at first
     public Node root = WhiteNode.getInstance();
 
+    //TODO part 3
+    public void remove(){
+        throw new UnsupportedOperationException();
+    }
+
+    public void add(Road road){
+
+    }
+
+    public void addCity(City city){
+        root.addCity(root, city);
+    }
+
+    public void clear(){
+        root = WhiteNode.getInstance();
+    }
 }
