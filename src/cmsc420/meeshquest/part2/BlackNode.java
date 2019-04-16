@@ -1,31 +1,34 @@
 package cmsc420.meeshquest.part2;
 
 import cmsc420.drawing.CanvasPlus;
+import cmsc420.geom.Geometry2D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class BlackNode extends Node {
     //can have a city w no roads
     //or a city w roads
-    City city;
 
     //these are the roads
-    LinkedList<Road> roads;
+    TreeSet<Geometry2D> roads = new TreeSet<>( ((o1, o2) -> {
+        if(o1 instanceof Road && o2 instanceof City){
+            return -1;
+        }if(o1 instanceof City && o2 instanceof Road){
+            return 1;
+        }else return 0;
+    }));
 
     Validator valid;
 
+    public boolean isIsolated;
     //this should imply that this includes a road
     //this means that cities must be passed to black node
     public BlackNode(Rectangle2D.Float rect, Validator valid){
-        //city = road.getEnd(); TODO get city up and running which side of road are we on
-        roads = new LinkedList<>();
         super.height = rect.height;
         super.width = rect.width;
         super.x = rect.x;
@@ -33,7 +36,6 @@ public class BlackNode extends Node {
         this.valid = valid;
     }
 
-    //we only have a const that makes the squares then add stuff in. dont do too much at once
 /*
     //i guess if this is done then this is an orphaned city
     public BlackNode(float height, float width, City city) {
@@ -46,59 +48,46 @@ public class BlackNode extends Node {
     }
 */
 //should only be zero or one cities per black node
+
     public City getCity() {
-        return city;
+        if(roads.first() instanceof City){
+            return (City)roads.first();
+        }
+        return null;
     }
 
     //adds a isolated city
-    public Node addCity(Float rect, City city){
-        return valid.validate(this, city);
-    }
-
-    public Node addRoad(Road road){
-        //todo maybe you need to throw road cant be mapped or somethi
-        roads.add(road);
-        return this;
-    }
-    //isolated cities?
-    public Node add(Float rect, City city) {
-        Node ret = this;
-        if(this.contains(city))
-            ret = valid.validate(ret, city);
-        //if pm3 then as long as there isnt a city here, we add the city else partition
-        //if pm1 then only 1 line or city with edges from it
-        return ret;
-    }
-
     Node add(Float rect,Road road) {
-        //if anything is contained or intersects then we add
         Node ret = this;
+        //add both cities
         if(ret.contains(road.start))
             ret = ret.add(ret, road.start);
         if(ret.contains(road.end))
             ret = ret.add(ret, road.end);
+        //finally add the road
         if(road.intersects(ret))
-            ret = valid.validate(ret, road);
+            ret = valid.validate(ret);
         return ret;
     }
 
-
-    Node partition(City city){
-        GreyNode g = new GreyNode(this, valid);
-        g.add(this.city);
-        g.add(city);
-        //g.add(this.roads);
-        return g;
+    Node add(Float rect, City city){
+        roads.add(city);
+        Node ret = this;
+        ret = valid.validate(ret);
+        return ret;
     }
 
     //can return null if city doesnt exist
     public Point2D.Float getCoords() {
-        return city.getCoords();
+        if(this.getCity() == null){
+            return null;
+        }
+        return getCity().getCoords();
     }
 
     //can be null
     public boolean containsCity(String city) {
-        if (this.city != null && this.city.name.equals(city)) {
+        if (this.getCity()!= null && this.getCity().name.equals(city)) {
             return true;
         }
         return false;
@@ -118,16 +107,30 @@ public class BlackNode extends Node {
 
     public Element printquadtree(Document doc) {
         Element black = doc.createElement("black");
-        black.setAttribute("name", city.name);
-        black.setAttribute("x", String.valueOf((int) getCity().getX()));
-        black.setAttribute("y", String.valueOf((int) getCity().getY()));
+        black.setAttribute("cardinality", String.valueOf(roads.size()));
+        if(roads.first() instanceof City){
+            Element sub = doc.createElement("city");
+            black.setAttribute("name", getCity().name);
+            black.setAttribute("color", getCity().color);
+            black.setAttribute("radius", String.valueOf(getCity().radius));
+            black.setAttribute("x", String.valueOf((int) getCity().getX()));
+            black.setAttribute("y", String.valueOf((int) getCity().getY()));
+            black.appendChild(sub);
+        }
+        for (Geometry2D n:roads) {
+            if(n instanceof Road) {
+                Element sub = doc.createElement("road");
+                sub.setAttribute("end", ((Road)n).end.name);
+                sub.setAttribute("start", ((Road)n).start.name);
+            }
+        }
         return black;
     }
 
     public ArrayList<City> rangeCities(int x, int y, int radius) {
         ArrayList<City> citiesInRange = new ArrayList<>();
-        if (this.city.distance(new Point2D.Float((float) x, (float) y)) <= radius) {
-            citiesInRange.add(this.city);
+        if (this.getCity().distance(new Point2D.Float((float) x, (float) y)) <= radius) {
+            citiesInRange.add(this.getCity());
         }
         return citiesInRange;
     }
@@ -141,7 +144,7 @@ public class BlackNode extends Node {
 
     @Override
     void saveMap(CanvasPlus canvas) {
-        canvas.addPoint(city.name, x, y, Color.BLACK);
+        canvas.addPoint(getCity().name, x, y, Color.BLACK);
     }
 
 }

@@ -1,11 +1,13 @@
 package cmsc420.meeshquest.part2;
 
 
+import cmsc420.geom.Geometry2D;
+
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
 
 //using float here as double precision unnecessary (and it says to in spec)
-public class City extends Point2D.Float {
+public class City extends Point2D.Float implements Geometry2D {
     //these are private and should probably have gets/sets
     String name, color;
     int radius;
@@ -47,4 +49,8 @@ public class City extends Point2D.Float {
     }
 
 
+    @Override
+    public int getType() {
+        return 0;
+    }
 }

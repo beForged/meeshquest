@@ -69,17 +69,17 @@ public class GreyNode extends Node {
         return this;
     }
 
-    public Node addCity(Float rect, City c){
+    public Node addCity(Float rect, City c) throws cityOutOfBoundsException {
         LinkedList<Integer> q = quadrant(c);
         for(int quad:q){
-            quadrants[quad] = quadrants[quad].addCity(getChildRect(this, quad), c);
+            quadrants[quad] = quadrants[quad].add(getChildRect(this, quad), c);
         }
         return this;
     }
 
     public Node addRoad(Float rect, Road r){
         for(int i = 0; i < quadrants.length; i++){
-            quadrants[i] = quadrants[i].addRoad(getChildRect(this, i), r);
+            quadrants[i] = quadrants[i].add(getChildRect(this, i), r);
         }
         return this;
     }
@@ -100,7 +100,7 @@ public class GreyNode extends Node {
         for(int i = 0; i < quadrants.length; i++){
             for(Road road:r){
                 if(road.intersects(quadrants[i])){
-                    quadrants[i] = quadrants[i].addRoad(getChildRect(this, i), road);
+                    quadrants[i] = quadrants[i].add(getChildRect(this, i), road);
                 }
             }
         }

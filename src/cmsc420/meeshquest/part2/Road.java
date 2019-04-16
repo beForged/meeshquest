@@ -1,9 +1,11 @@
 package cmsc420.meeshquest.part2;
 
+import cmsc420.geom.Geometry2D;
+
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
-public class Road extends Line2D.Float {
+public class Road extends Line2D.Float implements Geometry2D {
     City start, end;
 
     public Road(City start, City end){
@@ -29,4 +31,8 @@ public class Road extends Line2D.Float {
         return end;
     }
 
+    @Override
+    public int getType() {
+        return 1;
+    }
 }

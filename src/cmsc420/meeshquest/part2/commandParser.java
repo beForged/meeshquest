@@ -185,7 +185,8 @@ public class commandParser {
             if(!map.quadTree.containsCity(name)){
                 return outputBuilder("cityNotMapped", unmap, params, values, null);
             }
-            map.quadTree.deleteCity(name);//should be true tbh as if it doesnt contain it will already ret
+            //todo
+            //map.quadTree.deleteCity(name);//should be true tbh as if it doesnt contain it will already ret
             return outputBuilder(null, unmap, params, values, null);
         }
 

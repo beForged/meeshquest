@@ -38,17 +38,16 @@ public class WhiteNode extends Node{
     }
 
     //for isolated cities
-    @Override
-    Node addCity(Float rect, City city) {
+    Node addCity(Float rect, City city) throws cityOutOfBoundsException {
         BlackNode b = new BlackNode(rect, valid);
-        b.addCity(rect, city);
+        b.add(rect, city);
         return this;
     }
 
 
     Node addRoad(Float rect, Road road){
         BlackNode b = new BlackNode(rect, valid);
-        b.addRoad(road);
+        b.add(rect, road);
         return b;
     }
 
