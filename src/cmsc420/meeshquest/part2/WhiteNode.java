@@ -48,8 +48,11 @@ public class WhiteNode extends Node{
 
     Node addRoad(Float rect, Road road){
         BlackNode b = new BlackNode(rect, valid);
-        b.add(rect, road);
-        return b;
+        if(road.intersects(rect)) {
+            b.addRoad(rect, road);
+            return b;
+        }
+        else return this;
     }
 
     Node remove() {

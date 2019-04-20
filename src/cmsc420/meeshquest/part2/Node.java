@@ -28,6 +28,7 @@ public abstract class Node extends Rectangle2D.Float{
 
     abstract Node add(Rectangle2D.Float rect, City city);
 
+    abstract Node addRoad(Rectangle2D.Float rect, Road road);
 
     //this is for isolated cities
     //abstract Node addCity(Rectangle2D.Float rect, City city) throws cityOutOfBoundsException;

@@ -88,8 +88,17 @@ public class BlackNode extends Node {
             ret = ret.add(ret, road.end);
         //finally add the road
         if(road.intersects(ret))
-            roads.add( road);
+            ret.addRoad(this, road);
             ret = valid.validate(ret);
+        return ret;
+    }
+
+    Node addRoad(Float rect, Road road){
+        if(road.intersects(this)){
+            roads.add(road);
+        }
+        Node ret = this;
+        ret = valid.validate(ret);
         return ret;
     }
 

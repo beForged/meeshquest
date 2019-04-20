@@ -80,7 +80,7 @@ public class GreyNode extends Node {
 
     public Node addRoad(Float rect, Road r){
         for(int i = 0; i < quadrants.length; i++){
-            quadrants[i] = quadrants[i].add(getChildRect(this, i), r);
+            quadrants[i] = quadrants[i].addRoad(getChildRect(this, i), r);
         }
         return this;
     }
