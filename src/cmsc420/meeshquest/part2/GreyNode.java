@@ -69,6 +69,7 @@ public class GreyNode extends Node {
         return this;
     }
 
+    @Deprecated
     public Node addCity(Float rect, City c) throws cityOutOfBoundsException {
         LinkedList<Integer> q = quadrant(c);
         for(int quad:q){
@@ -89,13 +90,15 @@ public class GreyNode extends Node {
         if(road.intersects(this)){
             //if it intersects this grey node then we add
             for(Node n: quadrants){
-                n.add(rect, road);
+                if(road.intersects(n))
+                    n.add(rect, road);
             }
         }
         return this;
     }
 
 
+    @Deprecated
     public Node addroads(LinkedList<Road> r){
         for(int i = 0; i < quadrants.length; i++){
             for(Road road:r){

@@ -113,8 +113,17 @@ public class commandParser {
         */
 
         if(node.getNodeName().equals("mapRoad")) {
-            return null;
-            //TODO maproad
+            String start = node.getAttribute("start");
+            String end = node.getAttribute("end");
+            Road r = new Road(map.nameMap.get(start), map.nameMap.get(end));
+            map.quadTree.add(r);
+            String[] params = {"start", "end"};
+            String[] values = {start, end};
+            Element out = doc.createElement("roadCreated");
+            out.setAttribute("start", start);
+            out.setAttribute("end", end);
+            return outputBuilder(null, "mapRoad", params, values, out);
+            //todo error handling
         }
         /*
         --------------------------------------------------------------------------------------------------------------
@@ -195,15 +204,15 @@ public class commandParser {
         --------------------------------------------------------------------------------------------------------------
         */
 
-        if(node.getNodeName().equals("printPRQuadtree")){
+        if(node.getNodeName().equals("printPMQuadtree")){
             Element output = null;
             try {
                 output = doc.createElement("quadtree");
                 output.appendChild(map.quadTree.printquadtree(doc));
             }catch (mapisEmptyException e){
-                return outputBuilder(e.getMessage(), "printPRQuadtree", empty, empty, null);
+                return outputBuilder(e.getMessage(), "printPMQuadtree", empty, empty, null);
             }
-            return outputBuilder(null, "printPRQuadtree", empty, empty, output);
+            return outputBuilder(null, "printPMQuadtree", empty, empty, output);
         }
 
         /*

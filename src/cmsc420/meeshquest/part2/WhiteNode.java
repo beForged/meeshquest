@@ -26,14 +26,15 @@ public class WhiteNode extends Node{
     @Override
     Node add(Float rect, Road road) {
         Node newBlackNode = new BlackNode(rect, valid);
-        newBlackNode.add(rect, road);
+        //System.err.println(newBlackNode.toString());
+        newBlackNode = newBlackNode.add(rect, road);
         return newBlackNode;
     }
 
 
     Node add(Float rect, City city) {
         Node b = new BlackNode(rect, valid);
-        ((BlackNode) b).add(city);
+        b = b.add(rect, city);
         return b;
     }
 

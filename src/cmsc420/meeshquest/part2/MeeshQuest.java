@@ -27,9 +27,8 @@ public class MeeshQuest {
 
             //this is the results document that gets printed as output
             results = XmlUtility.getDocumentBuilder().newDocument();
-
-            //Document doc = XmlUtility.validateNoNamespace(new File("testing/test8.xml"));
-            Document doc = XmlUtility.validateNoNamespace(System.in);
+Document doc = XmlUtility.validateNoNamespace(new File("testing/p2sampletests/test1.xml"));
+            //Document doc = XmlUtility.validateNoNamespace(System.in);
 
 
             //we generate a root element here to start the output as it is on every output (iirc)

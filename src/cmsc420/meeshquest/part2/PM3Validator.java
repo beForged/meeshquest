@@ -1,54 +1,40 @@
 package cmsc420.meeshquest.part2;
 
+import cmsc420.geom.Geometry2D;
+
 public class PM3Validator implements Validator{
 
     //default constructor
 
     public Node validate(Node n) {
         //want to see if the node is valid else we partition
-        if(valid(n)){
-
-        }
-        return null;
+        if(!valid(n)) {
+            //n has to be a blacknode in this case
+            GreyNode g = new GreyNode(n, this);
+            for (Geometry2D c : ((BlackNode) n).roads){
+                if (c instanceof City)
+                    g.add(g, (City) c);
+                else
+                    g.add(g, (Road) c);
+            }
+            return g;
+        }//it is valid so we return it
+        return n;
     }
 
-    private boolean valid(BlackNode n){
+    private boolean valid(Node n){
         //for pm3 we just need to check if there is more than one city
-        if(n.roads.first() instanceof City){
-
-        }
-
-    }
-/*
-    public Node validate(Node n, City city, boolean isolated) {
-        if(n instanceof BlackNode) {//
-            if(((BlackNode)n).city.equals(city)){
-                //todo trow city already mapped
-                return n;
-            }
-            if (((BlackNode)n).city != null) {
-                //partiion
-                Node g = new GreyNode(n, this);
-                g.add(((BlackNode)n).city);
-                if(isolated) {
-                    g.addCity(n, city);
-                }else {
-                    g.add(n, city);
+        if(n instanceof BlackNode) {
+            int citycount = 0;
+            for (Geometry2D g : ((BlackNode) n).roads) {
+                if (g instanceof City) {
+                    citycount++;
                 }
-                return g;
-            } else {//dont need to partition, no city so just add it
-                ((BlackNode) n).city = city;
-                ((BlackNode) n).isIsolated= isolated;
-                return n;
             }
-        }else {
-            return n.add(n, city);
-        }
+            return !(citycount > 1);
+        }else
+            return true;
+
     }
 
-    @Override
-    public Node validateCity(Node n, City city) {
-        return validate(n, city, true);
-    }
-    */
 }

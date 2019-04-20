@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
@@ -36,14 +37,14 @@ public abstract class PMQuadtree {
     }
 
     public void add(Road road){
-
+        root = root.add(new Rectangle2D.Float(0,0, width, height), road);
     }
 
     public void addCity(City city) throws cityOutOfBoundsException, CityAlreadyMappedException {
         if(root.containsCity(city.name)){//todo probably fix this
             throw new CityAlreadyMappedException("cityAlreadyMapped");
         }
-        root.addCity(root, city);
+        root.add(root, city);
     }
 
     public boolean containsCity(String c){

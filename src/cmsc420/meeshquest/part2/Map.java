@@ -38,6 +38,7 @@ public class Map {
 
         this.order = order;
 
+        //System.err.println(width + ", " + height);
         if(order == 3){
             quadTree = new PM3Quadtree(width, height);
         }

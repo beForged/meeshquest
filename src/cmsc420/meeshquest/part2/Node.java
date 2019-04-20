@@ -16,13 +16,18 @@ public abstract class Node extends Rectangle2D.Float{
 
     abstract boolean containsCity(String city);
 
+    /*
+    float x = super.x;
+    float y = super.y;
+    float height = super.height;
+    float width = super.height;
+    */
 
     //todo maybe add a default func that auto adds both cities and the road
     abstract Node add(Rectangle2D.Float rect, Road road);
 
     abstract Node add(Rectangle2D.Float rect, City city);
 
-    //abstract Node add(Geometry2D geom);
 
     //this is for isolated cities
     //abstract Node addCity(Rectangle2D.Float rect, City city) throws cityOutOfBoundsException;
@@ -80,7 +85,7 @@ public abstract class Node extends Rectangle2D.Float{
         float height = parentSquare.height/2;
         float width = parentSquare.width/2;
         Point2D.Float cent = newcenter(quadrant);
-        return new Rectangle2D.Float(width, height, cent.x, cent.y );
+        return new Rectangle2D.Float(cent.x, cent.y , width, height);
     }
     // and some other stuff
     abstract Element printquadtree(Document doc);
