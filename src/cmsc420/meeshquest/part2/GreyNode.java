@@ -40,30 +40,6 @@ public class GreyNode extends Node {
         for(int quadrant: quad) {
             quadrants[quadrant] = quadrants[quadrant].add(getChildRect(this, quadrant), city);
             //this is prquadtree code
-            /*
-            Point2D.Float corner = newcenter(quadrant);
-            //if its a blacknode, we take the city as a tmp and then replace with grey node,
-            // and reinsert to that greynode
-            if (quadrants[quadrant] instanceof BlackNode) {
-                //this casting is ok because of the instance of we had above
-                //TODO this is different for PM1 and PM3
-                //todo if this node is valid
-                City temp = ((BlackNode) quadrants[quadrant]).getCity();
-                LinkedList<Road> roads = ((BlackNode) quadrants[quadrant]).roads;
-                //we create a new grey node
-                quadrants[quadrant] = new GreyNode(height / 2, width / 2, corner.x, corner.y);
-                //and then insert into it
-                quadrants[quadrant].add(temp);
-                quadrants[quadrant].add(city);
-                //quadrants[quadrant].add(roads);//todo add a add all roads thing?
-            } else if (quadrants[quadrant] instanceof WhiteNode) {
-                //otherwise it is a whitenode and we can replace with a blacknode
-                quadrants[quadrant] = new BlackNode((height / 2), (width / 2), corner.x, corner.y);
-                quadrants[quadrant].add(city);
-            } else {//it is a greynode and we recurse
-                quadrants[quadrant].add(city);
-            }
-            */
         }
 
         return this;
@@ -89,9 +65,10 @@ public class GreyNode extends Node {
         //first we find what it intersects
         if(road.intersects(this)){
             //if it intersects this grey node then we add
+            int q = 0;
             for(Node n: quadrants){
-                if(road.intersects(n))
-                    n.add(rect, road);
+                n.add(getChildRect(this, q), road);
+                q += 1;
             }
         }
         return this;

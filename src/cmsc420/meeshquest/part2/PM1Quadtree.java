@@ -8,7 +8,6 @@ public class PM1Quadtree extends PMQuadtree{
     public PM1Quadtree(int width, int height, int pmorder){
         super.width = width;
         super.height = height;
-        super.order = pmorder;
         PM1Validator v = new PM1Validator();
         WhiteNode.setValidator(v);
         root = WhiteNode.getInstance();

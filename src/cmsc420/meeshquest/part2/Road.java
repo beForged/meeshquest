@@ -35,4 +35,12 @@ public class Road extends Line2D.Float implements Geometry2D {
     public int getType() {
         return 1;
     }
+
+    public int compareTo(Road road){
+        if(road.start.name.equals(this.start.name) && road.end.name.equals(this.end.name)){
+            return 0;
+        }
+        else
+            return road.start.name.compareTo(this.start.name);
+    }
 }

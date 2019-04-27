@@ -208,6 +208,7 @@ public class commandParser {
             Element output = null;
             try {
                 output = doc.createElement("quadtree");
+                output.setAttribute("order", String.valueOf(map.order));
                 output.appendChild(map.quadTree.printquadtree(doc));
             }catch (mapisEmptyException e){
                 return outputBuilder(e.getMessage(), "printPMQuadtree", empty, empty, null);

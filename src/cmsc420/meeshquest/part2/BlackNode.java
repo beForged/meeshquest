@@ -2,8 +2,6 @@ package cmsc420.meeshquest.part2;
 
 import cmsc420.drawing.CanvasPlus;
 import cmsc420.geom.Geometry2D;
-import com.sun.deploy.util.OrderedHashSet;
-import javafx.collections.transformation.SortedList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -11,22 +9,22 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
-import java.util.List;
 
 public class BlackNode extends Node {
 
     //these are the roads
-    /*
     TreeSet<Geometry2D> roads = new TreeSet<>( ((o1, o2) -> {
         if(o1 instanceof Road && o2 instanceof City){
             return 1;
         }if(o1 instanceof City && o2 instanceof Road){
             return -1;
         }
-        else return 0;
+        else if(o1 instanceof City && o2 instanceof City){
+            return ((City)o1).compareTo((City)o2);
+        }else
+            return ((Road)o1).compareTo((Road)o2);
     }));
-    */
-    ArrayList<Geometry2D> roads = new ArrayList<>();
+    //ArrayList<Geometry2D> roads = new ArrayList<>();
 
     Validator valid;
 
@@ -103,8 +101,10 @@ public class BlackNode extends Node {
     }
 
     Node add(Float rect, City city){
-        if(this.contains(city))
-            roads.add( city);
+        if(this.contains(city)) {
+            System.out.println(this.toString());
+            roads.add(city);
+        }
         Node ret = this;
         ret = valid.validate(ret);
         return ret;
@@ -174,7 +174,7 @@ public class BlackNode extends Node {
     @Override
     PriorityQueue<Node> nearestCity(int x, int y) {
         PriorityQueue<Node> a = new PriorityQueue<>(new PriorityComparator(x,y));
-        if(this.getCity() != null) {
+        if(this.getCity() != null && !this.isIsolated()) {
             a.add(this);
             return a;
         }

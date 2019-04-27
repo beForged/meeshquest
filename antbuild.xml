@@ -4,7 +4,7 @@
 		as well as the .submit, .project, and .classpath files, suitable for submission to the
 		submit server.
 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	--><property name="jar.name" value="meeshquest-part1-sp19-submission.jar"/>
+	--><property name="jar.name" value="meeshquest-sp19-submission.jar"/>
     <!-- Stuff that goes in the test-setup JAR --><!-- Java source directory -->
     <property name="sub.dir" value="."/>
     <!-- List of all java source files that need to go into the test setup -->

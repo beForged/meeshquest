@@ -53,4 +53,11 @@ public class City extends Point2D.Float implements Geometry2D {
     public int getType() {
         return 0;
     }
+
+    public int compareTo(City c){
+        if(c.name.equals(this.name)){
+            return 0;
+        }else
+            return -c.name.compareTo(this.name);
+    }
 }

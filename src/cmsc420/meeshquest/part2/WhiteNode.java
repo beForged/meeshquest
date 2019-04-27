@@ -25,17 +25,24 @@ public class WhiteNode extends Node{
 
     @Override
     Node add(Float rect, Road road) {
-        Node newBlackNode = new BlackNode(rect, valid);
-        //System.err.println(newBlackNode.toString());
-        newBlackNode = newBlackNode.add(rect, road);
-        return newBlackNode;
+        if(road.intersects(rect)) {
+            Node newBlackNode = new BlackNode(rect, valid);
+            //System.err.println(newBlackNode.toString());
+            newBlackNode = newBlackNode.add(rect, road);
+            return newBlackNode;
+        }
+        return this;
     }
 
 
+
     Node add(Float rect, City city) {
-        Node b = new BlackNode(rect, valid);
-        b = b.add(rect, city);
-        return b;
+        if(rect.contains(city)) {
+            Node b = new BlackNode(rect, valid);
+            b = b.add(rect, city);
+            return b;
+        }
+        return this;
     }
 
     //for isolated cities

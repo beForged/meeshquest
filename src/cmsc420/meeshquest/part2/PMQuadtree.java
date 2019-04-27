@@ -15,8 +15,6 @@ public abstract class PMQuadtree {
     //height and width of the map
     public int width, height;
 
-    //pmorder - maybe somehow make it final?
-    public int order;
 
     //set of all roads in the quadtree
     TreeSet<Road> all;
