@@ -1,9 +1,11 @@
 package cmsc420.meeshquest.part2;
 
+import cmsc420.geom.Geometry2D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class commandParser {
@@ -166,6 +168,7 @@ public class commandParser {
             String[] values = {name};
             try{
                 City c = map.nameMap.get(name);
+                c.setIsolated(true);
                 if(c == null){
                     return outputBuilder("nameNotInDictionary", mapCity, params, values, null);
                 }
@@ -280,7 +283,7 @@ public class commandParser {
             String[] values = {x, y};
             City c;
             try {
-                c = map.quadTree.nearestCity(Integer.parseInt(x), Integer.parseInt(y));
+                c = map.quadTree.nearestCity(Integer.parseInt(x), Integer.parseInt(y), false);
             }catch(mapisEmptyException e){
                 return outputBuilder(e.getMessage(), "nearestCity", params, values, null);
             }
@@ -294,6 +297,96 @@ public class commandParser {
 
         }
 
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+
+        if (node.getNodeName().equals("nearestIsolatedCity")){
+            String x= node.getAttribute("x");
+            String y= node.getAttribute("y");
+            String[] params = {"x", "y"};
+            String[] values = {x, y};
+            City c;
+            try {
+                c = map.quadTree.nearestCity(Integer.parseInt(x), Integer.parseInt(y), true);
+            }catch(mapisEmptyException e){
+                return outputBuilder(e.getMessage(), "nearestIsolatedCity", params, values, null);
+            }
+            Element out = doc.createElement("isolatedCity");
+            out.setAttribute("name", c.name);
+            out.setAttribute("x", String.valueOf((int)c.x));
+            out.setAttribute("y", String.valueOf((int)c.y));
+            out.setAttribute("color", c.color);
+            out.setAttribute("radius", String.valueOf(c.radius));
+            return outputBuilder(null, "nearestIsolatedCity", params, values, out);
+        }
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+
+        if(node.getNodeName().equals("rangeRoads")) {
+            String rangeroad = "rangeRoads";
+            String x = node.getAttribute("x");
+            String y = node.getAttribute("y");
+            String radius = node.getAttribute("radius");
+            String saveMap = node.getAttribute("saveMap");
+            ArrayList<Road> a;
+            String[] params;
+            String[] values;
+            if(saveMap.equals("") ){
+                params = new String[]{"x", "y", "radius"};
+                values = new String[]{x, y, radius};
+            }else {
+                params = new String[]{"x", "y", "radius", "saveMap"};
+                values = new String[]{x, y, radius,saveMap};
+                map.quadTree.saveMap(saveMap,Integer.parseInt(x),Integer.parseInt(y),Integer.parseInt(radius));
+            }
+            List<Road> b;
+            try {
+                a = map.quadTree.rangeRoads(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(radius));
+                b = a.stream().distinct().collect(Collectors.toList());
+                Collections.sort(b,new RoadComparator());
+            }catch (noCitiesExistInRangeException e){
+                return outputBuilder(e.getMessage(), rangeroad, params, values, null);
+            }
+            Element output = doc.createElement("roadList");
+            for (Road i:b ) {
+                Element city = doc.createElement("road");
+                city.setAttribute("start", i.start.name);
+                city.setAttribute("end", i.end.name);
+                output.appendChild(city);
+            }
+            return outputBuilder(null, rangeroad, params, values, output);
+        }
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+        if(node.getNodeName().equals("nearestRoad")){
+            String x = node.getAttribute("x");
+            String y = node.getAttribute("y");
+            String params[] = {"x", "y"};
+            String values [] = {x, y};
+            Road road = map.quadTree.nearestRoad(Integer.parseInt(x),Integer.parseInt(y));
+            //todo
+        }
+
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+        if(node.getNodeName().equals("nearestCityToRoad")){
+
+            //todo
+            return null;
+        }
+        /*
+        --------------------------------------------------------------------------------------------------------------
+        */
+        if(node.getNodeName().equals("shortestPath")){
+
+            //todo
+            return null;
+        }
         //y6y tbh
         /*
         --------------------------------------------------------------------------------------------------------------

@@ -39,8 +39,13 @@ public abstract class PMQuadtree {
     }
 
     public void addCity(City city) throws cityOutOfBoundsException, CityAlreadyMappedException {
+
         if(root.containsCity(city.name)){//todo probably fix this
             throw new CityAlreadyMappedException("cityAlreadyMapped");
+        }
+        Rectangle2D.Float rect = new Rectangle2D.Float(0, 0, width, height);
+        if(!rect.contains(city)){
+            throw new cityOutOfBoundsException("cityOutOfBouds");
         }
         root.add(root, city);
     }
@@ -80,10 +85,10 @@ public abstract class PMQuadtree {
         canvas.dispose();
     }
 
-    public City nearestCity(int x, int y) throws mapisEmptyException {
+    public City nearestCity(int x, int y, boolean isolated) throws mapisEmptyException {
         PriorityQueue<Node> cities = new PriorityQueue<>(new PriorityComparator(x,y));
         if (root instanceof WhiteNode){
-            throw new mapisEmptyException("mapIsEmpty");
+            throw new mapisEmptyException("cityNotFound");
         }
         cities.add(root);
         //while nearest thing is a grey node
@@ -92,11 +97,22 @@ public abstract class PMQuadtree {
             Node head = cities.poll();
             PriorityQueue<Node> result = head.nearestCity(x,y);
             for(Node i:result){
-                cities.add(i);
+                if(i instanceof BlackNode){
+                    if(((BlackNode) i).getCity().isolated && isolated){
+                        cities.add(i);
+                    }else if(!((BlackNode) i).getCity().isolated && !isolated){
+                        cities.add(i);
+                    }
+                }
             }
         }
         //cant be white bc they arent added to the queue and while already removed greys so we gucci
         return ((BlackNode) cities.peek()).getCity();
+    }
+
+    public Road nearestRoad(int x, int y){
+
+        return null;
     }
 
     public ArrayList<City> rangeCities(int x, int y, int radius) throws noCitiesExistInRangeException{
@@ -111,5 +127,14 @@ public abstract class PMQuadtree {
         return citiesInRange;
     }
 
+    public ArrayList<Road> rangeRoads(int x, int y, int radius) throws noCitiesExistInRangeException{
+        ArrayList<Road> roadsInRange = new ArrayList<>();
+        roadsInRange.addAll(root.rangeRoads(x,y,radius));
+        if(roadsInRange.size() == 0){
+            throw new noCitiesExistInRangeException("noRoadsExistInRange");
+        }
+        Collections.sort(roadsInRange, (o1, o2) -> -o1.start.name.compareTo(o2.start.name));
+        return roadsInRange;
+    }
 
 }

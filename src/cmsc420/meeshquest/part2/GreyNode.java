@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
@@ -65,10 +66,8 @@ public class GreyNode extends Node {
         //first we find what it intersects
         if(road.intersects(this)){
             //if it intersects this grey node then we add
-            int q = 0;
-            for(Node n: quadrants){
-                n.add(getChildRect(this, q), road);
-                q += 1;
+            for(int i = 0; i < 4; i++){
+                quadrants[i] = quadrants[i].add(getChildRect(this, i), road);
             }
         }
         return this;
@@ -144,6 +143,13 @@ public class GreyNode extends Node {
         }
         return rangeCity;
     }
+    public ArrayList<Road> rangeRoads(int x, int y, int radius) {
+        ArrayList<Road> rangeRoad = new ArrayList<>();
+        for (Node i : quadrants) {
+            rangeRoad.addAll(i.rangeRoads(x, y, radius));
+        }
+        return rangeRoad;
+    }
 
     @Override
     PriorityQueue<Node> nearestCity(int x, int y) {
@@ -158,9 +164,20 @@ public class GreyNode extends Node {
     }
 
     @Override
+    PriorityQueue<Node> nearestRoad(int x, int y) {
+        PriorityQueue<Node> nodes = new PriorityQueue<>(new Comparator<Node>() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                return 0;//todo
+            }
+        });
+        return null;
+    }
+
+    @Override
     void saveMap(CanvasPlus canvas) {
         //need to draw a cross at center
-        canvas.addCross(centerx,centery, height/2, Color.BLACK);
+        canvas.addCross(centerx,centery, height/2, Color.GRAY);
         for(Node i:quadrants){
             i.saveMap(canvas);
         }

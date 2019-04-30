@@ -1,7 +1,9 @@
 package cmsc420.meeshquest.part2;
 
 import cmsc420.drawing.CanvasPlus;
+import cmsc420.geom.Circle2D;
 import cmsc420.geom.Geometry2D;
+import cmsc420.geom.Shape2DDistanceCalculator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -64,13 +66,8 @@ public class BlackNode extends Node {
 
     public boolean isIsolated(){
         if(getCity() != null){
-            for(Geometry2D r: roads){
-                if(r instanceof Road) {
-                    if(((Road) r).end.equals(getCity())|| ((Road) r).start.equals(getCity())){
-                        return false;
-                    }
-                }
-            }
+            City city = getCity();
+            return city.isolated;
         }
         return true;
     }
@@ -87,7 +84,7 @@ public class BlackNode extends Node {
         //finally add the road
         if(road.intersects(ret))
             ret.addRoad(this, road);
-            ret = valid.validate(ret);
+        ret = valid.validate(ret);
         return ret;
     }
 
@@ -102,7 +99,7 @@ public class BlackNode extends Node {
 
     Node add(Float rect, City city){
         if(this.contains(city)) {
-            System.out.println(this.toString());
+            //System.out.println(this.toString());
             roads.add(city);
         }
         Node ret = this;
@@ -165,10 +162,28 @@ public class BlackNode extends Node {
 
     public ArrayList<City> rangeCities(int x, int y, int radius) {
         ArrayList<City> citiesInRange = new ArrayList<>();
+        if(this.getCity() == null){
+            return citiesInRange;
+        }
         if (this.getCity().distance(new Point2D.Float((float) x, (float) y)) <= radius) {
             citiesInRange.add(this.getCity());
         }
         return citiesInRange;
+    }
+
+    public ArrayList<Road> rangeRoads(int x, int y, int radius) {
+        Rectangle2D.Float rect = new Rectangle2D.Float(x, y, 0, 0);
+        ArrayList<Road> roadsInRange = new ArrayList<>();
+        for(Geometry2D r:roads){
+            if(r instanceof Road){
+                //THis is disgusting
+                if(Shape2DDistanceCalculator.distance((Road)r, rect) <= radius){
+                    roadsInRange.add((Road)r);
+
+                }
+            }
+        }
+        return roadsInRange;
     }
 
     @Override

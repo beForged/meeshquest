@@ -93,7 +93,11 @@ public abstract class Node extends Rectangle2D.Float{
 
     abstract ArrayList<City> rangeCities(int x, int y, int radius);
 
+    abstract ArrayList<Road> rangeRoads(int x, int y, int radius);
+
     abstract PriorityQueue<Node> nearestCity(int x, int y);
+
+    abstract PriorityQueue<Node> nearestRoad(int x, int y);
 
     abstract void saveMap(CanvasPlus canvas);
 

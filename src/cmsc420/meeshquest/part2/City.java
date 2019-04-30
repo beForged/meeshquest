@@ -24,6 +24,7 @@ public class City extends Point2D.Float implements Geometry2D {
         super.y = y;
         this.radius = radius;
         this.color = color;
+        isolated = false;
     }
 
     //equals func if needed
@@ -34,6 +35,10 @@ public class City extends Point2D.Float implements Geometry2D {
             return false;
         }
     }*/
+
+    public void setIsolated(Boolean isolated){
+        this.isolated = isolated;
+    }
 
     //function that returns information about the city
     public String[] cityInfo(){

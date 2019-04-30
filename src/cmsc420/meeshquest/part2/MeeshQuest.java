@@ -27,7 +27,7 @@ public class MeeshQuest {
 
             //this is the results document that gets printed as output
             results = XmlUtility.getDocumentBuilder().newDocument();
-Document doc = XmlUtility.validateNoNamespace(new File("testing/p2sampletests/test1.xml"));
+Document doc = XmlUtility.validateNoNamespace(new File("testing/p2sampletests/part2.public.shortestPath.input.xml"));
             //Document doc = XmlUtility.validateNoNamespace(System.in);
 
 

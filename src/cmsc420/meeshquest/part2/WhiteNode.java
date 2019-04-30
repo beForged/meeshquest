@@ -36,19 +36,13 @@ public class WhiteNode extends Node{
 
 
 
+    //should also be able to handle isolated cities
     Node add(Float rect, City city) {
         if(rect.contains(city)) {
             Node b = new BlackNode(rect, valid);
             b = b.add(rect, city);
             return b;
         }
-        return this;
-    }
-
-    //for isolated cities
-    Node addCity(Float rect, City city) throws cityOutOfBoundsException {
-        BlackNode b = new BlackNode(rect, valid);
-        b.add(rect, city);
         return this;
     }
 
@@ -83,9 +77,18 @@ public class WhiteNode extends Node{
     public ArrayList<City> rangeCities(int x, int y, int radius) {
         return new ArrayList<>();
     }
+    @Override
+    public ArrayList<Road> rangeRoads(int x, int y, int radius) {
+        return new ArrayList<>();
+    }
 
     @Override
     public PriorityQueue<Node> nearestCity(int x, int y) {
+        return null;
+    }
+
+    @Override
+    PriorityQueue<Node> nearestRoad(int x, int y) {
         return null;
     }
 
