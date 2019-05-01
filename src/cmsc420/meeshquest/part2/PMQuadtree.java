@@ -103,16 +103,28 @@ public abstract class PMQuadtree {
                     }else if(!((BlackNode) i).getCity().isolated && !isolated){
                         cities.add(i);
                     }
-                }
+                }else
+                    cities.add(i);
             }
         }
         //cant be white bc they arent added to the queue and while already removed greys so we gucci
         return ((BlackNode) cities.peek()).getCity();
     }
 
-    public Road nearestRoad(int x, int y){
-
-        return null;
+    public Road nearestRoad(int x, int y) throws mapisEmptyException {
+        PriorityQueue<Node> roads = new PriorityQueue<>(new RoadPriorityComparator(x,y));
+        if(root instanceof WhiteNode){
+            throw new mapisEmptyException("cityNotFound");
+        }
+        roads.add(root);
+        while(roads.peek() instanceof GreyNode){
+            Node head = roads.poll();
+            PriorityQueue<Node> result = head.nearestRoad(x, y);
+            for(Node i: result){
+                roads.add(i);
+            }
+        }
+        return ((BlackNode)roads.peek()).nearestRoadroad(x, y);
     }
 
     public ArrayList<City> rangeCities(int x, int y, int radius) throws noCitiesExistInRangeException{

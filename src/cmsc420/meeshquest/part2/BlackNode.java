@@ -197,6 +197,47 @@ public class BlackNode extends Node {
     }
 
     @Override
+    PriorityQueue<Node> nearestRoad(int x, int y) {
+        Rectangle2D.Float rect = new Rectangle2D.Float(x, y, 0, 0);
+        PriorityQueue<Node> a = new PriorityQueue<>();
+        for(Geometry2D g:roads){
+            if(g instanceof Road){
+                a.add(this);
+                return a;
+            }
+        }
+        return null;
+    }
+
+    public Road nearestRoadroad(int x, int y){
+        Rectangle2D.Float rect = new Rectangle2D.Float(x, y, 0, 0);
+        double dist = java.lang.Double.MAX_VALUE;
+        Road r = null;
+        for(Geometry2D g:roads){
+            if (g instanceof Road){
+                if(Shape2DDistanceCalculator.distance((Road)g, rect) < dist){
+                    dist = Shape2DDistanceCalculator.distance((Road)g, rect);
+                    r = (Road)g;
+                }
+            }
+        }
+        return r;
+    }
+    public float nearestroadDist(int x, int y){
+        Rectangle2D.Float rect = new Rectangle2D.Float(x, y, 0, 0);
+        double dist = java.lang.Double.MAX_VALUE;
+        Road nearest = null;
+        for(Geometry2D g:roads) {
+            if (g instanceof Road) {
+                if (dist > Shape2DDistanceCalculator.distance((Road) g, rect)){
+                    dist = Shape2DDistanceCalculator.distance((Road) g, rect);
+                }
+            }
+        }
+        return (float)dist;
+    }
+
+    @Override
     void saveMap(CanvasPlus canvas) {
         for (Geometry2D g:roads) {
             switch (g.getType()){

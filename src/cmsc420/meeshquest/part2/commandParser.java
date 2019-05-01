@@ -118,7 +118,16 @@ public class commandParser {
             String start = node.getAttribute("start");
             String end = node.getAttribute("end");
             Road r = new Road(map.nameMap.get(start), map.nameMap.get(end));
-            map.quadTree.add(r);
+                map.quadTree.add(r);
+                /*todo
+                startPointDoesNotExist
+                endPointDoesNotExist
+                startEqualsEnd
+                startOrEndIsIsolated
+                roadAlreadyMapped
+                roadOutOfBounds
+                 */
+
             String[] params = {"start", "end"};
             String[] values = {start, end};
             Element out = doc.createElement("roadCreated");
@@ -367,8 +376,16 @@ public class commandParser {
             String y = node.getAttribute("y");
             String params[] = {"x", "y"};
             String values [] = {x, y};
-            Road road = map.quadTree.nearestRoad(Integer.parseInt(x),Integer.parseInt(y));
-            //todo
+            Road road;
+            try {
+                road = map.quadTree.nearestRoad(Integer.parseInt(x), Integer.parseInt(y));
+            }catch (mapisEmptyException e) {
+                return outputBuilder(e.getMessage(), "nearestRoad", params, values, null);
+            }
+            Element output = doc.createElement("road");
+            output.setAttribute("start", road.start.name);
+            output.setAttribute("end", road.end.name);
+            return outputBuilder(null, "nearestRoad", params, values, output);
         }
 
         /*
@@ -383,6 +400,10 @@ public class commandParser {
         --------------------------------------------------------------------------------------------------------------
         */
         if(node.getNodeName().equals("shortestPath")){
+            String start = node.getAttribute("start");
+            String end = node.getAttribute("end");
+            String saveMap = node.getAttribute("saveMap");
+            String saveHtml= node.getAttribute("saveHTML");
 
             //todo
             return null;

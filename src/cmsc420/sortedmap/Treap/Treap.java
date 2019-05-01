@@ -15,6 +15,7 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
     static private Random rand = new Random();
 
     public Treap() {
+
         comparator = null;
         modcount = 0;
     }
@@ -172,16 +173,195 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
 
     }
 
+
+    public V get(Object key){
+        Entry<K,V> p = getEntry(key);
+        return (p ==null ? null: p.value);
+    }
+
+    final Entry<K,V> getEntry(Object key){
+        if(comparator != null){
+            return getEntryUsingComparator(key);
+        }if(key == null){
+            return null;
+        }
+        @SuppressWarnings("unchecked")
+        Comparable k = (Comparable) key;
+        Entry<K,V > curr = root;
+        while(curr != null){
+           int comp = k.compareTo(curr.key);
+           if(comp < 0){
+               curr =curr.left;
+           }if(comp > 0){
+               curr = curr.right;
+            }else
+                return curr;
+        }
+        return null;
+    }
+
+    final Entry<K,V> getEntryUsingComparator(Object key){
+        K k = (K) key;
+        Comparator comp = comparator;
+        if(comp != null){
+            Entry<K,V> p = root;
+            while(p != null){
+                int cmp = comp.compare(k, p.key);
+                if(cmp<0)
+                    p = p.left;
+                if(cmp>0)
+                    p = p.right;
+                else
+                    return p;
+            }
+        }
+        return null;
+    }
+
     //TODO
     @Override
     public Set<Map.Entry<K, V>> entrySet() {
-        return null;
+        EntrySet es = entryset;
+        //todo line 850ish
     }
 
     @Override
     //TODO
     public boolean remove(Object key, Object value) {
         return false;
+    }
+
+    class EntrySet extends AbstractSet<Map.Entry<K,V>>{
+        @Override
+        public Iterator<Map.Entry<K, V>> iterator() {
+            //todo
+            return new EntryIterator(getFirstEntry());
+        }
+
+        public boolean contains(Object o){
+            if (!(o instanceof Map.Entry)){
+                return false
+            }
+            Map.Entry<?,?> entry = (Map.Entry<?,?>) o;
+            Object value = entry.getValue();
+            Entry<K,V> p = getEntry(entry.getKey());
+            return p != null && valEquals(p.getValue(), value);
+        }
+
+        public boolean remove(Object o){
+            //todo line 1070
+            return false;
+        }
+
+
+        @Override
+        public int size() {
+            return Treap.this.size();
+        }
+
+        public void clear(){ Treap.this.clear();}
+
+        public Spliterator<Map.Entry<K,V>> spliterator(){
+            //I dont think we need to implement this
+            return null;
+        }
+    }
+    abstract class PrivateEntryIterator<T> implements Iterator<T> {
+        Entry<K,V> next;
+        Entry<K,V> lastReturned;
+        int expectedModCount;
+
+        PrivateEntryIterator(Entry<K,V> first){
+            expectedModCount = modcount;
+            lastReturned = null;
+            next = first;
+        }
+
+        public final boolean hasNext(){return next != null;}
+
+        final Entry<K,V> nextEntry(){
+            Entry<K,V> e = next;
+            if(e == null){
+                throw new NoSuchElementException();
+            }if(modcount != expectedModCount){
+                throw new ConcurrentModificationException();
+            }
+            next = successor(e);
+            lastReturned = e;
+            return e;
+        }
+
+        final Entry<K,V> prevEntry() {
+            Entry<K, V> e = next;
+            if (e == null) {
+                throw new NoSuchElementException();
+            }
+            if (modcount != expectedModCount) {
+                throw new ConcurrentModificationException();
+            }
+            next = predecessor(e);
+            lastReturned = e;
+            return e;
+        }
+
+        public void Remove(){
+            //todo
+        }
+
+    }
+
+    final class EntryIterator extends PrivateEntryIterator<Map.Entry<K,V>>{
+        EntryIterator(Entry<K, V> first) {
+            super(first);
+        }
+
+        @Override
+        public Map.Entry<K, V> next() {
+
+        }
+        //todo
+    }
+
+
+    static <K,V> Treap.Entry<K,V> successor(Entry<K,V> t){
+        if(t == null)
+            return null;
+        else if (t.right != null){
+            Entry<K,V> p = t.right;
+            while (p.left != null){
+                p = p.left;
+            }
+            return p;
+        }else{
+            Entry<K,V> p = t.parent;
+            Entry<K,V> ch = t;
+            while (p != null && ch == p.right){
+                ch = p;
+                p = p.parent;
+            }
+            return p;
+        }
+    }
+
+    static <K, V> Entry<K,V> predecessor(Entry<K,V> t){
+        if(t == null){
+            return null;
+        }
+        else if(t.left != null){
+            Entry<K,V> p = t.left;
+            while (p.right != null){
+                p = p.right;
+            }
+            return p;
+        }else {
+            Entry<K,V> p = t.parent;
+            Entry<K,V> ch = t;
+            while (p != null && ch == p.left){
+                ch = p;
+                p = p.parent;
+            }
+            return p;
+        }
     }
 
     //we make an inner class to hold each node in the map, and extend map.entry like in treemap

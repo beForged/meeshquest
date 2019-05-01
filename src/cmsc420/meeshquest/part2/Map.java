@@ -3,6 +3,7 @@ package cmsc420.meeshquest.part2;
 import java.awt.geom.Point2D;
 import java.util.Comparator;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 //this for now is the top level essentially
 //this may need to change significantly later
@@ -10,6 +11,7 @@ public class Map {
     TreeMap<Point2D, City> coordinateMap;
     TreeMap<String , City> nameMap;
     PMQuadtree quadTree;
+    TreeMap<String, TreeSet<Road>> adjacencyList;
     int width, height;
     int order;
 
@@ -42,6 +44,8 @@ public class Map {
         if(order == 3){
             quadTree = new PM3Quadtree(width, height);
         }
+
+        adjacencyList = new TreeMap<>();
     }
 
     //check that name and coordinates are not taken

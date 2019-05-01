@@ -1,6 +1,7 @@
 package cmsc420.meeshquest.part2;
 
 import cmsc420.drawing.CanvasPlus;
+import cmsc420.geom.Shape2DDistanceCalculator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -165,13 +166,13 @@ public class GreyNode extends Node {
 
     @Override
     PriorityQueue<Node> nearestRoad(int x, int y) {
-        PriorityQueue<Node> nodes = new PriorityQueue<>(new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                return 0;//todo
-            }
-        });
-        return null;
+        PriorityQueue<Node> nodes = new PriorityQueue<>(new PriorityComparator(x, y));
+        for(Node i:quadrants){
+            PriorityQueue t = i.nearestRoad(x,y);
+            if(t != null)
+                nodes.addAll(t);
+        }
+        return nodes;
     }
 
     @Override
