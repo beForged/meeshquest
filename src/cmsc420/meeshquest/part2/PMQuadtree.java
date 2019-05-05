@@ -17,7 +17,7 @@ public abstract class PMQuadtree {
 
 
     //set of all roads in the quadtree
-    TreeSet<Road> all;
+    TreeSet<Road> all = new TreeSet<>();
 
     //number of isolated cities
     public int isolatedCities;
@@ -34,7 +34,13 @@ public abstract class PMQuadtree {
         throw new UnsupportedOperationException();
     }
 
-    public void add(Road road){
+    public void add(Road road) throws GenericException {
+        if(!road.intersects(new Rectangle2D.Float(0,0, width, height))){
+            throw new GenericException("roadOutOfBounds");
+        }
+        if(all.contains(road))
+            throw new GenericException("roadAlreadyMapped");
+        all.add(road);
         root = root.add(new Rectangle2D.Float(0,0, width, height), road);
     }
 

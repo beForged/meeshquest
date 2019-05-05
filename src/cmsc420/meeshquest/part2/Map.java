@@ -1,7 +1,8 @@
 package cmsc420.meeshquest.part2;
 
+import cmsc420.sortedmap.Treap;
+
 import java.awt.geom.Point2D;
-import java.util.Comparator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -12,6 +13,7 @@ public class Map {
     TreeMap<String , City> nameMap;
     PMQuadtree quadTree;
     TreeMap<String, TreeSet<Road>> adjacencyList;
+    Treap treapMap;
     int width, height;
     int order;
 
@@ -45,7 +47,21 @@ public class Map {
             quadTree = new PM3Quadtree(width, height);
         }
 
+        treapMap = new Treap<>((o1, o2) -> -((String)o1).compareTo((String)o2));
         adjacencyList = new TreeMap<>();
+    }
+
+    public void addRoad(Road road) throws GenericException {
+        if(!nameMap.containsKey(road.start.name)){
+            throw new GenericException("startPointDoesNotExist");
+        }
+        if(!nameMap.containsKey(road.end.name))
+            throw new GenericException("endPointDoesNotExist");
+        if(road.start.name.equals(road.end.name))
+            throw new GenericException("startEqualsEnd");
+        if(nameMap.get(road.start.name).isolated || nameMap.get(road.end.name).isolated)
+            throw new GenericException("startOrEndIsIsolated");
+        quadTree.add(road);
     }
 
     //check that name and coordinates are not taken
@@ -59,6 +75,7 @@ public class Map {
             return "duplicateCityName";
             //TODO throw new duplicateCityName();
         }else{
+            treapMap.put(city.name, new Point2D.Float(city.x, city.y));
             coordinateMap.put(new Point2D.Float(city.x, city.y), city);
             nameMap.put(city.name, city);
             return "success";
@@ -74,6 +91,7 @@ public class Map {
         boolean deleted = true;
         //if the city exists, remove from namemap and get the city object
         City rem = nameMap.remove(name);
+        //todo remove for treap
         //then remove from coordinate map
         coordinateMap.remove(new Point2D.Float((int)rem.getX(), (int)rem.getY()));
         //success so return null

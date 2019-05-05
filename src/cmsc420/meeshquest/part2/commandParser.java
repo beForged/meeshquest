@@ -1,6 +1,6 @@
 package cmsc420.meeshquest.part2;
 
-import cmsc420.geom.Geometry2D;
+import cmsc420.sortedmap.Treap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -96,6 +96,7 @@ public class commandParser {
             map.coordinateMap.clear();
             map.nameMap.clear();
             map.quadTree.clear();
+            map.treapMap.clear();
             return outputBuilder(null, "clearAll", empty, empty, null);
         }
 
@@ -106,8 +107,21 @@ public class commandParser {
         */
 
         if(node.getNodeName().equals("printTreap")){
-            return null;
-            //TODO print treap
+            //todo empty treap
+            Treap temp = map.treapMap;
+            Element treap = doc.createElement("treap");
+            treap.setAttribute("cardinality", String.valueOf(temp.size()));
+            try {
+                treap.appendChild(temp.printTreap(doc));
+                if(!temp.checkHeap(temp.getRoot())){
+                    System.err.println("something wrong with treap heap");
+                }
+            } catch (GenericException e) {
+                return outputBuilder(e.getMessage(), "printTreap", empty, empty, null);
+            }catch (NullPointerException n){
+
+            }
+            return outputBuilder(null, "printTreap", empty, empty, treap);
         }
 
         /*
@@ -118,23 +132,17 @@ public class commandParser {
             String start = node.getAttribute("start");
             String end = node.getAttribute("end");
             Road r = new Road(map.nameMap.get(start), map.nameMap.get(end));
-                map.quadTree.add(r);
-                /*todo
-                startPointDoesNotExist
-                endPointDoesNotExist
-                startEqualsEnd
-                startOrEndIsIsolated
-                roadAlreadyMapped
-                roadOutOfBounds
-                 */
-
             String[] params = {"start", "end"};
             String[] values = {start, end};
+            try {
+                map.addRoad(r);
+            }catch (GenericException e){
+                return outputBuilder(e.getMessage(), "mapRoad", params, values, null);
+            }
             Element out = doc.createElement("roadCreated");
             out.setAttribute("start", start);
             out.setAttribute("end", end);
             return outputBuilder(null, "mapRoad", params, values, out);
-            //todo error handling
         }
         /*
         --------------------------------------------------------------------------------------------------------------
@@ -178,6 +186,8 @@ public class commandParser {
             try{
                 City c = map.nameMap.get(name);
                 c.setIsolated(true);
+                //reput to make sure city is isolated (this overwrites)
+                map.nameMap.put(name, c);
                 if(c == null){
                     return outputBuilder("nameNotInDictionary", mapCity, params, values, null);
                 }

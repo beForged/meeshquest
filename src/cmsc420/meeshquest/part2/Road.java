@@ -5,7 +5,7 @@ import cmsc420.geom.Geometry2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
-public class Road extends Line2D.Float implements Geometry2D {
+public class Road extends Line2D.Float implements Geometry2D, Comparable{
     City start, end;
 
     public Road(City start, City end){
@@ -36,11 +36,25 @@ public class Road extends Line2D.Float implements Geometry2D {
         return 1;
     }
 
-    public int compareTo(Road road){
-        if(road.start.name.equals(this.start.name) && road.end.name.equals(this.end.name)){
-            return 0;
+    public int compareTo(Object road){
+        if(road instanceof Road) {
+            Road r = (Road)road;
+            if (r.start.name.equals(this.start.name) && r.end.name.equals(this.end.name)) {
+                return 0;
+            } else
+                return r.start.name.compareTo(this.start.name);
         }
-        else
-            return road.start.name.compareTo(this.start.name);
+        return -1;
     }
+
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Road){
+            if(((Road) o).compareTo(this) == 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
