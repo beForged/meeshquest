@@ -15,6 +15,13 @@ public class Road extends Line2D.Float implements Geometry2D, Comparable{
         super.x2 = end.x;
         super.y2 = end.y;
 
+        String e= end.name;
+        String s= start.name;
+        if(e.compareTo(s) < 0){
+            City temp = start;
+            start = end;
+            end = temp;
+        }
         this.start = start;
         this.end = end;
     }

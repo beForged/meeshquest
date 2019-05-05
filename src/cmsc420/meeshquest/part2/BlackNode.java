@@ -152,8 +152,8 @@ public class BlackNode extends Node {
             }
             if(n instanceof Road) {
                 Element sub = doc.createElement("road");
-                sub.setAttribute("end", ((Road)n).end.name);
-                sub.setAttribute("start", ((Road)n).start.name);
+                sub.setAttribute("end", ((Road) n).end.name);
+                sub.setAttribute("start", ((Road) n).start.name);
                 black.appendChild(sub);
             }
         }
@@ -199,7 +199,7 @@ public class BlackNode extends Node {
     @Override
     PriorityQueue<Node> nearestRoad(int x, int y) {
         Rectangle2D.Float rect = new Rectangle2D.Float(x, y, 0, 0);
-        PriorityQueue<Node> a = new PriorityQueue<>();
+        PriorityQueue<Node> a = new PriorityQueue<>(new RoadPriorityComparator(x, y));
         for(Geometry2D g:roads){
             if(g instanceof Road){
                 a.add(this);
