@@ -189,7 +189,7 @@ public class BlackNode extends Node {
     @Override
     PriorityQueue<Node> nearestCity(int x, int y) {
         PriorityQueue<Node> a = new PriorityQueue<>(new PriorityComparator(x,y));
-        if(this.getCity() != null && !this.isIsolated()) {
+        if(this.getCity() != null) {
             a.add(this);
             return a;
         }

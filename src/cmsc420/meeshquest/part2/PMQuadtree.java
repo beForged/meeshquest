@@ -98,12 +98,14 @@ public abstract class PMQuadtree {
         }
         cities.add(root);
         //while nearest thing is a grey node
-        while(cities.peek() instanceof GreyNode){
+        while(!(cities.peek() instanceof BlackNode) && cities.peek() != null){
             //take the head out - TODO should check that the next thing isnt the same dist.
             Node head = cities.poll();
+            if(cities.peek() instanceof GreyNode);
             PriorityQueue<Node> result = head.nearestCity(x,y);
             for(Node i:result){
                 if(i instanceof BlackNode){
+                    //if (((BlackNode) i).getCity().isolated){ System.err.println("hewwo"); }
                     if(((BlackNode) i).getCity().isolated && isolated){
                         cities.add(i);
                     }else if(!((BlackNode) i).getCity().isolated && !isolated){
@@ -113,6 +115,9 @@ public abstract class PMQuadtree {
                     cities.add(i);
             }
         }
+        if(cities.size() == 0){
+            throw new mapisEmptyException("cityNotFound");
+        }
         //cant be white bc they arent added to the queue and while already removed greys so we gucci
         return ((BlackNode) cities.peek()).getCity();
     }
@@ -120,15 +125,18 @@ public abstract class PMQuadtree {
     public Road nearestRoad(int x, int y) throws mapisEmptyException {
         PriorityQueue<Node> roads = new PriorityQueue<>(new RoadPriorityComparator(x,y));
         if(root instanceof WhiteNode){
-            throw new mapisEmptyException("cityNotFound");
+            throw new mapisEmptyException("roadNotFound");
         }
         roads.add(root);
-        while(roads.peek() instanceof GreyNode){
+        while(!(roads.peek() instanceof BlackNode) && roads.peek()!= null){
             Node head = roads.poll();
             PriorityQueue<Node> result = head.nearestRoad(x, y);
             for(Node i: result){
                 roads.add(i);
             }
+        }
+        if(roads.size() == 0){
+            throw new mapisEmptyException("roadNotFound");
         }
         return ((BlackNode)roads.peek()).nearestRoadroad(x, y);
     }
@@ -153,6 +161,11 @@ public abstract class PMQuadtree {
         }
         Collections.sort(roadsInRange, (o1, o2) -> -o1.start.name.compareTo(o2.start.name));
         return roadsInRange;
+    }
+
+    public City nearestCityToRoad(Road road){
+        //todo
+        return null;
     }
 
 }

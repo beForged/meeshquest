@@ -41,7 +41,9 @@ public class Road extends Line2D.Float implements Geometry2D, Comparable{
             Road r = (Road)road;
             if (r.start.name.equals(this.start.name) && r.end.name.equals(this.end.name)) {
                 return 0;
-            } else
+            } else if(r.start.name.compareTo(this.start.name) == 0){
+                return r.end.name.compareTo(this.end.name);
+            }
                 return r.start.name.compareTo(this.start.name);
         }
         return -1;
