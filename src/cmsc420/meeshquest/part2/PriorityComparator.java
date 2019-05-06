@@ -17,17 +17,26 @@ public class PriorityComparator implements Comparator<Node>{
     @Override
     public int compare(Node o1, Node o2){
         if(o1 instanceof BlackNode && o2 instanceof BlackNode) {
-            int dist1 = (int) ((BlackNode) o1).getCity().distance(ref);
-            int dist2 = (int) ((BlackNode) o2).getCity().distance(ref);
-            return dist1 - dist2;
+            if(((BlackNode) o1).getCity()!= null && ((BlackNode) o2).getCity()!= null) {
+                int dist1 = (int) ((BlackNode) o1).getCity().distance(ref);
+                int dist2 = (int) ((BlackNode) o2).getCity().distance(ref);
+                return dist1 - dist2;
+            }
+            return comp(o1, o2);
         }else if(o1 instanceof BlackNode){
-            int cityDist = (int) ((BlackNode) o1).getCity().distance(ref);
-            int nodeDist = (int) Shape2DDistanceCalculator.distance(ref, o2);
-            return cityDist - nodeDist;
+            if(((BlackNode) o1).getCity()!= null) {
+                int cityDist = (int) ((BlackNode) o1).getCity().distance(ref);
+                int nodeDist = (int) Shape2DDistanceCalculator.distance(ref, o2);
+                return cityDist - nodeDist;
+            }
+            return comp(o1, o2);
         }else if(o2 instanceof BlackNode){
-            int cityDist = (int) ((BlackNode) o2).getCity().distance(ref);
-            int nodeDist = (int) Shape2DDistanceCalculator.distance(ref, o1);
-            return cityDist - nodeDist;
+            if(((BlackNode) o2).getCity()!= null) {
+                int cityDist = (int) ((BlackNode) o2).getCity().distance(ref);
+                int nodeDist = (int) Shape2DDistanceCalculator.distance(ref, o1);
+                return cityDist - nodeDist;
+            }
+            return comp(o1, o2);
         }
         return comp(o1, o2);
     }

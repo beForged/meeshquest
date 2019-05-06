@@ -52,11 +52,6 @@ public class Map {
     }
 
     public void addRoad(Road road) throws GenericException {
-        if(!nameMap.containsKey(road.start.name)){
-            throw new GenericException("startPointDoesNotExist");
-        }
-        if(!nameMap.containsKey(road.end.name))
-            throw new GenericException("endPointDoesNotExist");
         if(road.start.name.equals(road.end.name))
             throw new GenericException("startEqualsEnd");
         if(nameMap.get(road.start.name).isolated || nameMap.get(road.end.name).isolated)

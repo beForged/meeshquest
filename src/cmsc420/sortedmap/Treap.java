@@ -164,10 +164,29 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V>, Navi
         return value; //todo check return type needed/ wanted
     }
 
+    //e is current, p is to be inserted
+    private Entry insertHelp(Entry e, Entry p){
+        if(e == null){
+            return p;
+        }
+return null;
+    }
+
     //we make a rotate class to call and then go from there
     //left is true, right is false
     //TODO check correct rotate
     private void rotate(Entry n){
+        while(n.parent != null && n.parent.priority > n.priority){
+            if(n.parent.right == n){
+                leftRotate(n.parent);
+            }else {
+                rightRotate(n.parent);
+            }
+            if(n.parent == null){
+                root = n;
+            }
+        }
+        /*
         if(n.left != null && n.priority < n.left.priority){
             leftRotate(n);
             rotate(n.parent);
@@ -175,6 +194,7 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V>, Navi
             rightRotate(n);
             rotate(n.parent);
         }
+        */
     }
 
     /* T1, T2 and T3 are subtrees of the tree rooted with y
@@ -186,7 +206,24 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V>, Navi
             T1  T2     Left Rotation            T2  T3 */
 
 
-    private Entry rightRotate(Entry y){
+    private void rightRotate(Entry y){
+        Entry w = y.left;
+        w.parent = y.parent;
+        if (w.parent != null) {
+            if (w.parent.left == y) {
+                w.parent.left = w;
+            } else {
+                w.parent.right = w;
+            }
+        }
+        y.left = w.right;
+        if (y.left != null) {
+            y.left.parent = y;
+        }
+        y.parent = w;
+        w.right = y;
+        if (y == root) { root = w; root.parent = null; }
+        /*
         Entry x = y.left;
         Entry T2 = x.right;
 
@@ -196,8 +233,29 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V>, Navi
         T2.parent = y;
 
         return x;
+        */
     }
-    private Entry leftRotate(Entry x){
+    private void leftRotate(Entry x){
+        Entry w = x.right;
+        w.parent = x.parent;
+        if(w.parent != null){
+            if(w.parent == x){
+                w.parent.left = w;
+            }else {
+                w.parent.right = w;
+            }
+        }
+        x.right = w.left;
+        if(x.right != null){
+            x.right.parent = x;
+        }
+        x.parent = w;
+        w.left = x;
+        if(x == root){
+            root = w;
+            root.parent = null;
+        }
+        /*
         Entry y = x.right;
         Entry T2 = y.left;
 
@@ -207,7 +265,7 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V>, Navi
         T2.parent = x;
 
         return y;
-
+        */
     }
 
     @Override
@@ -1212,7 +1270,11 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V>, Navi
 
         public boolean isEmpty() { return m.isEmpty(); }
 
-        public boolean contains(Object o){return m.containsKey(o);}
+        public boolean contains(Object o){
+            if(o == null){
+                throw new NullPointerException();
+            }
+            return m.containsKey(o);}
 
         public void clear() {m.clear();}
 
@@ -1367,7 +1429,7 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V>, Navi
         }
 
         public Element printTreap(Document doc){
-            System.err.println(this);
+            //System.err.println(this);
             Element e = doc.createElement("node");
             //uncaught exception
             Point2D a = (Point2D.Float) value;

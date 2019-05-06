@@ -131,10 +131,14 @@ public class commandParser {
         if(node.getNodeName().equals("mapRoad")) {
             String start = node.getAttribute("start");
             String end = node.getAttribute("end");
-            Road r = new Road(map.nameMap.get(start), map.nameMap.get(end));
             String[] params = {"start", "end"};
             String[] values = {start, end};
             try {
+                if(!map.nameMap.containsKey(start)){ throw new GenericException("startPointDoesNotExist"); }
+                if(!map.nameMap.containsKey(end))
+                    throw new GenericException("endPointDoesNotExist");
+
+                Road r = new Road(map.nameMap.get(start), map.nameMap.get(end));
                 map.addRoad(r);
             }catch (GenericException e){
                 return outputBuilder(e.getMessage(), "mapRoad", params, values, null);
@@ -185,12 +189,12 @@ public class commandParser {
             String[] values = {name};
             try{
                 City c = map.nameMap.get(name);
-                c.setIsolated(true);
-                //reput to make sure city is isolated (this overwrites)
-                map.nameMap.put(name, c);
                 if(c == null){
                     return outputBuilder("nameNotInDictionary", mapCity, params, values, null);
                 }
+                c.setIsolated(true);
+                //reput to make sure city is isolated (this overwrites)
+                map.nameMap.put(name, c);
                 map.quadTree.addCity(c);
             }catch(CityAlreadyMappedException e){
                 return outputBuilder(e.getMessage(), mapCity, params, values, null);

@@ -27,8 +27,8 @@ public class MeeshQuest {
 
             //this is the results document that gets printed as output
             results = XmlUtility.getDocumentBuilder().newDocument();
-//Document doc = XmlUtility.validateNoNamespace(new File("testing/p2sampletests/part2.public.nearestCity.input.xml"));
-Document doc = XmlUtility.validateNoNamespace(new File("testing/p2sampletests/test3.xml"));
+Document doc = XmlUtility.validateNoNamespace(new File("testing/p2sampletests/part2.public.treap.input.xml"));
+//Document doc = XmlUtility.validateNoNamespace(new File("testing/p2sampletests/test3.xml"));
             //Document doc = XmlUtility.validateNoNamespace(System.in);
 
 
