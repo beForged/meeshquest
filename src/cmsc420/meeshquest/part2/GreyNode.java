@@ -38,10 +38,9 @@ public class GreyNode extends Node {
     //we need to have a road and city difference
     //this adds the endpoints of roads and isolated cities
     public Node add(Float rect, City city) {
-        LinkedList<Integer> quad= quadrant(city);
-        for(int quadrant: quad) {
+        //LinkedList<Integer> quad= quadrant(city);
+        for(int quadrant = 0;quadrant < 4; quadrant++) {
             quadrants[quadrant] = quadrants[quadrant].add(getChildRect(this, quadrant), city);
-            //this is prquadtree code
         }
 
         return this;

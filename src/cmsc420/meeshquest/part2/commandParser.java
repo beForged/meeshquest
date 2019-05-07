@@ -192,6 +192,7 @@ public class commandParser {
                 if(c == null){
                     return outputBuilder("nameNotInDictionary", mapCity, params, values, null);
                 }
+                map.nameMap.remove(name);
                 c.setIsolated(true);
                 //reput to make sure city is isolated (this overwrites)
                 map.nameMap.put(name, c);

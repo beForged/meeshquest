@@ -38,8 +38,8 @@ public class WhiteNode extends Node{
 
     //should also be able to handle isolated cities
     Node add(Float rect, City city) {
-        if(rect.contains(city)) {
-            Node b = new BlackNode(rect, valid);
+        Node b = new BlackNode(rect, valid);
+        if(((BlackNode) b).containsb(city)) {
             b = b.add(rect, city);
             return b;
         }
@@ -60,10 +60,6 @@ public class WhiteNode extends Node{
         return null;
     }
 
-    //does nothing
-    public void addCity(City city) {
-        return;
-    }
 
     public Node deleteCity(String c) {
         return this;

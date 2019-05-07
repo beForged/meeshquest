@@ -75,11 +75,11 @@ public class BlackNode extends Node {
     Node add(Float rect,Road road) {
         Node ret = this;
         //add both cities
-        if(ret.contains(road.start))
+        if(this.containsb(road.start))
             ret = ret.add(ret, road.start);
         //System.err.println(ret.toString());
         //System.err.println(ret.contains(road.end));
-        if(ret.contains(road.end))
+        if(this.containsb(road.end))
             ret = ret.add(ret, road.end);
         //finally add the road
         if(road.intersects(ret))
@@ -97,8 +97,17 @@ public class BlackNode extends Node {
         return ret;
     }
 
+    public boolean containsb(City c){
+        int x = (int)c.x;
+        int y = (int)c.y;
+        return (x >= this.x&&
+                y >= this.y&&
+                x <= this.x + getWidth() &&
+                y <= this.y + getHeight());
+    }
+
     Node add(Float rect, City city){
-        if(this.contains(city)) {
+        if(this.containsb(city)) {
             //System.out.println(this.toString());
             roads.add(city);
         }

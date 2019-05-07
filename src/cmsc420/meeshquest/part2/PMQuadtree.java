@@ -53,7 +53,7 @@ public abstract class PMQuadtree {
         if(!rect.contains(city)){
             throw new cityOutOfBoundsException("cityOutOfBouds");
         }
-        root.add(root, city);
+        root = root.add(rect, city);
     }
 
     public boolean containsCity(String c){
@@ -143,14 +143,15 @@ public abstract class PMQuadtree {
 
     public ArrayList<City> rangeCities(int x, int y, int radius) throws noCitiesExistInRangeException{
         //new array put here
-        ArrayList<City> citiesInRange = new ArrayList<>();
+        HashSet<City> citiesInRange = new HashSet<>();
         citiesInRange.addAll(root.rangeCities(x, y, radius));
         if(citiesInRange.size() == 0){
             throw new noCitiesExistInRangeException("noCitiesExistInRange");
         }
         //sort the return array
-        Collections.sort(citiesInRange, (o1, o2) -> -o1.name.compareTo(o2.name));
-        return citiesInRange;
+        ArrayList<City> ranges = new ArrayList<>(citiesInRange);
+        Collections.sort(ranges, (o1, o2) -> -o1.name.compareTo(o2.name));
+        return ranges;
     }
 
     public ArrayList<Road> rangeRoads(int x, int y, int radius) throws noCitiesExistInRangeException{

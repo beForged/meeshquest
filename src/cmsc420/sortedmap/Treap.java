@@ -55,6 +55,27 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V>, Navi
         throw new UnsupportedOperationException();
     }
 
+    /*
+    @Override
+    public boolean equals(Object o){
+        if(o instanceof Treap){
+         //TODO equals
+        }
+        return false;
+    }
+
+    public String toString(){
+        //TODO tostring
+        return null;
+    }
+
+    @Override
+    public int hashCode() {
+        //TODO hashcode
+        return super.hashCode();
+    }
+    */
+
     public Element printTreap(Document doc) throws GenericException {
         Entry e = root;
         if(e == null){
@@ -164,13 +185,6 @@ public class Treap<K,V> extends AbstractMap<K,V> implements SortedMap<K,V>, Navi
         return value; //todo check return type needed/ wanted
     }
 
-    //e is current, p is to be inserted
-    private Entry insertHelp(Entry e, Entry p){
-        if(e == null){
-            return p;
-        }
-return null;
-    }
 
     //we make a rotate class to call and then go from there
     //left is true, right is false
@@ -1425,7 +1439,20 @@ return null;
         }
 
         public String toString() {
-            return key + " = " + value;
+            return key + "=" + value;
+        }
+
+        public boolean equals(Object o) {
+            if (!(o instanceof Map.Entry))
+                return false;
+            Map.Entry<?,?> e = (Map.Entry<?,?>)o;
+            return valEquals(key,e.getKey()) && valEquals(value,e.getValue());
+        }
+
+        public int hashCode() {
+            int keyHash = (key==null ? 0 : key.hashCode());
+            int valueHash = (value==null ? 0 : value.hashCode());
+            return keyHash ^ valueHash;
         }
 
         public Element printTreap(Document doc){
