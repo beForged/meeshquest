@@ -10,6 +10,7 @@ https://www.geeksforgeeks.org/treap-set-2-implementation-of-search-insert-and-de
 https://opendatastructures.org/ods-java/7_2_Treap_Randomized_Binary.html
 ^actually probably used this, but started with the one above
 used the java implementation of TreeMap extensively when making treap thx josh
+also utilized the skiplist code and
 
 
 Additional Information:

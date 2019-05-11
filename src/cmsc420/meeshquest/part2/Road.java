@@ -30,6 +30,10 @@ public class Road extends Line2D.Float implements Geometry2D, Comparable{
         return new String[] {start.toString(), end.toString()};
     }
 
+    public double distance(){
+        return  start.distance(end);
+    }
+
     public Point2D.Float getStart(){
         return start;
     }

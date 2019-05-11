@@ -1,6 +1,7 @@
 package cmsc420.meeshquest.part2;
 
 import cmsc420.sortedmap.Treap;
+import cmsc420.sortedmap.Treap2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -108,13 +109,13 @@ public class commandParser {
 
         if(node.getNodeName().equals("printTreap")){
             //todo empty treap
-            Treap temp = map.treapMap;
+            Treap2 temp = map.treapMap;
             Element treap = doc.createElement("treap");
-            treap.setAttribute("cardinality", String.valueOf(temp.size()));
+            treap.setAttribute("cardinality", String.valueOf(((Treap2) temp).size()));
             try {
                 treap.appendChild(temp.printTreap(doc));
-                if(!temp.checkHeap(temp.getRoot())){
-                    System.err.println("something wrong with treap heap");
+                if(!map.testingTreap.equals(map.treapMap)){
+                    System.err.println("failure");
                 }
             } catch (GenericException e) {
                 return outputBuilder(e.getMessage(), "printTreap", empty, empty, null);

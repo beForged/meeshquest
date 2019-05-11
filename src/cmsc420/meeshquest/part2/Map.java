@@ -1,8 +1,12 @@
 package cmsc420.meeshquest.part2;
 
+import cmsc420.geom.Circle2D;
 import cmsc420.sortedmap.Treap;
+import cmsc420.sortedmap.Treap2;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -12,8 +16,9 @@ public class Map {
     TreeMap<Point2D, City> coordinateMap;
     TreeMap<String , City> nameMap;
     PMQuadtree quadTree;
-    TreeMap<String, TreeSet<Road>> adjacencyList;
-    Treap treapMap;
+    TreeMap<City, TreeSet<City>> adjacencyList;
+    Treap<String, Point2D> treapMap;
+    TreeMap<String, Point2D> testingTreap;
     int width, height;
     int order;
 
@@ -46,8 +51,9 @@ public class Map {
         if(order == 3){
             quadTree = new PM3Quadtree(width, height);
         }
-
-        treapMap = new Treap<>((o1, o2) -> -((String)o1).compareTo((String)o2));
+        //I guess this is not reverse asciibetical?
+        treapMap = new Treap<String, Point2D>(((o1, o2) -> -((String)o1).compareTo((String)o2)));
+        testingTreap= new TreeMap<>((o1, o2) -> -((String)o1).compareTo((String)o2));
         adjacencyList = new TreeMap<>();
     }
 
@@ -57,6 +63,70 @@ public class Map {
         if(nameMap.get(road.start.name).isolated || nameMap.get(road.end.name).isolated)
             throw new GenericException("startOrEndIsIsolated");
         quadTree.add(road);
+        //addRoadAdj(road);
+    }
+
+    public void addRoadAdj(Road road){
+        if(adjacencyList.get(road.end) == null){
+            TreeSet<City> r = new TreeSet<>();
+            r.add(road.start);
+            adjacencyList.put(road.end,  r);
+        }else{
+            TreeSet<City> r = adjacencyList.get(road.end);
+            r.add(road.start);
+            adjacencyList.put(road.end, r);
+        }
+        if(adjacencyList.get(road.start) == null){
+            TreeSet<City> r = new TreeSet<>();
+            r.add(road.end);
+            adjacencyList.put(road.start,  r);
+        }else{
+            TreeSet<City> r = adjacencyList.get(road.start);
+            r.add(road.end);
+            adjacencyList.put(road.start, r);
+        }
+    }
+
+    //djikstras helper
+    private class CityNode{
+        String name;
+        Double pathdist;
+        CityNode(String n, Double p) {
+            name = n;
+            pathdist = p;
+        }
+    }
+
+    public void djikstras(String start, String end) throws GenericException {
+        City s = nameMap.get(start);
+        City e = nameMap.get(end);
+        if(adjacencyList.get(s) == null)
+            throw new GenericException("nonExistentStart");
+        if(adjacencyList.get(e) == null)
+            throw new GenericException("nonExistentEnd");
+
+
+        TreeSet<City> settled = new TreeSet<>();
+        TreeSet<City> unsettled = new TreeSet<>(/*todo insert comparator*/);
+
+        ArrayList<City> path= new ArrayList<>();
+        while(unsettled.size() != 0){
+
+        }
+    }
+    public City getLowestDist(City start){
+        TreeSet<City> adjacent= adjacencyList.get(start);
+        double dist = adjacent.first().distance(start);
+        City closest = adjacent.first();
+        for(City c:adjacent){
+            if(c.distance(start) < dist){
+                dist = c.distance(start);
+                closest = c;
+            }
+        }
+        return closest;
+
+        //return (start.equals(closest.start.name)) ? closest.end.name : closest.start.name;
     }
 
     //check that name and coordinates are not taken
@@ -71,6 +141,7 @@ public class Map {
             //TODO throw new duplicateCityName();
         }else{
             treapMap.put(city.name, new Point2D.Float(city.x, city.y));
+            testingTreap.put(city.name, new Point2D.Float(city.x, city.y));
             coordinateMap.put(new Point2D.Float(city.x, city.y), city);
             nameMap.put(city.name, city);
             return "success";
