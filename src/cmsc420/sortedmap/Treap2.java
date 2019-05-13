@@ -32,6 +32,10 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
         modCount = 0;
     }
 
+    public void printModCount(){
+        //debug method
+        System.out.println(modCount);
+    }
     public V put(K key, V value) {
         //Most of this is taken straight from Treemap implementation
         if(key == null || value == null){
@@ -93,7 +97,7 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
     }
 
     //rotates all taken from online source in readme
-    private void rotate(Entry n) {
+    private void rotate(Entry<K,V> n) {
         while (n != null ) {
             if (n.left != null && n.left.priority > n.priority) {
                 rightRotate(n);
@@ -104,7 +108,7 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
         }
     }
 
-    private void rightRotate(Entry p){
+    private void rightRotate(Entry<K,V> p){
         if (p != null) {
             Entry<K,V> l = p.left;
             p.left = l.right;
@@ -120,7 +124,7 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
         }
     }
 
-    private void leftRotate(Entry p){
+    private void leftRotate(Entry<K,V> p){
         if (p != null) {
             Entry<K,V> r = p.right;
             p.right = r.left;
@@ -136,6 +140,18 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
             r.left = p;
             p.parent = r;
         }
+    }
+
+    @Override
+    public void putAll(Map<? extends K, ? extends V> m) {
+        super.putAll(m);
+    }
+
+    public boolean containsKey(Object key){
+        if(key == null){
+            throw new NullPointerException();
+        }
+        return super.containsKey(key);
     }
 
     public void clear(){
@@ -174,34 +190,26 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
 
     @Override
     public K firstKey() {
-        if(root == null){
-            throw new NullPointerException();
-        }
-        return null;
+        return getFirstEntry().getKey();
     }
 
     @Override
     public K lastKey() {
-        if(root == null){
-            throw new NullPointerException();
-        }
-        return null;
+        return getLastEntry().getKey();
     }
 
     final int compare(Object k1, Object k2){
         return comparator == null ? ((Comparable<? super K>)k1).compareTo((K)k2) : comparator.compare((K) k1, (K) k2);
     }
-
     /**
      * Submap function and class
      */
     @Override
-    public SortedMap subMap(Object fromKey, Object toKey) {
-        //todo
-        return null;
+    public SortedMap subMap(K fromKey, K toKey) {
+        return new SubMap(fromKey, toKey);
     }
 
-    public class SubMap extends AbstractMap<K,V> {
+    public class SubMap extends AbstractMap<K,V> implements SortedMap<K,V>{
         private boolean fromStart = false, toEnd = false;
         private K fromKey, toKey;
 
@@ -227,10 +235,109 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
             return entrySet.isEmpty();
         }
 
+        @Override
+        public V put(K key, V value) {
+            if(!inRange(key)){
+                throw new IllegalArgumentException();
+            }
+            return Treap2.this.put(key, value);
+        }
 
         @Override
-        public Set<Entry<K, V>> entrySet() {
-            return null;
+        public void putAll(Map m) {
+        //todo
+        }
+
+        @Override
+        public Comparator comparator() {
+            return Treap2.this::compare;
+        }
+
+        @Override
+        public SortedMap subMap(K fromKey, K toKey) {
+            if (!inRange(fromKey))
+                throw new IllegalArgumentException ("fromKey out of range");
+            if (!inRange(toKey))
+                throw new IllegalArgumentException ("toKey out of range");
+            return new SubMap(fromKey, toKey);
+        }
+
+        @Override
+        public SortedMap headMap(Object toKey) { throw new UnsupportedOperationException(); }
+        @Override
+        public SortedMap tailMap(Object fromKey) { throw new UnsupportedOperationException(); }
+
+        @Override
+        public K firstKey() {
+            Treap2.Entry <K,V> e = fromStart ? getFirstEntry() : getCeilingEntry(fromKey);
+            K first = e.getKey();
+            if (!toEnd && compare(first, toKey) >= 0)
+                throw(new NoSuchElementException ());
+            return first;
+        }
+
+        @Override
+        public K lastKey() {
+            Treap2.Entry <K,V> e = toEnd ? getLastEntry() : getFloorEntry(toKey);
+            K last = e.getKey();
+            if (!fromStart && compare(last, fromKey) < 0)
+                throw(new NoSuchElementException());
+            return last;
+        }
+        private transient Set <Map.Entry <K,V>> entrySet = new EntrySetView();
+
+        public Set <Map.Entry <K,V>> entrySet() {
+            return entrySet;
+        }
+
+        private class EntrySetView extends AbstractSet<Map.Entry<K,V>>{
+            private transient int size = -1;
+            private int sizeModCount;
+
+            public int size() {
+                if (size == -1 || sizeModCount != Treap2.this.modCount) {
+                    size = 0; sizeModCount = Treap2.this.modCount;
+                    Iterator i = iterator();
+                    while (i.hasNext()) {
+                        size++;
+                        i.next();
+                    }
+                }
+                return size;
+            }
+
+            public boolean isEmpty(){
+                return !iterator().hasNext();
+            }
+
+            public boolean contains(Object o){
+                if(!(o instanceof Map.Entry)){
+                    return false;
+                }
+                Map.Entry<K,V> e = (Map.Entry<K,V>)o;
+                K key = e.getKey();
+                if(!inRange(key)){
+                    return false;
+                }
+                Treap2.Entry node = getEntry(key);
+                return node != null && valEquals(node.getValue(), e.getValue());
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                //todo remove in part 3
+                return super.remove(o);
+            }
+
+            public Iterator<Map.Entry<K,V>> iterator(){
+                return new SubMapEntryIterator(
+                    (fromStart ? getFirstEntry() : getCeilingEntry(fromKey)), (toEnd ? null : getCeilingEntry(toKey))
+                );
+            }
+        }
+
+        private boolean inRange(K key) {
+            return (fromStart || compare(key, fromKey) >= 0) && (toEnd || compare(key, toKey) < 0);
         }
     }
     /**
@@ -288,7 +395,7 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
     }
 
     /**
-     * gets the first entry
+     * gets the first, last and closest above and below entry
      * @return
      */
     final Entry<K,V> getFirstEntry(){
@@ -301,9 +408,92 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
         return p;
     }
 
+    final Entry<K,V> getLastEntry(){
+        Entry<K,V> p = root;
+        if (p != null){
+            while(p.right != null){
+                p = p.right;
+            }
+        }
+        return p;
+    }
+
+    final Entry<K,V> getCeilingEntry(K key){
+        Entry<K,V> p = root;
+        while(p != null){
+            int cmp = compare(key, p.getKey());
+            if (cmp < 0){
+                if(p.left != null)
+                    p = p.left;
+                else
+                    return p;
+            }else if(cmp > 0){
+                if(p.right != null){
+                    p = p.right;
+                }else {
+                    Entry<K,V> parent = p.parent;
+                    Entry<K,V> ch = p;
+                    while(parent != null && ch == parent.right){
+                        ch = parent;
+                        parent = parent.parent;
+                    }
+                    return parent;
+                }
+            }else{
+                return p;
+            }
+        }
+        return null;
+    }
+
+    final Entry<K,V> getFloorEntry(K key) {
+        Entry<K,V> p = root;
+        while (p != null) {
+            int cmp = compare(key, p.getKey());
+            if (cmp > 0) {
+                if (p.right != null)
+                    p = p.right;
+                else
+                    return p;
+            } else if (cmp < 0) {
+                if (p.left != null) {
+                    p = p.left;
+                } else {
+                    Entry<K,V> parent = p.parent;
+                    Entry<K,V> ch = p;
+                    while (parent != null && ch == parent.left) {
+                        ch = parent;
+                        parent = parent.parent;
+                    }
+                    return parent;
+                }
+            } else
+                return p;
+        }
+        return null;
+    }
+
     /**
      * iterators and helpers for them
      */
+    private class SubMapEntryIterator extends PrivateEntryIterator<Map.Entry<K,V>>{
+        private final K firstExcludedKey;
+
+        SubMapEntryIterator(Entry<K,V> first, Entry<K,V> firstExcluded) {
+            super(first);
+            firstExcludedKey = (firstExcluded == null ? null : firstExcluded.getKey()); }
+
+        public boolean hasNext() {
+            return next != null && next.getKey()!= firstExcludedKey;
+            }
+
+        public Map.Entry <K,V> next() {
+            if (next == null || next.getKey() == firstExcludedKey)
+                throw new NoSuchElementException ();
+            return nextEntry();
+        }
+    }
+
     private class EntryIterator extends PrivateEntryIterator<Map.Entry<K,V>>{
         public Map.Entry<K,V> next(){
             return nextEntry();
@@ -357,11 +547,12 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
         int expectedmodCount;
 
         PrivateEntryIterator(){
+            expectedmodCount = Treap2.this.modCount;
             next = getFirstEntry();
         }
 
         PrivateEntryIterator(Entry<K,V> first){
-            expectedmodCount = modCount;
+            expectedmodCount = Treap2.this.modCount;
             lastReturned = null;
             next = first;
         }

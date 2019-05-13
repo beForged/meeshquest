@@ -109,9 +109,9 @@ public class commandParser {
 
         if(node.getNodeName().equals("printTreap")){
             //todo empty treap
-            Treap2 temp = map.treapMap;
+            Treap temp = map.treapMap;
             Element treap = doc.createElement("treap");
-            treap.setAttribute("cardinality", String.valueOf(((Treap2) temp).size()));
+            treap.setAttribute("cardinality", String.valueOf(((Treap) temp).size()));
             try {
                 treap.appendChild(temp.printTreap(doc));
                 if(!map.testingTreap.equals(map.treapMap)){
