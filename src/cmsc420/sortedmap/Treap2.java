@@ -190,11 +190,17 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
 
     @Override
     public K firstKey() {
+        if(getFirstEntry() == null){
+            throw new NoSuchElementException();
+        }
         return getFirstEntry().getKey();
     }
 
     @Override
     public K lastKey() {
+        if(getLastEntry() == null){
+            throw new NoSuchElementException();
+        }
         return getLastEntry().getKey();
     }
 
@@ -364,7 +370,7 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
             int comp = k.compareTo(curr.getKey());
             if(comp < 0){
                 curr =curr.left;
-            }if(comp > 0){
+            }else if(comp > 0){
                 curr = curr.right;
             }else
                 return curr;
@@ -379,11 +385,11 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
             Entry<K,V> p = root;
             while(p != null){
                 int cmp = comp.compare(k, p.getKey());
-                if(cmp<0)
+                if(cmp<0) {
                     p = p.left;
-                if(cmp>0)
+                }else if(cmp>0) {
                     p = p.right;
-                else
+                } else
                     return p;
             }
         }

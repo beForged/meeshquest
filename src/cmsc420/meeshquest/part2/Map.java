@@ -5,10 +5,7 @@ import cmsc420.sortedmap.Treap;
 import cmsc420.sortedmap.Treap2;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 //this for now is the top level essentially
 //this may need to change significantly later
@@ -53,7 +50,6 @@ public class Map {
         }
         //I guess this is not reverse asciibetical?
         treapMap = new Treap<String, Point2D>(((o1, o2) -> -((String)o1).compareTo((String)o2)));
-        testingTreap= new TreeMap<>((o1, o2) -> -((String)o1).compareTo((String)o2));
         adjacencyList = new TreeMap<>();
     }
 
@@ -63,7 +59,7 @@ public class Map {
         if(nameMap.get(road.start.name).isolated || nameMap.get(road.end.name).isolated)
             throw new GenericException("startOrEndIsIsolated");
         quadTree.add(road);
-        //addRoadAdj(road);
+        addRoadAdj(road);
     }
 
     public void addRoadAdj(Road road){
@@ -90,32 +86,67 @@ public class Map {
     //djikstras helper
     private class CityNode{
         String name;
+        City city;
         Double pathdist;
-        CityNode(String n, Double p) {
+        public List<CityNode> shortestPath = new LinkedList<>();
+        public double dist = Double.MAX_VALUE;
+        HashMap<City, Double> adjacent = new HashMap<City, Double>();
+        CityNode(String n, Double p ) {
             name = n;
             pathdist = p;
+            city = nameMap.get(name);
+        }
+        void addNeighbor(List<City> a){
+            for(City c:a){
+                adjacent.put(c, city.distance(c));
+            }
         }
     }
 
-    public void djikstras(String start, String end) throws GenericException {
+    public ArrayList djikstras(String start, String end) throws GenericException {//todo
         City s = nameMap.get(start);
         City e = nameMap.get(end);
+
         if(adjacencyList.get(s) == null)
             throw new GenericException("nonExistentStart");
         if(adjacencyList.get(e) == null)
             throw new GenericException("nonExistentEnd");
 
 
-        TreeSet<City> settled = new TreeSet<>();
-        TreeSet<City> unsettled = new TreeSet<>(/*todo insert comparator*/);
+        ArrayList<City> settled = new ArrayList<>();
+        TreeSet<City> unsettled = new TreeSet<>(((o1, o2) -> (int)o1.distance(o2)));
+
 
         ArrayList<City> path= new ArrayList<>();
-        while(unsettled.size() != 0){
-
+        unsettled.add(s);
+        City work;
+        while((work = unsettled.pollFirst()) != null || !settled.contains(e)){
+            for(City neighbor: adjacencyList.get(work)){
+                System.out.println(settled);
+                double dist = neighbor.distance(work);
+                if(!settled.contains(neighbor)){
+                    System.out.println(work.name + " to " + neighbor.name);
+                    if(dist < neighbor.distance){
+                        neighbor.distance = dist;
+                        neighbor.prev = work;
+                    }
+                    unsettled.add(neighbor);
+                }
+            }
+            settled.add(work);
         }
+        s.prev = null;
+        City prev = e;
+        while(prev != null){
+            path.add(prev);
+            prev = prev.prev;
+        }
+        path.add(s);
+        Collections.reverse(path);
+        return path;
     }
     public City getLowestDist(City start){
-        TreeSet<City> adjacent= adjacencyList.get(start);
+        TreeSet<City> adjacent = adjacencyList.get(start);
         double dist = adjacent.first().distance(start);
         City closest = adjacent.first();
         for(City c:adjacent){
@@ -129,6 +160,13 @@ public class Map {
         //return (start.equals(closest.start.name)) ? closest.end.name : closest.start.name;
     }
 
+    public ArrayList<City> getShortest(String start, String end) throws GenericException {
+        ArrayList<City> a = djikstras(start,end);
+        if(a.size() == 0){
+            throw new GenericException("noPathExists");
+        }
+        return a;
+    }
     //check that name and coordinates are not taken
     public String addCity(City city){
         //check for duplicates
@@ -141,7 +179,6 @@ public class Map {
             //TODO throw new duplicateCityName();
         }else{
             treapMap.put(city.name, new Point2D.Float(city.x, city.y));
-            testingTreap.put(city.name, new Point2D.Float(city.x, city.y));
             coordinateMap.put(new Point2D.Float(city.x, city.y), city);
             nameMap.put(city.name, city);
             return "success";

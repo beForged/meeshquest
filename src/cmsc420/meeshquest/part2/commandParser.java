@@ -5,6 +5,8 @@ import cmsc420.sortedmap.Treap2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.awt.geom.Arc2D;
+import java.awt.geom.Line2D;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -114,9 +116,6 @@ public class commandParser {
             treap.setAttribute("cardinality", String.valueOf(((Treap) temp).size()));
             try {
                 treap.appendChild(temp.printTreap(doc));
-                if(!map.testingTreap.equals(map.treapMap)){
-                    System.err.println("failure");
-                }
             } catch (GenericException e) {
                 return outputBuilder(e.getMessage(), "printTreap", empty, empty, null);
             }catch (NullPointerException n){
@@ -420,9 +419,41 @@ public class commandParser {
             String end = node.getAttribute("end");
             String saveMap = node.getAttribute("saveMap");
             String saveHtml= node.getAttribute("saveHTML");
-
-            //todo
-            return null;
+            ArrayList<City> path;
+            String params[] = {"start", "end"};
+            String[] values = {start, end};
+            try {
+                path = map.getShortest(start, end);
+            } catch (GenericException e) {
+                return outputBuilder(e.getMessage(), "shortestPath", params, values, null);
+            }
+            City last = path.get(path.size()-1);
+            Element output = doc.createElement("path");
+            output.setAttribute("hops", String.valueOf(path.size() - 1));
+            output.setAttribute("length", String.valueOf(last.distance));
+            for (int i = 0; i < path.size() - 1; i++) {
+                Element road = doc.createElement("road");
+                City one = path.get(i);
+                City two = path.get(i + 1);
+                road.setAttribute("start", one.name);
+                road.setAttribute("end", two.name);
+                output.appendChild(road);
+                if(i + 2 < path.size()){
+                    City three = path.get(i + 2);
+                    Arc2D.Double arc = new Arc2D.Double();
+                    arc.setArcByTangent(one, two, three, 1);
+                    double angle = arc.getAngleExtent();
+                    //System.err.println(angle);
+                    if(angle <= 45){
+                    output.appendChild(doc.createElement("right"));
+                    }else if(angle <= 135){
+                        output.appendChild(doc.createElement("straight"));
+                    }else{
+                        output.appendChild(doc.createElement("left"));
+                    }
+                }
+            }
+            return outputBuilder(null, "shortestPath", params, values, output);
         }
         //y6y tbh
         /*

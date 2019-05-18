@@ -12,11 +12,10 @@
     <property name="sub.other" value=".submit,.project,.classpath,README.txt"/>
     <!--
 		TARGETS: The builds available in this file. 
-			    - - - - - - - - - - - - - - - - - -
 	-->
     <target name="export">
         <jar destfile="${jar.name}" update="true">
-            <fileset dir="." includes="${sub.source}"/>
+            <fileset dir="." includes="${sub.source}" excludes="**/TreapTest.java"/>
             <fileset dir="." includes="${sub.other}"/>
         </jar>
     </target>
