@@ -1,4 +1,4 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part3;
 
 import java.awt.geom.Point2D;
 import java.util.Comparator;

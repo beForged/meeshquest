@@ -1,8 +1,6 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part3;
 
-import cmsc420.geom.Circle2D;
 import cmsc420.sortedmap.Treap;
-import cmsc420.sortedmap.Treap2;
 
 import java.awt.geom.Point2D;
 import java.util.*;

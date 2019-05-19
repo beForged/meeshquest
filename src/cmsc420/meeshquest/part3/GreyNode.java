@@ -1,15 +1,12 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part3;
 
 import cmsc420.drawing.CanvasPlus;
-import cmsc420.geom.Shape2DDistanceCalculator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 

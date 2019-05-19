@@ -1,10 +1,8 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part3;
 
 import cmsc420.drawing.CanvasPlus;
-import cmsc420.geom.Geometry2D;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.css.Rect;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;

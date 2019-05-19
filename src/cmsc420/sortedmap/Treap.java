@@ -7,7 +7,7 @@ public class Treap<K,V> extends Treap2<K,V>{
     public Treap(Comparator c){super(c);}
 }
 /*
-import cmsc420.meeshquest.part2.GenericException;
+import cmsc420.meeshquest.part3.GenericException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import java.awt.geom.Point2D;

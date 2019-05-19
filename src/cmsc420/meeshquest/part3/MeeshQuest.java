@@ -1,4 +1,4 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part3;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class MeeshQuest {
 
             //this is the results document that gets printed as output
             results = XmlUtility.getDocumentBuilder().newDocument();
-Document doc = XmlUtility.validateNoNamespace(new File("testing/p2sampletests/part2.public.shortestPath.input.xml"));
+Document doc = XmlUtility.validateNoNamespace(new File("testing/p2sampletests/part3.public.shortestPath.input.xml"));
 //Document doc = XmlUtility.validateNoNamespace(new File("testing/p2sampletests/basicPath.xml"));
             //Document doc = XmlUtility.validateNoNamespace(System.in);
 

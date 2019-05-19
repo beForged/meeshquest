@@ -1,7 +1,6 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part3;
 
 import cmsc420.drawing.CanvasPlus;
-import cmsc420.geom.Circle2D;
 import cmsc420.geom.Geometry2D;
 import cmsc420.geom.Shape2DDistanceCalculator;
 import org.w3c.dom.Document;

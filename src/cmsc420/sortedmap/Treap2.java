@@ -1,6 +1,6 @@
 package cmsc420.sortedmap;
 
-import cmsc420.meeshquest.part2.GenericException;
+import cmsc420.meeshquest.part3.GenericException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -252,6 +252,11 @@ public class Treap2<K,V> extends AbstractMap<K,V> implements SortedMap<K,V> {
         @Override
         public void putAll(Map m) {
         //todo
+        }
+
+        @Override
+        public V remove(Object key) {
+            return super.remove(key);
         }
 
         @Override

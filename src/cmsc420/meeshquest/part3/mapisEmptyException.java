@@ -1,4 +1,4 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part3;
 
 public class mapisEmptyException extends Throwable {
     public mapisEmptyException(String s) {

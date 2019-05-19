@@ -1,12 +1,10 @@
-package cmsc420.meeshquest.part2;
+package cmsc420.meeshquest.part3;
 
 import cmsc420.sortedmap.Treap;
-import cmsc420.sortedmap.Treap2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.awt.geom.Arc2D;
-import java.awt.geom.Line2D;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -118,8 +116,6 @@ public class commandParser {
                 treap.appendChild(temp.printTreap(doc));
             } catch (GenericException e) {
                 return outputBuilder(e.getMessage(), "printTreap", empty, empty, null);
-            }catch (NullPointerException n){
-
             }
             return outputBuilder(null, "printTreap", empty, empty, treap);
         }
